@@ -2,6 +2,10 @@ from django.shortcuts import render
 from .models import Word_Set
 
 # Create your views here.
+def home(request):
+
+    return render(request, "vocab/index.html")
+
 def set_list(request):
     word_sets = Word_Set.objects.all().order_by("set_order")
 

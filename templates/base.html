@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}My Django Project{% endblock %}</title>
+    {% block css %}
+    <!-- Add your CSS files here -->
+    {% endblock %}
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to My Django Project</h1>
+      <nav>
+        <ul></ul>
+      </nav>
+    </header>
+
+    <main>
+      {% block content %}
+      <!-- Main content goes here -->
+      {% endblock %}
+    </main>
+
+    <footer>
+      <p>&copy; 2023 My Django Project. All rights reserved.</p>
+    </footer>
+
+    {% block js %}
+    <!-- Add your JavaScript files here -->
+    {% endblock %}
+  </body>
+</html>
