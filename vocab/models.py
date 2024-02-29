@@ -18,6 +18,7 @@ class Word_Set(models.Model):
     set_id = models.IntegerField(unique=True)
     set_title = models.CharField(max_length=100)
     set_slug = models.SlugField(max_length=100, unique=True)
+    set_order = models.IntegerField()
 
     def __str__(self):
         return f"[ID] {self.set_id} [TITLE] {self.set_title}"
