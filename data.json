@@ -1,1 +1,0 @@
-[{"model": "vocab.word", "pk": 1, "fields": {"word_id": 0, "word_ukrainian": "Привіт", "word_english": "Hello", "word_roman": "Pryvit", "word_pronounciation": "Pree-veet"}}, {"model": "vocab.word", "pk": 2, "fields": {"word_id": 2, "word_ukrainian": "Дякую", "word_english": "Thank you", "word_roman": "Dyakuyu", "word_pronounciation": "Dyah-koo-yoo"}}]

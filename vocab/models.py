@@ -1,14 +1,25 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
+
+
+GENDER = ((0, "None"), (1, "Male"), (2, "Female"))
+
+def default_english_words():
+    return {"No Translation"}
 
 # Model to define full list of word
 class Word(models.Model):
     word_id = models.IntegerField(unique=True)
     word_ukrainian = models.CharField(max_length=100)
-    word_english = models.CharField(max_length=100)
+    word_english = ArrayField(models.CharField(max_length=50), default=default_english_words)
     word_roman = models.CharField(max_length=100)
+    word_gender = models.IntegerField(choices=GENDER, default=0)
     word_pronounciation = models.CharField(max_length=100)
+    word_pronounciation_audio = models.URLField(null=True)
+    word_explanation = models.TextField(null=True)
+    word_examples = models.JSONField(null=True)
 
     def __str__(self):
         return f"[ID] {self.word_id} [UKR] {self.word_ukrainian} [ENG] {self.word_english}"
