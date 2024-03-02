@@ -26,6 +26,7 @@ def get_word_list(request):
 
     for word in words:
         word_data = {
+            "word_id": word.word_id,
             "word_ukrainian": word.word_ukrainian,
             "word_english": word.word_english,
             "word_roman": word.word_roman,

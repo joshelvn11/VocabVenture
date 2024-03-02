@@ -16,6 +16,34 @@
         </tr>
     </table>
 </div>
+<div class="background-overlay hidden"></div>
+<div id="word-details-modal" class="modal hidden">
+    <div class="modal-header-wrapper"><button id="close-modal-button" class="button-transparent">Close</button></div>
+    <div class="modal-content-wrapper">
+        <div id="details-card-container" class="card-container">
+            <div class="card col-6">
+                <div class="card-title">Ukrainian</div>
+                <div class="card-content font-size-xxlarge" id="word-ukr">Content</div>
+            </div>
+            <div class="card col-6">
+                <div class="card-title">English</div>
+                <div class="card-content font-size-xxlarge" id="word-eng">Content</div>
+            </div>
+            <div class="card col-6">
+                <div class="card-title">Pronounciation</div>
+                <div class="card-content font-size-xxlarge" id="word-pronounce">Content</div>
+            </div>
+            <div class="card col-6">
+                <div class="card-title">Romanization</div>
+                <div class="card-content font-size-xxlarge" id="word-roman">Content</div>
+            </div>
+            <div class="card col-12">
+                <div class="card-title">Explanation</div>
+                <div id="word-explain" class="card-content font-size-large">Content</div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="{% static '/js/words-list.js' %}"></script>
