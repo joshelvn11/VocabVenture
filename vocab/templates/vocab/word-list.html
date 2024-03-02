@@ -1,13 +1,22 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
+{% load static %} 
 {% block stylesheets %}
 <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
-{% enblock %}
+{% endblock %}
 {% block page_title %}Words List{% endblock %}
 {% block content %}
 <div>
-Hello
+    <table id="words-list-table">
+        <tr>
+            <th>Ukrainian</th>
+            <th>English</th>
+            <th>Romanization</th>
+            <th>Pronounciation</th>
+            <th>Actions</th>
+        </tr>
+    </table>
 </div>
 {% endblock %}
 {% block scripts %}
-<script type="text/javascript" src="{% static 'js/word-list.js' %}"></script>
-{% enblock %}
+<script type="text/javascript" src="{% static '/js/words-list.js' %}"></script>
+{% endblock %}
