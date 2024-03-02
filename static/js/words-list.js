@@ -4,7 +4,7 @@ const wordsListTable = $("#words-list-table");
 let wordData;
 
 // Fetch the word data from the api
-fetch("http://127.0.0.1:8000/api/words/list")
+fetch("/api/words/list")
   .then((response) => {
     if (!response.ok) {
       console.log("Error in response");
