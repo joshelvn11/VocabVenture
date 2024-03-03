@@ -240,10 +240,6 @@ th {
   width: calc(100% / 5);
 }
 
-th {
-  background-color: var(--gray-very-light);
-}
-
 .table-action-button {
   background-color: var(--background-color);
   border: solid 1px var(--border-color);
@@ -322,6 +318,8 @@ th {
   min-height: 200px;
   border: solid 1px var(--border-color);
   border-radius: var(--border-radius);
+  -webkit-box-shadow: 0px 0px 5px 0.8px var(--gray-opaque);
+  box-shadow: 0px 0px 5px 0.8px var(--gray-opaque);
 }
 
 .card-title {
