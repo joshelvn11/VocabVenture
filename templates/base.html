@@ -12,10 +12,11 @@
   <body>
     <div id="root-container">
       <nav id="sidebar-nav">
-        <ul id="page-nav">
-          <!-- Home -->
-          <li class="nav-item {% if request.path == '/' %}active{% endif %}">
-            <svg
+        <!-- Home -->
+        <div class="nav-item-wrapper">
+          <a href="/">
+            <div class="nav-item-text">
+              <svg
               width="64"
               height="64"
               viewBox="0 0 64 64"
@@ -31,13 +32,15 @@
                 fill="black"
               />
             </svg>
-            <a href="/">Home</a>
-          </li>
-          <!-- Vocab -->
-          <li
-            class="nav-item {% if request.path == 'vocab' %}active{% endif %}"
-          >
-            <svg
+              <p>Home</p>
+            </div>
+          </a>
+        </div>
+        <!-- Words -->
+        <div class="nav-item-wrapper">
+          <a href="/words/list">
+            <div class="nav-item-text">
+              <svg
               width="64"
               height="64"
               viewBox="0 0 64 64"
@@ -63,13 +66,15 @@
                 </clipPath>
               </defs>
             </svg>
-            <a href="#about">Words</a>
-          </li>
-          <!-- Phrases -->
-          <li
-            class="nav-item {% if request.path == 'phrases' %}active{% endif %}"
-          >
-            <svg
+              <p>Words</p>
+            </div>
+          </a>
+        </div>
+        <!-- Phrases -->
+        <div class="nav-item-wrapper">
+          <a href="/words/list">
+            <div class="nav-item-text">
+              <svg
               width="64"
               height="64"
               viewBox="0 0 64 64"
@@ -98,9 +103,11 @@
                   <rect width="64" height="64" fill="white" />
                 </clipPath>
               </defs></svg
-            ><a href="#services">Phrases</a>
-          </li>
-        </ul>
+            >
+              <p>Phrases</p>
+            </div>
+          </a>
+        </div>
       </nav>
       <div id="content-container">
         <div id="page-header">
