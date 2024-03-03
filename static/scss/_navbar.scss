@@ -33,7 +33,7 @@
   border-radius: 8px;
   margin-bottom: 2.5px;
 
-  .active {
+  &.active {
     background-color: var(--blue-opaque);
   }
 
