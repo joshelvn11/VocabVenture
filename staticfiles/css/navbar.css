@@ -1,0 +1,154 @@
+/* Navbar Styling */
+
+#sidebar-nav {
+  width: 150px;
+  height: 100%;
+  border-right: solid 1px var(--border-color);
+  padding: 50px 10px 10px 10px;
+}
+
+#page-nav {
+  padding: 10px;
+}
+
+.nav-item-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  margin-bottom: 2.5px;
+}
+
+.nav-item-wrapper svg {
+  margin-bottom: -3px;
+  padding-right: 3px;
+}
+
+.nav-item-wrapper a {
+  width: 100%;
+  padding: 6px 10px 4px 10px;
+}
+
+.nav-item-wrapper p {
+  display: inline;
+}
+
+.active {
+  background-color: var(--blue-opaque);
+}
+
+.nav-item-wrapper:hover {
+  background-color: var(--blue-opaque);
+}
+
+.nav-item-wrapper:hover p {
+  color: black;
+}
+
+.nav-item-wrapper:hover path {
+  fill: black;
+}
+
+.nav-item-expand {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  padding: 0px 3px 0px 3px;
+  margin-top: -4px;
+  cursor: pointer;
+}
+
+.nav-chevron {
+  max-width: 12px;
+  max-height: 12px;
+  margin: 0;
+}
+
+.nav-chevron path {
+  fill: var(--gray-dark);
+}
+
+.nav-item-text {
+  width: 100%;
+}
+
+.nav-item {
+  margin: 5px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  gap: 10px;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+}
+
+.nav-item:hover {
+  background-color: rgb(20, 96, 239);
+}
+
+.nav-item a {
+  margin-bottom: -3px;
+}
+
+.nav-item.active {
+  background-color: rgba(51, 152, 219, 0.15);
+  color: #3498db;
+}
+
+.nav-item.active a {
+  color: #3498db;
+}
+
+.nav-item.active .sidebar-nav-icon path {
+  fill: #3498db !important;
+}
+
+.sidebar-nav-icon {
+  max-width: 18px;
+  max-height: 18px;
+  margin: 0;
+}
+
+.sidebar-nav-icon path {
+  fill: var(--gray-dark);
+}
+
+@media only screen and (max-width: 768px) {
+  #sidebar-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    width: 70%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: start;
+    background-color: var(--background-color);
+  }
+
+  .nav-item-wrapper {
+    max-width: 95%;
+    width: 200px;
+    padding: 4px 0px 4px 15px;
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+
+  .nav-item-wrapper p {
+    font-size: 1.2rem;
+  }
+
+  .sidebar-nav-icon {
+    max-width: 22px;
+    max-height: 22px;
+    margin: 0;
+  }
+
+  .nav-item-wrapper svg {
+    margin-bottom: -5px;
+  }
+}

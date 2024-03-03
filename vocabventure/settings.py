@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_summernote',
+    'django_sass',
     'vocab',
 ]
 
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'vocabventure.urls'
@@ -145,3 +147,6 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com",
     "http://localhost"
 ]
+
+# Configure sass compiler settings
+SASS_COMPILE_STATIC = True

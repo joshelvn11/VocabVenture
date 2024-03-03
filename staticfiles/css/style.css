@@ -78,120 +78,6 @@ a {
   cursor: pointer;
 }
 
-/* Navbar Styling */
-
-#sidebar-nav {
-  width: 150px;
-  height: 100%;
-  border-right: solid 1px var(--border-color);
-  padding: 50px 10px 10px 10px;
-}
-
-#page-nav {
-  padding: 10px;
-}
-
-.nav-item-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 8px;
-  margin-bottom: 2.5px;
-}
-
-.nav-item-wrapper svg {
-  margin-bottom: -3px;
-  padding-right: 3px;
-}
-
-.nav-item-wrapper a {
-  width: 100%;
-  padding: 6px 10px 4px 10px;
-}
-
-.nav-item-wrapper p {
-  display: inline;
-}
-
-.nav-item-wrapper:hover {
-  background-color: var(--blue-opaque);
-}
-
-.nav-item-wrapper:hover p {
-  color: black;
-}
-
-.nav-item-wrapper:hover path {
-  fill: black;
-}
-
-.nav-item-expand {
-  background-color: rgba(0, 0, 0, 0);
-  border: none;
-  padding: 0px 3px 0px 3px;
-  margin-top: -4px;
-  cursor: pointer;
-}
-
-.nav-chevron {
-  max-width: 12px;
-  max-height: 12px;
-  margin: 0;
-}
-
-.nav-chevron path {
-  fill: var(--gray-dark);
-}
-
-.nav-item-text {
-  min-width: 100px;
-}
-
-.nav-item {
-  margin: 5px;
-  padding: 8px 10px;
-  border-radius: 8px;
-  list-style-type: none;
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  gap: 10px;
-  transition: all 0.3s ease-in-out;
-  width: 100%;
-}
-
-.nav-item:hover {
-  background-color: rgb(20, 96, 239);
-}
-
-.nav-item a {
-  margin-bottom: -3px;
-}
-
-.nav-item.active {
-  background-color: rgba(51, 152, 219, 0.15);
-  color: #3498db;
-}
-
-.nav-item.active a {
-  color: #3498db;
-}
-
-.nav-item.active .sidebar-nav-icon path {
-  fill: #3498db !important;
-}
-
-.sidebar-nav-icon {
-  max-width: 18px;
-  max-height: 18px;
-  margin: 0;
-}
-
-.sidebar-nav-icon path {
-  fill: var(--gray-dark);
-}
-
 /* Page Content Styling */
 
 #content-container {
@@ -200,9 +86,24 @@ a {
 }
 
 #page-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   width: 100%;
   border-bottom: solid 1px var(--border-color);
   padding: 18px 0px 10px 25px;
+}
+
+#page-header-left-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+#page-header-left-container {
+  display: flex;
+  justify-content: end;
+  align-items: center;
 }
 
 #page-title {
@@ -214,6 +115,12 @@ a {
 #page-content {
   padding: 25px 25px;
   overflow-y: scroll;
+}
+
+@media only screen and (max-width: 768px) {
+  #content-container {
+    width: 100vw;
+  }
 }
 
 /* Table Styling */
