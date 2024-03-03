@@ -1,4 +1,4 @@
-{% load static %} {% url 'home' as home_url %}
+{% load static %} {% url 'home' as home_url %} {% url '/words/' as words_url %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,13 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>VocabVenture</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     {% block stylesheets %} {% endblock %}
   </head>
   <body>
     <div id="root-container">
-      <nav id="sidebar-nav">
+      <nav id="sidebar-nav" class="">
+        <!-- Mobile Nav Close Button -->
+        <button id="mobile-nav-close" class="icon-button">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M61.7932 56.5976L37.6569 32L61.7178 7.40241L61.7932 7.3253C63.1509 5.78313 63.1509 3.39277 61.7178 2.00482C60.9635 1.23374 59.983 0.848193 58.927 0.848193C57.9465 0.848193 57.0414 1.31084 56.3625 2.00482L32.3017 26.6024L7.48662 1.15663C6.73236 0.385542 5.75182 0 4.69586 0C3.71533 0 2.81022 0.462651 2.13139 1.15663C1.45255 1.92771 1 2.93012 1.07543 3.93253C1.07543 4.93494 1.52798 5.86024 2.20681 6.55422L27.0219 32L2.13139 57.4458C1.37713 58.2169 1 59.2193 1 60.2988C1 61.3012 1.45255 62.2265 2.13139 62.9205C2.65937 63.3831 3.48905 64 4.77129 64C6.12895 64 6.95864 63.3831 7.48662 62.9205L32.3771 37.4747L56.438 62.0723C56.9659 62.612 57.7956 63.1518 59.1533 63.1518C60.5109 63.1518 61.3406 62.5349 61.8686 62.0723C62.6229 61.3012 63 60.2988 63 59.2193C62.9246 58.2169 62.5474 57.2916 61.7932 56.5976Z" fill="black"/>
+            </svg>            
+        </button>
         <!-- Home -->
-        <div class="nav-item-wrapper">
+        <div class="nav-item-wrapper {% if request.path == '/' %}active{% endif %}">
           <a href="/">
             <div class="nav-item-text">
               <svg
@@ -37,7 +44,7 @@
           </a>
         </div>
         <!-- Words -->
-        <div class="nav-item-wrapper">
+        <div class="nav-item-wrapper {% if '/words/' in request.path %}active{% endif %}"">
           <a href="/words/list">
             <div class="nav-item-text">
               <svg
@@ -111,12 +118,34 @@
       </nav>
       <div id="content-container">
         <div id="page-header">
-          <h2 id="page-title">{% block page_title %}{% endblock %}</h2>
+          <div id="page-header-left-container">
+            <button id="mobile-nav-open" class="icon-button">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_42_20)">
+                <path d="M62.3301 16.3163C62.0637 15.2508 59.7994 5.86056 50.8087 2.3975C45.3477 0.266389 35.8243 0 31.9617 0C28.099 0 18.5756 0.332987 13.1147 2.3975C3.79103 5.99376 1.65992 15.9168 1.52672 16.3163C0.394567 21.0447 -0.204809 26.3059 -0.138211 31.9667C-0.138211 37.6275 0.394567 42.8887 1.52672 47.6171C1.59332 48.0166 3.79103 58.0062 13.1147 61.6025C18.5756 63.7336 28.099 64 31.9617 64C35.8243 64 45.3477 63.667 50.8087 61.6025C60.1323 58.0062 62.2635 48.0832 62.3301 47.6837C63.4622 42.9553 64.0616 37.6941 63.995 32.0333C63.995 26.3059 63.4622 21.0447 62.3301 16.3163ZM59.7994 32.0333C59.866 37.3611 59.3332 42.3559 58.2676 46.7513C58.2676 46.8179 56.4029 54.9428 49.277 57.6733C45.9471 58.9386 39.4206 59.7378 31.9617 59.8044C24.4362 59.7378 17.9763 58.9386 14.5798 57.6733C7.45388 54.9428 5.58916 46.7513 5.58916 46.6847C4.5236 42.2893 3.99082 37.3611 4.05742 31.9667C3.99082 26.6389 4.5236 21.6441 5.58916 17.2487C5.58916 17.1821 7.45388 9.05723 14.5798 6.32674C17.9097 5.06139 24.4362 4.26223 31.8951 4.19563C39.4206 4.26223 45.8805 5.06139 49.277 6.32674C56.4029 9.05723 58.2676 17.1821 58.2676 17.3153C59.3332 21.7107 59.866 26.6389 59.7994 32.0333Z" fill="black"/>
+                <path d="M19.1084 22.4432H44.6818C45.9471 22.4432 46.9461 21.4442 46.9461 20.1789C46.9461 18.9135 45.9471 17.9146 44.6818 17.9146H19.1084C17.8431 17.9146 16.8441 18.9135 16.8441 20.1789C16.8441 21.4442 17.9097 22.4432 19.1084 22.4432Z" fill="black"/>
+                <path d="M44.7484 29.5691H19.1084C17.8431 29.5691 16.8441 30.568 16.8441 31.8334C16.8441 33.0987 17.8431 34.0977 19.1084 34.0977H44.6818C45.9471 34.0977 46.9461 33.0987 46.9461 31.8334C46.9461 30.568 45.9471 29.5691 44.7484 29.5691Z" fill="black"/>
+                <path d="M44.7484 41.5566H19.1084C17.8431 41.5566 16.8441 42.5556 16.8441 43.8209C16.8441 45.0863 17.8431 46.0853 19.1084 46.0853H44.6818C45.9471 46.0853 46.9461 45.0863 46.9461 43.8209C47.0127 42.5556 45.9471 41.5566 44.7484 41.5566Z" fill="black"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_42_20">
+                <rect width="64" height="64" fill="none"/>
+                </clipPath>
+                </defs>
+                </svg>
+            </button>
+            <h2 id="page-title">{% block page_title %}{% endblock %}</h2>
+            {% block page_buttons %} {% endblock %}
+          </div>
+          <div id="page-header-right-container">
+            <button>Button</button>
+          </div>
         </div>
         <div id="page-content">{% block content %}{% endblock %}</div>
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="{% static 'js/index.js' %}"></script>
     {% block scripts %} {% endblock %}
   </body>
 </html>
