@@ -12,10 +12,10 @@ def set_list(request):
 
     return render(request, "vocab/word-sets.html", {"word_sets": word_sets})
 
-def word_list(request):
+def word_list_ukr_eng(request):
     words =  WORD_UKR_ENG.objects.all()
 
-    return render(request, "vocab/word-list.html", {"words": words})
+    return render(request, "vocab/word-list.html", {"words": words},)
 
 def get_word_list(request):
     # Retrieve the query set

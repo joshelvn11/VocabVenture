@@ -1,0 +1,39 @@
+table {
+  width: 100%;
+  border-radius: 30px;
+  border-collapse: collapse;
+}
+
+tr {
+  transition: all 0.2s ease-in-out;
+}
+
+tr:hover {
+  background-color: var(--gray-opaque);
+}
+
+td,
+th {
+  padding: 13px 15px 8px 10px;
+  border-bottom: solid 1px var(--border-color);
+  text-align: left;
+  width: calc(100% / 5);
+}
+
+.table-action-button {
+  background-color: var(--background-color);
+  border: solid 1px var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 5px 8px 2px 8px;
+  cursor: pointer;
+}
+
+.table-action-icon {
+  max-width: 20px;
+  max-height: 20px;
+  margin: 0;
+}
+
+.table-action-icon path {
+  fill: var(--gray-dark);
+}

@@ -1,0 +1,32 @@
+.transparent-button {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  cursor: pointer;
+  padding: 5px 20px 5px 20px;
+}
+
+.button-transparent {
+  background-color: rgba(0, 0, 0, 0);
+  font-family: "Manjari", Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.icon-button {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  cursor: pointer;
+
+  svg {
+    max-width: 28px;
+    max-height: 28px;
+    margin: 0;
+
+    path {
+      fill: var(--gray-dark);
+    }
+  }
+}

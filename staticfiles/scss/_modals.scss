@@ -1,0 +1,41 @@
+.background-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 98;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--gray-medium-opaque);
+  backdrop-filter: blur(3px);
+}
+
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+  background-color: var(--background-color);
+  border: solid 1px var(--border-color);
+  padding: 10px 25px 25px 25px;
+}
+
+.modal-header-wrapper {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  height: 50px;
+}
+
+.modal-content-wrapper {
+  max-height: calc(100% - 50px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+#word-details-modal {
+  width: 80%;
+  height: 80%;
+}

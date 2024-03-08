@@ -1,0 +1,13 @@
+.hidden {
+  display: none;
+}
+
+.col-6 {
+  min-width: calc(
+    (100% / 2) - 10px /* 100% of the container width minus the gap */
+  );
+}
+
+.col-12 {
+  min-width: calc(100% - 8px);
+}
