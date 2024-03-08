@@ -10,7 +10,7 @@ def default_english_words():
     return {"No Translation"}
 
 # Model to define full list of word
-class Word(models.Model):
+class WORD_UKR_ENG(models.Model):
     word_id = models.IntegerField(unique=True)
     word_ukrainian = models.CharField(max_length=100)
     word_english = ArrayField(models.CharField(max_length=50), default=default_english_words, editable=True)
@@ -25,7 +25,7 @@ class Word(models.Model):
         return f"[ID] {self.word_id} [UKR] {self.word_ukrainian} [ENG] {self.word_english}"
 
 # Model to define sets of words
-class Word_Set(models.Model):
+class WORD_SET(models.Model):
     set_id = models.IntegerField(unique=True)
     set_title = models.CharField(max_length=100)
     set_slug = models.SlugField(max_length=100, unique=True)
@@ -38,9 +38,9 @@ class Word_Set(models.Model):
 # Junction table needed as words can belong to multiple sets 
 # meaning a many-to-many relationship i.e Sets can have multiple words
 # and words can have multiple sets
-class Set_Word_Junction(models.Model):
-    word = models.ForeignKey(Word, on_delete=models.PROTECT)
-    word_set = models.ForeignKey(Word_Set, on_delete=models.PROTECT)
+class WORD_SET_JUNCTION_UKR_ENG(models.Model):
+    word = models.ForeignKey(WORD_UKR_ENG, on_delete=models.PROTECT)
+    word_set = models.ForeignKey(WORD_SET, on_delete=models.PROTECT)
 
     class Meta:
         ordering = ["word"] 

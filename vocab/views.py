@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Word_Set, Word
+from .models import WORD_SET, WORD_UKR_ENG, WORD_SET_JUNCTION_UKR_ENG
 
 # Create your views here.
 def home(request):
@@ -8,18 +8,18 @@ def home(request):
     return render(request, "vocab/index.html")
 
 def set_list(request):
-    word_sets = Word_Set.objects.all().order_by("set_order")
+    word_sets = WORD_SET.objects.all().order_by("set_order")
 
     return render(request, "vocab/word-sets.html", {"word_sets": word_sets})
 
 def word_list(request):
-    words = Word.objects.all()
+    words =  WORD_UKR_ENG.objects.all()
 
     return render(request, "vocab/word-list.html", {"words": words})
 
 def get_word_list(request):
     # Retrieve the query set
-    words = Word.objects.all()
+    words = WORD_UKR_ENG.objects.all()
 
     # Create a dictionary for sending
     data = []
