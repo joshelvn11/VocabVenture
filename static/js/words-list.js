@@ -1,14 +1,13 @@
-// Get the words list table
-const wordsListTable = $("#words-list-table");
-
 // Global word data variable, holds an array of word objects
 let wordData;
 
 // Get HTML elements
+const wordsListTable = $("#words-list-table");
+
+// Word Details Elements
 const showDetailsButtons = $(".show-word-details-button");
 const wordDetailsModal = $("#word-details-modal");
-const backgroundOverlay = $(".background-overlay");
-const closeModalButton = $("#close-modal-button");
+const closeWordDetailsModalButton = $("#close-word-details-modal-button");
 const detailsCardContainer = $("#details-card-container");
 const wordUkr = $("#word-ukr");
 const wordEng = $("#word-eng");
@@ -16,14 +15,39 @@ const wordPronounce = $("#word-pronounce");
 const wordRoman = $("#word-roman");
 const wordExplain = $("#word-explain");
 
+// Admin Edit Modal Elements
+const adminEditButtons = $(".admin-edit-details-button");
+const adminEditModal = $("#admin-edit-modal");
+const closeAdminEditModalButton = $("#close-admin-edit-modal-button");
+const wordIdInput = $("#word-id-input");
+const wordUkrInput = $("#word-ukr-input");
+const wordEngInput = $("#word-eng-input");
+const wordRomanInput = $("#word-roman-input");
+const wordPronounceInput = $("#word-pronounce-input");
+const wordExplainInput = $("#word-explain-input");
+const wordExamplesInput = $("#word-examples-input");
+
+// Other Elements
+const backgroundOverlay = $(".background-overlay");
+
 // Add event listeners
-closeModalButton.on("click", () => {
-  closeModal();
+closeWordDetailsModalButton.on("click", () => {
+  closeWordDetailsModal();
+});
+
+closeAdminEditModalButton.on("click", () => {
+  closeAdminEditModal();
 });
 
 showDetailsButtons.each(function () {
   $(this).on("click", function () {
-    showModal($(this).attr("word-id"));
+    showWordDetailsModal($(this).attr("word-id"));
+  });
+});
+
+adminEditButtons.each(function () {
+  $(this).on("click", function () {
+    showAdminEditModal($(this).attr("word-id"));
   });
 });
 
@@ -39,8 +63,7 @@ fetch("/api/words/list")
     wordData = data.data;
   });
 
-function showModal(wordId) {
-  console.log(`Word id = ${wordId}`);
+function showWordDetailsModal(wordId) {
   // Find the relevant objecty from the wordData array
   const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
 
@@ -57,8 +80,32 @@ function showModal(wordId) {
   backgroundOverlay.removeClass("hidden");
 }
 
+function closeWordDetailsModal() {
+  // Hide the modal and background overlay
+  wordDetailsModal.addClass("hidden");
+  backgroundOverlay.addClass("hidden");
+
+  // Remove all the usage example elements
+  $(".usage-example").remove();
+}
+
+function showAdminEditModal(wordId) {
+  // Find the relevant objecty from the wordData array
+  const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
+
+  populateAdminEditFields(wordObject);
+
+  adminEditModal.removeClass("hidden");
+  backgroundOverlay.removeClass("hidden");
+}
+
+function closeAdminEditModal() {
+  // Hide the modal and background overlay
+  adminEditModal.addClass("hidden");
+  backgroundOverlay.addClass("hidden");
+}
+
 function loadUsageExamples(wordObject) {
-  console.log(wordObject["word_examples"]);
   // Get the usage examples object
   usageExamplesObject = wordObject["word_examples"];
 
@@ -125,13 +172,15 @@ function loadUsageExamples(wordObject) {
   }
 }
 
-function closeModal() {
-  // Hide the modal and background overlay
-  wordDetailsModal.addClass("hidden");
-  backgroundOverlay.addClass("hidden");
+function populateAdminEditFields(wordObject) {
+  wordIdInput.val(wordObject["word_id"]);
+  wordUkrInput.val(wordObject["word_ukrainian"]);
+  wordEngInput.val(wordObject["word_english"]);
+  wordRomanInput.val(wordObject["word_roman"]);
+  wordPronounceInput.val(wordObject["word_pronounciation"]);
+  wordExplainInput.val(wordObject["word_explanation"]);
 
-  // Remove all the usage example elements
-  $(".usage-example").remove();
+  wordExamplesInput.val(JSON.stringify(wordObject["word_examples"], null, 2));
 }
 
 // Function to format an array of strings into an individual string
