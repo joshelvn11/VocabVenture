@@ -75,46 +75,61 @@ def getWordList(request):
 @api_view(["POST"])
 def postWordItem(request):
 
-    print("Received word item POST request")
+    # Check if the user is authenticated and is a superuser
+    if request.user.is_authenticated and request.user.is_superuser:
+        print("Received word item POST request")
 
-    # Serialize the received post data
-    serializer = WordUkrEngSerializer(data=request.data)
+        # Serialize the received post data
+        serializer = WordUkrEngSerializer(data=request.data)
 
-    # Check if the serialized data is valid
-    if serializer.is_valid():
-        serializer.save()
-        return Response({"status": "SUCCESS",
-                         "message": "Word added successfully"})
+        # Check if the serialized data is valid
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status": "SUCCESS",
+                            "message": "Word added successfully"})
+        else:
+            return Response({"status": "ERROR",
+                            "message": json.dumps(serializer.errors)})
     else:
-         return Response({"status": "ERROR",
-                         "message": json.dumps(serializer.errors)})
+        # If the user is not a superuser, return an unauthorized error response
+        return Response({"status": "ERROR",
+                         "message": "Unauthorized: Only superusers can perform this action"},
+                        status=status.HTTP_403_FORBIDDEN)
     
 ## --------------------------------------------------------------------------  PUT Word Item
 
 @api_view(["PUT"])
 def updateWordItem(request, word_id):
-    try:
-        # Retrieve the existing word item by id
-        word_item = WORD_UKR_ENG.objects.get(word_id=word_id)
-    except WORD_UKR_ENG.DoesNotExist:
-        # If the word item does not exist, return a 404 Not Found response
-        return Response({"status": "ERROR",
-                         "message": "Word not found"})
+    # Check if the user is authenticated and is a superuser
+    if request.user.is_authenticated and request.user.is_superuser:
+        print("Received word item POST request")
+        try:
+            # Retrieve the existing word item by id
+            word_item = WORD_UKR_ENG.objects.get(word_id=word_id)
+        except WORD_UKR_ENG.DoesNotExist:
+            # If the word item does not exist, return a 404 Not Found response
+            return Response({"status": "ERROR",
+                            "message": "Word not found"})
 
-    # Serialize the incoming data with the existing word item instance
-    serializer = WordUkrEngSerializer(word_item, data=request.data)
+        # Serialize the incoming data with the existing word item instance
+        serializer = WordUkrEngSerializer(word_item, data=request.data)
 
-    # Check if the serialized data is valid
-    if serializer.is_valid():
-        # Save the updated word item
-        serializer.save()
-        # Return the updated word item data
-        return Response({"status": "SUCCESS",
-                         "message": "Word updated successfully"})
+        # Check if the serialized data is valid
+        if serializer.is_valid():
+            # Save the updated word item
+            serializer.save()
+            # Return the updated word item data
+            return Response({"status": "SUCCESS",
+                            "message": "Word updated successfully"})
+        else:
+            # If data is invalid, return the errors
+            return Response({"status": "ERROR",
+                            "message": json.dumps(serializer.errors)})
     else:
-        # If data is invalid, return the errors
+        # If the user is not a superuser, return an unauthorized error response
         return Response({"status": "ERROR",
-                         "message": json.dumps(serializer.errors)})
+                         "message": "Unauthorized: Only superusers can perform this action"},
+                        status=status.HTTP_403_FORBIDDEN)
     
 
 
