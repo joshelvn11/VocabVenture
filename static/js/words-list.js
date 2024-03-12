@@ -257,7 +257,7 @@ function submitWordEditUpdate() {
 
   if (editAction === "UPDATE") {
     // Logic to run if updating a word record
-    fetch(`http://vocabventure.onrender.com/api/words/update/${editWordID}`, {
+    fetch(`https://vocabventure.onrender.com/api/words/update/${editWordID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -274,7 +274,7 @@ function submitWordEditUpdate() {
       });
   } else if (editAction === "ADD") {
     // Logic to run if adding a word record
-    fetch(`http://vocabventure.onrender.com/api/words/add`, {
+    fetch(`https://vocabventure.onrender.com/api/words/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -292,7 +292,7 @@ function submitWordEditUpdate() {
       });
   } else if (editAction === "DELETE") {
     // Logic to running if deleting a word record
-    fetch(`http://vocabventure.onrender.com/api/words/delete/${editWordID}`, {
+    fetch(`https://vocabventure.onrender.com/api/words/delete/${editWordID}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
