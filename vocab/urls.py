@@ -12,5 +12,6 @@ urlpatterns = [
     path('api/word/list', views.getWordList, name='getWordList'), 
     path('api/words/add', views.postWordItem, name='postWordItem'), 
     path('api/words/update/<int:word_id>', views.updateWordItem, name='updateWordItem'), 
+    path('api/words/delete/<int:word_id>', views.deleteWordItem, name='deleteWordItem'), 
    ## path('api/words/<int:word_id>', WordUkrEngUpdateView.as_view(), name='word_update'), 
 ]

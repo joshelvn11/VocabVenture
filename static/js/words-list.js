@@ -1,7 +1,7 @@
 // Global word data variable, holds an array of word objects
 let wordData;
 let editWordID; // Word that is currently beind edited in the admin from
-let editWord; // State variable to control whether a word is being added or updated
+let editAction = "NONE"; // State variable to control whether a word is being added or updated
 
 // ------------------------------------------------------------------------- DOM Elements
 
@@ -26,6 +26,7 @@ const adminEditModal = $("#admin-edit-modal");
 const closeAdminEditModalButton = $("#close-admin-edit-modal-button");
 const adminEditForm = $("#admin-word-edit-form");
 const adminEditFormSaveButton = $("#admin-word-edit-save-button");
+const adminEditFormDeleteButton = $("#admin-word-edit-delete-button");
 const wordIdInput = $("#word-id-input");
 const wordUkrInput = $("#word-ukr-input");
 const wordEngInput = $("#word-eng-input");
@@ -53,6 +54,11 @@ adminEditFormSaveButton.on("click", () => {
   submitWordEditUpdate();
 });
 
+adminEditFormDeleteButton.on("click", () => {
+  editAction = "DELETE";
+  submitWordEditUpdate();
+});
+
 showDetailsButtons.each(function () {
   $(this).on("click", function () {
     showWordDetailsModal($(this).attr("word-id"));
@@ -61,13 +67,13 @@ showDetailsButtons.each(function () {
 
 adminEditButtons.each(function () {
   $(this).on("click", function () {
-    editWord = true;
+    editAction = "UPDATE";
     showAdminEditModal($(this).attr("word-id"));
   });
 });
 
 addWordButton.on("click", () => {
-  editWord = false;
+  editAction = "ADD";
   showAdminEditModal();
 });
 
@@ -184,7 +190,7 @@ function loadUsageExamples(wordObject) {
 
 function showAdminEditModal(wordId) {
   // Populate the fields with word data if is editinng words
-  if (editWord == true) {
+  if (editAction === "UPDATE") {
     // Find the relevant objecty from the wordData array
     editWordID = wordId;
     const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
@@ -244,7 +250,7 @@ function submitWordEditUpdate() {
     word_examples: wordExamples,
   };
 
-  if (editWord) {
+  if (editAction === "UPDATE") {
     // Logic to run if updating a word record
     fetch(`http://127.0.0.1:8000/api/words/update/${editWordID}`, {
       method: "PUT",
@@ -261,7 +267,7 @@ function submitWordEditUpdate() {
       .then((data) => {
         showAlertModal(data.status, data.message);
       });
-  } else {
+  } else if (editAction === "ADD") {
     // Logic to run if adding a word record
     fetch(`http://127.0.0.1:8000/api/words/add`, {
       method: "POST",
@@ -271,6 +277,23 @@ function submitWordEditUpdate() {
         "X-CSRFToken": getCookie("csrftoken"),
       },
       body: JSON.stringify(jsonData),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        showAlertModal(data.status, data.message);
+      });
+  } else if (editAction === "DELETE") {
+    // Logic to running if deleting a word record
+    fetch(`http://127.0.0.1:8000/api/words/delete/${editWordID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        // Include CSRF token as required by Django for non-GET requests
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
     })
       .then((response) => {
         return response.json();

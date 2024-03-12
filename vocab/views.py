@@ -130,6 +130,30 @@ def updateWordItem(request, word_id):
         return Response({"status": "ERROR",
                          "message": "Unauthorized: Only superusers can perform this action"},
                         status=status.HTTP_403_FORBIDDEN)
-    
+
+
+## --------------------------------------------------------------------------  DELETE Word Item
+
+@api_view(["DELETE"])
+def deleteWordItem(request, word_id):
+     # Check if the user is authenticated and is a superuser
+    if request.user.is_authenticated and request.user.is_superuser:
+        try:
+            # Retrieve the existing word item by id
+            word_item = WORD_UKR_ENG.objects.get(word_id=word_id)
+        except WORD_UKR_ENG.DoesNotExist:
+            # If the word item does not exist, return a 404 Not Found response
+            return Response({"status": "ERROR", "message": "Word not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Delete the found word item
+        word_item.delete()
+
+        # Return a success response
+        return Response({"status": "SUCCESS", "message": "Word deleted successfully"})
+    else:
+        # If the user is not a superuser, return an unauthorized error response
+        return Response({"status": "ERROR",
+                         "message": "Unauthorized: Only superusers can perform this action"},
+                        status=status.HTTP_403_FORBIDDEN)
 
 
