@@ -12,6 +12,8 @@ $("#mobile-nav-close").on("click", () => {
 
 const alertModal = $("#alert-modal");
 const alertModalCloseButton = $("#alert-modal-close-button");
+const alerModalTitle = $("#alert-title");
+const alerModalMessage = $("#alert-message");
 
 alertModalCloseButton.on("click", () => {
   closeAlertModal();
@@ -22,15 +24,23 @@ function showAlertModal(type, message) {
   switch (type) {
     case "INFO":
       alertModal.addClass("info");
+      alerModalTitle.text("Info");
+      alerModalMessage.text(message);
       break;
     case "SUCCESS":
       alertModal.addClass("success");
+      alerModalTitle.text("Success");
+      alerModalMessage.text(message);
       break;
     case "WARNING":
       alertModal.addClass("warning");
+      alerModalTitle.text("Warning");
+      alerModalMessage.text(message);
       break;
     case "ERROR":
       alertModal.addClass("error");
+      alerModalTitle.text("Error");
+      alerModalMessage.text(message);
       break;
   }
 

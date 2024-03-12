@@ -134,10 +134,9 @@
                 </svg>
             </button>
             <h2 id="page-title">{% block page_title %}{% endblock %}</h2>
-            {% block page_buttons %} {% endblock %}
           </div>
           <div id="page-header-right-container">
-            <button>Button</button>
+            {% block page_buttons %} {% endblock %}
           </div>
         </div>
         <div id="page-content">{% block content %}{% endblock %}</div>
