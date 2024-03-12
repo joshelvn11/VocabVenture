@@ -56,7 +56,12 @@ adminEditFormSaveButton.on("click", () => {
 
 adminEditFormDeleteButton.on("click", () => {
   editAction = "DELETE";
-  submitWordEditUpdate();
+  let confirmDetele = confirm(
+    "Are you sure you want to delete this word? This action cannot be undone"
+  );
+  if (confirmDetele) {
+    submitWordEditUpdate();
+  }
 });
 
 showDetailsButtons.each(function () {
@@ -252,7 +257,7 @@ function submitWordEditUpdate() {
 
   if (editAction === "UPDATE") {
     // Logic to run if updating a word record
-    fetch(`http://127.0.0.1:8000/api/words/update/${editWordID}`, {
+    fetch(`http://vocabventure.onrender.com/api/words/update/${editWordID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -269,7 +274,7 @@ function submitWordEditUpdate() {
       });
   } else if (editAction === "ADD") {
     // Logic to run if adding a word record
-    fetch(`http://127.0.0.1:8000/api/words/add`, {
+    fetch(`http://vocabventure.onrender.com/api/words/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -287,7 +292,7 @@ function submitWordEditUpdate() {
       });
   } else if (editAction === "DELETE") {
     // Logic to running if deleting a word record
-    fetch(`http://127.0.0.1:8000/api/words/delete/${editWordID}`, {
+    fetch(`http://vocabventure.onrender.com/api/words/delete/${editWordID}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
