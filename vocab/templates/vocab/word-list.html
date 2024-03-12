@@ -4,6 +4,11 @@
 <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
 {% endblock %}
 {% block page_title %}Words List{% endblock %}
+{% block page_buttons %} 
+{% if user.is_superuser %}
+<button id="add-word-button">Add Word</button>
+{% endif %}
+{% endblock %}
 {% block content %}
 <div>
     <div class="table-card-container">
@@ -30,7 +35,7 @@
                         </svg>
                     </button>
                     {% if user.is_superuser %}
-                    <button word-id="{{word.word_id}}" class="table-action-button show-word-details-button">
+                    <button word-id="{{word.word_id}}" class="table-action-button admin-edit-details-button">
                         <svg class="table-action-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"
                         >
                             <path d="M55.7023 1.72304C53.4141 -0.565231 49.6862 -0.565231 47.3937 1.72304L41.6313 7.48546L19.5091 29.5991C19.1679 29.9403 18.9557 30.3772 18.9016 30.8473L17.2707 44.3645C17.1959 45.0136 17.4205 45.6627 17.8782 46.1203C18.2818 46.5238 18.8268 46.7485 19.3802 46.7485C19.4634 46.7485 19.5508 46.7485 19.634 46.736L33.1512 45.1051C33.6214 45.051 34.0665 44.8389 34.3994 44.4977L62.2838 16.6133C64.5721 14.325 64.5721 10.5972 62.2838 8.30464L55.7023 1.72304ZM31.9207 40.9614L21.8355 42.1763L23.0503 32.091L43.1371 12.0043L52.0074 20.8746L31.9207 40.9614ZM59.2811 13.6011L55.0207 17.8615L46.1504 8.99119L50.4108 4.73078C51.039 4.10254 52.0626 4.10254 52.6908 4.73078L59.2728 11.3128C59.9094 11.9494 59.9093 12.9729 59.2811 13.6011Z" fill="black"/>
@@ -46,7 +51,13 @@
 </div>
 <div class="background-overlay hidden"></div>
 <div id="word-details-modal" class="modal hidden">
-    <div class="modal-header-wrapper"><button id="close-modal-button" class="button-transparent">Close</button></div>
+    <div class="modal-header-wrapper">
+        <div class="modal-left-conatainer">
+        </div>
+        <div class="modal-right-conatainer">
+            <button id="close-word-details-modal-button" class="button-transparent">Close</button>
+        </div>
+    </div>
     <div class="modal-content-wrapper">
         <div id="details-card-container" class="card-container">
             <div class="card col-6">
@@ -70,6 +81,39 @@
                 <div id="word-explain" class="card-content font-size-large">Content</div>
             </div>
         </div>
+    </div>
+</div>
+<div id="admin-edit-modal" class="modal hidden">
+    <div class="modal-header-wrapper">
+        <div class="modal-left-conatainer">
+            <button id="admin-word-edit-save-button">Save</button>
+        </div>
+        <div class="modal-right-conatainer">
+            <button id="close-admin-edit-modal-button" class="button-transparent">Close</button>
+        </div>
+            
+    </div>
+    <div class="modal-content-wrapper">
+       <form id="admin-word-edit-form">
+            <label for="word_id">Word ID</label>
+            <input id="word-id-input" type="number" name="word_id">
+            <label for="word_id">Ukrainian</label>
+            <input id="word-ukr-input" type="text" name="word_ukrainian">
+            <label for="word_id">English</label>
+            <input id="word-eng-input" type="text" name="word_english">
+            <label for="word_id">Romanization</label>
+            <input id="word-roman-input" type="text" name="word_roman">
+            <label for="word_id">Gender</label>
+            <input id="word-gender-input" type="text" name="word_gender">
+            <label for="word_id">Pronounciation</label>
+            <input id="word-pronounce-input" type="text" name="word_pronounciation">
+            <label for="word_id">Pronounciation Audi Link</label>
+            <input id="word-pronounce-audio-input" type="url" name="word_pronounciation_audio">
+            <label for="word_id">Explanation</label>
+            <input id="word-explain-input" type="text" name="word_explanation">
+            <label for="word_id">Usage Examples</label>
+            <textarea id="word-examples-input" name="word_examples"></textarea>
+       </form>
     </div>
 </div>
 {% endblock %}

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_summernote',
     'django_sass',
+    'rest_framework',
     'vocab',
 ]
 
@@ -150,3 +151,22 @@ CSRF_TRUSTED_ORIGINS = [
 
 # Configure sass compiler settings
 SASS_COMPILE_STATIC = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {  # This configures logging for all modules
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
+

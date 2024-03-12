@@ -1,0 +1,25 @@
+form {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+input,
+textarea {
+  display: block;
+  margin: 5px 0px 24px 0px;
+  width: 95%;
+}
+
+textarea {
+  height: 300px;
+}
+
+label {
+  display: block;
+}
+
+#admin-word-edit-form {
+  width: 800px;
+  max-height: calc(80vh - 100px);
+  padding: 5px;
+}

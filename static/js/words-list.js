@@ -1,5 +1,9 @@
 // Global word data variable, holds an array of word objects
 let wordData;
+let editWordID; // Word that is currently beind edited in the admin from
+let editWord; // State variable to control whether a word is being added or updated
+
+// ------------------------------------------------------------------------- DOM Elements
 
 // Get HTML elements
 const wordsListTable = $("#words-list-table");
@@ -17,26 +21,36 @@ const wordExplain = $("#word-explain");
 
 // Admin Edit Modal Elements
 const adminEditButtons = $(".admin-edit-details-button");
+const addWordButton = $("#add-word-button");
 const adminEditModal = $("#admin-edit-modal");
 const closeAdminEditModalButton = $("#close-admin-edit-modal-button");
+const adminEditForm = $("#admin-word-edit-form");
+const adminEditFormSaveButton = $("#admin-word-edit-save-button");
 const wordIdInput = $("#word-id-input");
 const wordUkrInput = $("#word-ukr-input");
 const wordEngInput = $("#word-eng-input");
 const wordRomanInput = $("#word-roman-input");
+const wordGenderInput = $("#word-gender-input");
 const wordPronounceInput = $("#word-pronounce-input");
+const wordPronounceAudioInput = $("#word-pronounce-audio-input");
 const wordExplainInput = $("#word-explain-input");
 const wordExamplesInput = $("#word-examples-input");
 
 // Other Elements
 const backgroundOverlay = $(".background-overlay");
 
-// Add event listeners
+// ------------------------------------------------------------------------- Event Listeners
+
 closeWordDetailsModalButton.on("click", () => {
   closeWordDetailsModal();
 });
 
 closeAdminEditModalButton.on("click", () => {
   closeAdminEditModal();
+});
+
+adminEditFormSaveButton.on("click", () => {
+  submitWordEditUpdate();
 });
 
 showDetailsButtons.each(function () {
@@ -47,9 +61,17 @@ showDetailsButtons.each(function () {
 
 adminEditButtons.each(function () {
   $(this).on("click", function () {
+    editWord = true;
     showAdminEditModal($(this).attr("word-id"));
   });
 });
+
+addWordButton.on("click", () => {
+  editWord = false;
+  showAdminEditModal();
+});
+
+// ------------------------------------------------------------------------- FETCH Word Data
 
 // Fetch the word data from the api
 fetch("/api/words/list")
@@ -63,12 +85,14 @@ fetch("/api/words/list")
     wordData = data.data;
   });
 
+// ------------------------------------------------------------------------- User Modal Functions
+
 function showWordDetailsModal(wordId) {
   // Find the relevant objecty from the wordData array
   const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
 
   wordUkr.text(wordObject["word_ukrainian"]);
-  wordEng.text(formatArray(wordObject["word_english"]));
+  wordEng.text(wordObject["word_english"]);
   wordRoman.text(wordObject["word_roman"]);
   wordPronounce.text(wordObject["word_pronounciation"]);
   wordExplain.text(wordObject["word_explanation"]);
@@ -87,22 +111,6 @@ function closeWordDetailsModal() {
 
   // Remove all the usage example elements
   $(".usage-example").remove();
-}
-
-function showAdminEditModal(wordId) {
-  // Find the relevant objecty from the wordData array
-  const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
-
-  populateAdminEditFields(wordObject);
-
-  adminEditModal.removeClass("hidden");
-  backgroundOverlay.removeClass("hidden");
-}
-
-function closeAdminEditModal() {
-  // Hide the modal and background overlay
-  adminEditModal.addClass("hidden");
-  backgroundOverlay.addClass("hidden");
 }
 
 function loadUsageExamples(wordObject) {
@@ -172,15 +180,124 @@ function loadUsageExamples(wordObject) {
   }
 }
 
+// ------------------------------------------------------------------------- Admin Modal Functions
+
+function showAdminEditModal(wordId) {
+  // Populate the fields with word data if is editinng words
+  if (editWord == true) {
+    // Find the relevant objecty from the wordData array
+    editWordID = wordId;
+    const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
+
+    populateAdminEditFields(wordObject);
+  }
+
+  adminEditModal.removeClass("hidden");
+  backgroundOverlay.removeClass("hidden");
+}
+
+function closeAdminEditModal() {
+  // Hide the modal and background overlay
+  adminEditModal.addClass("hidden");
+  backgroundOverlay.addClass("hidden");
+}
+
 function populateAdminEditFields(wordObject) {
+  console.log(wordObject);
+  // Load the data into all the form fields
   wordIdInput.val(wordObject["word_id"]);
   wordUkrInput.val(wordObject["word_ukrainian"]);
   wordEngInput.val(wordObject["word_english"]);
   wordRomanInput.val(wordObject["word_roman"]);
+  wordGenderInput.val(wordObject["word_gender"]);
   wordPronounceInput.val(wordObject["word_pronounciation"]);
+  wordPronounceAudioInput.val(wordObject["word_pronounciation_audio"]);
   wordExplainInput.val(wordObject["word_explanation"]);
-
   wordExamplesInput.val(JSON.stringify(wordObject["word_examples"], null, 2));
+}
+
+function submitWordEditUpdate() {
+  // Get the form data object
+  const formData = new FormData(
+    document.getElementById("admin-word-edit-form")
+  );
+
+  // Parse the word examples to JSON
+  wordExamples = {};
+  try {
+    wordExamples = JSON.parse(formData.get("word_examples"));
+  } catch (error) {
+    showAlertModal("ERROR", `Error in usage examples syntax (${error})`);
+    console.log(`Error in usage examples syntax (${error})`);
+  }
+
+  // Convert the form data to JSON
+  const jsonData = {
+    word_id: Number(formData.get("word_id")),
+    word_ukrainian: formData.get("word_ukrainian"),
+    word_english: formData.get("word_english"),
+    word_roman: formData.get("word_roman"),
+    word_gender: Number(formData.get("word_gender")),
+    word_pronounciation: formData.get("word_pronounciation"),
+    word_pronounciation_audio: formData.get("word_pronounciation_audio"),
+    word_explanation: formData.get("word_explanation"),
+    word_examples: wordExamples,
+  };
+
+  if (editWord) {
+    // Logic to run if updating a word record
+    fetch(`http://127.0.0.1:8000/api/words/update/${editWordID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        // Include CSRF token as required by Django for non-GET requests
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      body: JSON.stringify(jsonData),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        showAlertModal(data.status, data.message);
+      });
+  } else {
+    // Logic to run if adding a word record
+    fetch(`http://127.0.0.1:8000/api/words/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Include CSRF token as required by Django for non-GET requests
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      body: JSON.stringify(jsonData),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        showAlertModal(data.status, data.message);
+      });
+  }
+}
+
+// ------------------------------------------------------------------------- Utility Functions
+
+// Function to get CSRF token from cookies
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
 }
 
 // Function to format an array of strings into an individual string
