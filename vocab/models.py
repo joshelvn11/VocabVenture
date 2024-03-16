@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-
 GENDER = ((0, "None"), (1, "Male"), (2, "Female"))
 
 def default_english_words():

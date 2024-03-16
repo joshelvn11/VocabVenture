@@ -3,7 +3,7 @@
 {% block stylesheets %}
 <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
 {% endblock %}
-{% block page_title %}Words List{% endblock %}
+{% block page_title %}{{ set_title }}{% endblock %}
 {% block page_buttons %} 
 {% if user.is_superuser %}
 <button id="add-word-button">Add Word</button>

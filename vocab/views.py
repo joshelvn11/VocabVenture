@@ -1,5 +1,5 @@
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -14,10 +14,33 @@ def home(request):
 
     return render(request, "vocab/index.html")
 
-def set_list(request):
+def word_sets(request):
+    """
+    Renders a page of avaialble word sets ordered by the specified set_order field.
+    """
     word_sets = WORD_SET.objects.all().order_by("set_order")
 
     return render(request, "vocab/word-sets.html", {"word_sets": word_sets})
+
+
+def set_list(request, set_slug):
+    """
+    Renders a table of words contained with the word set specified in the URL
+    """
+
+    # Retrieve the word set using the slug
+    word_set = get_object_or_404(WORD_SET, set_slug=set_slug)
+
+    # Query the junction table for words in the set and retrieve the word objects
+    words_in_set = WORD_SET_JUNCTION_UKR_ENG.objects.filter(word_set=word_set).select_related('word')
+    print(words_in_set)
+
+    # Extract the WORD_UKR_ENG objects from the queryset
+    words = [junction.word for junction in words_in_set]
+
+    context = context = {'words': words, 'set_title': word_set.set_title}
+
+    return render(request, "vocab/word-list.html", context,)
 
 def word_list_ukr_eng(request):
     words =  WORD_UKR_ENG.objects.all()

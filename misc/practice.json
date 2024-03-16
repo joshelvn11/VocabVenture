@@ -1,0 +1,14 @@
+[
+  {
+    "type": "flash-card",
+    "front-instruction": "What is the meaning of the following word in English",
+    "front-question": "Привіт",
+    "back-answer": "Hello, Hi"
+  }
+  {
+    "type": "spelling"
+    "sentence-ukr": ["Привіт", "мене", "звати", "Олег"],
+    "sentence-eng": ["Hello", "my", "name", "Oleg"],
+    "word-index": 0,
+  }
+]

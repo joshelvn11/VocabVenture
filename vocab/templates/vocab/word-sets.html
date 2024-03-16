@@ -1,9 +1,11 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
+{% load static %} 
+{% block page_title %}Word Sets{% endblock %}
+{% block content %}
 <div>
-  <h1>Word sets</h1>
   <ul>
     {% for word_set in word_sets %}
-    <li>{{ word_set.set_title }}</li>
+    <li><a href="/words/sets/{{ word_set.set_slug }}">{{ word_set.set_title }}</a></li>
     {% endfor %}
   </ul>
 </div>
