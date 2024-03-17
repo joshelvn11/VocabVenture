@@ -178,7 +178,11 @@ input,
 textarea {
   display: block;
   margin: 5px 0px 24px 0px;
-  width: 95%;
+}
+
+input.full-width,
+textarea.full-width {
+  width: 100%;
 }
 
 textarea {
@@ -187,6 +191,15 @@ textarea {
 
 label {
   display: block;
+}
+
+.checkbox-wrapper input {
+  display: inline;
+  min-width: none;
+}
+
+.checkbox-wrapper label {
+  display: inline;
 }
 
 #admin-word-edit-form {

@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 import json
 from .models import WORD_SET, WORD_UKR_ENG, WORD_SET_JUNCTION_UKR_ENG
-from .serializers import WordUkrEngSerializer
+from .serializers import WordUkrEngSerializer, SetUkrEngSerializer
 
 ## ------------------------------------------------------------------------------------------------------------------------ Template Rendering Views
 
@@ -33,19 +33,22 @@ def set_list(request, set_slug):
 
     # Query the junction table for words in the set and retrieve the word objects
     words_in_set = WORD_SET_JUNCTION_UKR_ENG.objects.filter(word_set=word_set).select_related('word')
-    print(words_in_set)
 
     # Extract the WORD_UKR_ENG objects from the queryset
     words = [junction.word for junction in words_in_set]
 
-    context = context = {'words': words, 'set_title': word_set.set_title}
+    # Get all set objects
+    sets = WORD_SET.objects.all()
+
+    context = {'words': words, 'set_title': word_set.set_title, "sets": sets}
 
     return render(request, "vocab/word-list.html", context,)
 
 def word_list_ukr_eng(request):
     words =  WORD_UKR_ENG.objects.all()
+    sets = WORD_SET.objects.all()
 
-    return render(request, "vocab/word-list.html", {"words": words},)
+    return render(request, "vocab/word-list.html", {"words": words, "sets": sets},)
 
 ## ------------------------------------------------------------------------------------------------------------------------ API Views
 
@@ -180,3 +183,18 @@ def deleteWordItem(request, word_id):
                         status=status.HTTP_403_FORBIDDEN)
 
 
+## --------------------------------------------------------------------------  GET Word Sets
+
+@api_view(["GET"])
+def getWordSets(request, word_id):
+    # Get the specified word object
+    word = WORD_UKR_ENG.objects.get(word_id=word_id)
+    
+    # Use the junction table to find the corresponding sets for the word
+    word_sets = WORD_SET.objects.filter(word_set_junction_ukr_eng__word=word)
+    
+    # Serialize the items for the response
+    serializer = SetUkrEngSerializer(word_sets, many=True)
+
+    # Return the serialized data
+    return Response(serializer.data)

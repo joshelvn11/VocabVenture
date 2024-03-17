@@ -37,6 +37,7 @@ const wordPronounceInput = $("#word-pronounce-input");
 const wordPronounceAudioInput = $("#word-pronounce-audio-input");
 const wordExplainInput = $("#word-explain-input");
 const wordExamplesInput = $("#word-examples-input");
+const setCheckBoxes = $(".set-checkbox");
 
 // Other Elements
 const backgroundOverlay = $(".background-overlay");
@@ -209,6 +210,7 @@ function showAdminEditModal(wordId) {
     const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
 
     populateAdminEditFields(wordObject);
+    populateSetCheckBoxes(wordId);
   }
 
   adminEditModal.removeClass("hidden");
@@ -232,6 +234,26 @@ function populateAdminEditFields(wordObject) {
   wordPronounceAudioInput.val(wordObject["word_pronounciation_audio"]);
   wordExplainInput.val(wordObject["word_explanation"]);
   wordExamplesInput.val(JSON.stringify(wordObject["word_examples"], null, 2));
+}
+
+function populateSetCheckBoxes(wordId) {
+  fetch(`http://127.0.0.1:8000/api/words/sets/${wordId}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      // Iterate over the list of sets
+      data.forEach((setObject) => {
+        // Find the matching check box and set it to checked
+        setCheckBoxes
+          .filter(function () {
+            return $(this).attr("set-id") == setObject["set_id"];
+          })
+          .prop("checked", true);
+      });
+    });
 }
 
 function submitWordEditUpdate() {

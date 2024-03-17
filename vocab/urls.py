@@ -13,6 +13,11 @@ urlpatterns = [
     path('api/word/list', views.getWordList, name='getWordList'), 
     path('api/words/add', views.postWordItem, name='postWordItem'), 
     path('api/words/update/<int:word_id>', views.updateWordItem, name='updateWordItem'), 
-    path('api/words/delete/<int:word_id>', views.deleteWordItem, name='deleteWordItem'), 
+    path('api/words/delete/<int:word_id>', views.deleteWordItem, name='deleteWordItem'),
+    path('api/words/sets/<int:word_id>', views.getWordSets, name="getWordSets"),
+    # path('api/words/sets/<int:set_id>/add/<int:word_id>'),
+    # path('api/words/sets/<int:set_id>/delete/<int_word>'),
+    # path('api/words/sets/add'),
+    # path('api/words/sets/update'),  
    ## path('api/words/<int:word_id>', WordUkrEngUpdateView.as_view(), name='word_update'), 
 ]
