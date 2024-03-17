@@ -12,7 +12,7 @@
 {% block content %}
 <div class="card-container">
     {% for word in words %}
-    <div class="card set-card word-card clickable" word-id="{{word.word_id}}">
+    <div class="card word-card col-lg-4 col-md-6 clickable" word-id="{{word.word_id}}">
         <div class="card-content">
             <h3 class="set-title">{{ word.word_ukrainian }}</h3>
             <div>
@@ -34,6 +34,9 @@
 <div id="word-details-modal" class="modal hidden">
     <div class="modal-header-wrapper">
         <div class="modal-left-conatainer">
+            {% if user.is_superuser %}
+            <button class="admin-edit-details-button">Edit Word</button>
+            {% endif %}
         </div>
         <div class="modal-right-conatainer">
             <button id="close-word-details-modal-button" class="button-transparent">Close</button>
@@ -41,25 +44,45 @@
     </div>
     <div class="modal-content-wrapper">
         <div id="details-card-container" class="card-container">
-            <div class="card col-6 align-center justify-center">
-                <div class="card-title">Ukrainian</div>
-                <div class="card-content font-size-xxlarge" id="word-ukr">Content</div>
+            <div class="card word-detail-card col-lg-6 align-center justify-center">  
+                <div class="card-content"">
+                    <div class="card-title">Ukrainian</div>
+                    <div class="word-detail-content">
+                        <p class="font-size-xxlarge" id="word-ukr">Content</p>
+                    </div>
+                </div>
             </div>
-            <div class="card col-6 align-center justify-center">
-                <div class="card-title">English</div>
-                <div class="card-content font-size-xxlarge" id="word-eng">Content</div>
+            <div class="card word-detail-card col-lg-6 align-center justify-center">  
+                <div class="card-content"">
+                    <div class="card-title">English</div>
+                    <div class="word-detail-content">
+                        <p class="font-size-xxlarge" id="word-eng">Content</p>
+                    </div>
+                </div>
             </div>
-            <div class="card col-6 align-center justify-center">
-                <div class="card-title">Pronounciation</div>
-                <div class="card-content font-size-xxlarge" id="word-pronounce">Content</div>
+            <div class="card word-detail-card col-lg-6 align-center justify-center">  
+                <div class="card-content"">
+                    <div class="card-title">Pronounciation</div>
+                    <div class="word-detail-content">
+                        <p class="font-size-xxlarge" id="word-pronounce">Content</p>
+                    </div>
+                </div>
             </div>
-            <div class="card col-6 align-center justify-center">
-                <div class="card-title">Romanization</div>
-                <div class="card-content font-size-xxlarge" id="word-roman">Content</div>
+            <div class="card word-detail-card col-lg-6 align-center justify-center">  
+                <div class="card-content"">
+                    <div class="card-title">Romanization</div>
+                    <div class="word-detail-content">
+                        <p class="font-size-xxlarge" id="word-roman">Content</p>
+                    </div>
+                </div>
             </div>
-            <div class="card col-12 align-center justify-center">
-                <div class="card-title">Explanation</div>
-                <div id="word-explain" class="card-content font-size-large">Content</div>
+            <div class="card word-detail-card align-center justify-center">  
+                <div class="card-content"">
+                    <div class="card-title">Explanation</div>
+                    <div class="word-detail-content">
+                        <p class="font-size-large" id="word-explain">Content</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

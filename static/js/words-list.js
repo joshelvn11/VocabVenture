@@ -21,7 +21,7 @@ const wordRoman = $("#word-roman");
 const wordExplain = $("#word-explain");
 
 // Admin Edit Modal Elements
-const adminEditButtons = $(".admin-edit-details-button");
+const adminEditButton = $(".admin-edit-details-button");
 const addWordButton = $("#add-word-button");
 const adminEditModal = $("#admin-edit-modal");
 const closeAdminEditModalButton = $("#close-admin-edit-modal-button");
@@ -71,11 +71,10 @@ wordCards.each(function () {
   });
 });
 
-adminEditButtons.each(function () {
-  $(this).on("click", function () {
-    editAction = "UPDATE";
-    showAdminEditModal($(this).attr("word-id"));
-  });
+adminEditButton.on("click", function () {
+  editAction = "UPDATE";
+  closeWordDetailsModal();
+  showAdminEditModal($(this).attr("word-id"));
 });
 
 addWordButton.on("click", () => {
@@ -110,7 +109,11 @@ function showWordDetailsModal(wordId) {
   wordPronounce.text(wordObject["word_pronounciation"]);
   wordExplain.text(wordObject["word_explanation"]);
 
+  // Load usage examples
   loadUsageExamples(wordObject);
+
+  // Set the word id of the admin edit button
+  adminEditButton.attr("word-id", wordId);
 
   // Show the modal and background overlay
   wordDetailsModal.removeClass("hidden");
@@ -133,10 +136,13 @@ function loadUsageExamples(wordObject) {
   // Iterate through the object and create an element for every example
   for (let [index, usageExample] of usageExamplesObject.entries()) {
     // Create the example element
-    let exampleElement = $(`<div class="card col-12 usage-example">
-        <div class="card-title">Usage Example ${index + 1}</div>
-            <div class="card-content"></div>
-        </div>`);
+    let exampleElement = $(`
+      <div class="card word-detail-card align-center justify-center usage-example">
+        <div class="card-content">
+          <div class="card-title">Usage Example ${index + 1}</div>
+          <div class="usage-example-container"></div>
+        </div>
+      </div>`);
 
     // Create the sentence container
     let sentenceContainer = $(
@@ -173,7 +179,7 @@ function loadUsageExamples(wordObject) {
     }
 
     // Append the sentence container to the example element
-    exampleElement.children(".card-content").append(sentenceContainer);
+    exampleElement.find(".usage-example-container").append(sentenceContainer);
 
     // Create the english translation container
     let englishTranslation = $(`<div class="sentence-border-box">
@@ -186,7 +192,7 @@ function loadUsageExamples(wordObject) {
     });
 
     // Append the english translation box to the example element
-    exampleElement.children(".card-content").append(englishTranslation);
+    exampleElement.find(".usage-example-container").append(englishTranslation);
 
     // Append the new element to the card container
     detailsCardContainer.append(exampleElement);
@@ -216,7 +222,6 @@ function closeAdminEditModal() {
 }
 
 function populateAdminEditFields(wordObject) {
-  console.log(wordObject);
   // Load the data into all the form fields
   wordIdInput.val(wordObject["word_id"]);
   wordUkrInput.val(wordObject["word_ukrainian"]);
