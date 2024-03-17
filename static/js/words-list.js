@@ -9,6 +9,7 @@ let editAction = "NONE"; // State variable to control whether a word is being ad
 const wordsListTable = $("#words-list-table");
 
 // Word Details Elements
+const wordCards = $(".word-card");
 const showDetailsButtons = $(".show-word-details-button");
 const wordDetailsModal = $("#word-details-modal");
 const closeWordDetailsModalButton = $("#close-word-details-modal-button");
@@ -64,7 +65,7 @@ adminEditFormDeleteButton.on("click", () => {
   }
 });
 
-showDetailsButtons.each(function () {
+wordCards.each(function () {
   $(this).on("click", function () {
     showWordDetailsModal($(this).attr("word-id"));
   });
@@ -94,6 +95,7 @@ fetch("/api/words/list")
   })
   .then((data) => {
     wordData = data.data;
+    console.log("Loaded word data from API");
   });
 
 // ------------------------------------------------------------------------- User Modal Functions
@@ -101,7 +103,7 @@ fetch("/api/words/list")
 function showWordDetailsModal(wordId) {
   // Find the relevant objecty from the wordData array
   const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
-
+  console.log(wordObject);
   wordUkr.text(wordObject["word_ukrainian"]);
   wordEng.text(wordObject["word_english"]);
   wordRoman.text(wordObject["word_roman"]);

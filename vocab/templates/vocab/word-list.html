@@ -10,46 +10,94 @@
 {% endif %}
 {% endblock %}
 {% block content %}
-<div>
-    <div class="table-card-container">
-        <table id="words-list-table">
-            <tr>
-                <th>Ukrainian</th>
-                <th>English</th>
-                <th>Romanization</th>
-                <th>Pronounciation</th>
-                <th>Actions</th>
-            </tr>
-            {% for word in words %} 
-            <tr>
-                <td>{{ word.word_ukrainian }}</td>
-                <td>{{ word.word_english }}</td>
-                <td>{{ word.word_roman }}</td>
-                <td>{{ word.word_pronounciation }}</td>
-                <td>
-                    <button word-id="{{word.word_id}}" class="table-action-button show-word-details-button">
-                        <svg class="table-action-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        >
-                        <path d="M2.7398 37.7833L10.4687 44.8101C16.3474 50.193 24.0292 53.1786 32 53.1786C39.9709 53.1786 47.6526 50.193 53.5313 44.8101L61.2591 37.7845C62.1224 36.9999 62.8121 36.0435 63.2842 34.9767C63.7562 33.9099 64 32.7562 64 31.5896C64 30.423 63.7562 29.2693 63.2842 28.2025C62.8121 27.1357 62.1224 26.1793 61.2591 25.3947L53.5313 18.3691C47.6528 12.9859 39.971 10 32 10C24.0291 10 16.3473 12.9859 10.4687 18.3691L2.7398 25.3959C1.87684 26.1804 1.18734 27.1367 0.715532 28.2033C0.24372 29.2699 0 30.4233 0 31.5896C0 32.7559 0.24372 33.9093 0.715532 34.9759C1.18734 36.0425 1.87684 36.9988 2.7398 37.7833ZM6.05307 29.0385L13.782 22.0117C18.756 17.4571 25.2557 14.9308 32 14.9308C38.7443 14.9308 45.244 17.4571 50.2181 22.0117L57.9458 29.0385C58.3017 29.3613 58.5861 29.7562 58.7807 30.1954C58.9753 30.6346 59.0759 31.1098 59.0759 31.5902C59.0759 32.0706 58.9753 32.5457 58.7807 32.985C58.5861 33.4242 58.3017 33.8179 57.9458 34.1406L50.2181 41.1675C45.2442 45.7225 38.7445 48.249 32 48.249C25.2556 48.249 18.7558 45.7225 13.782 41.1675L6.05307 34.1406C5.69752 33.8176 5.41343 33.4237 5.21903 32.9844C5.02463 32.5451 4.92421 32.07 4.92421 31.5896C4.92421 31.1092 5.02463 30.6341 5.21903 30.1948C5.41343 29.7554 5.69752 29.3616 6.05307 29.0385Z" fill="black" />
-                        <path d="M32 46.3623C34.9218 46.3623 37.7779 45.4959 40.2072 43.8727C42.6366 42.2494 44.53 39.9423 45.6481 37.2429C46.7662 34.5436 47.0588 31.5733 46.4888 28.7077C45.9187 25.8421 44.5118 23.2099 42.4458 21.1439C40.3798 19.0779 37.7476 17.671 34.882 17.101C32.0164 16.531 29.0461 16.8235 26.3468 17.9416C23.6475 19.0597 21.3403 20.9532 19.7171 23.3825C18.0939 25.8119 17.2275 28.668 17.2275 31.5897C17.2317 35.5063 18.7895 39.2613 21.559 42.0308C24.3284 44.8002 28.0834 46.358 32 46.3623ZM36.9242 24.2034C37.4112 24.2034 37.8872 24.3478 38.2921 24.6184C38.697 24.8889 39.0126 25.2734 39.1989 25.7233C39.3853 26.1732 39.434 26.6683 39.339 27.1459C39.244 27.6235 39.0095 28.0622 38.6652 28.4065C38.3209 28.7508 37.8822 28.9853 37.4046 29.0803C36.927 29.1753 36.4319 29.1266 35.982 28.9402C35.5321 28.7539 35.1476 28.4383 34.8771 28.0334C34.6065 27.6285 34.4621 27.1525 34.4621 26.6655C34.4628 26.0127 34.7224 25.3869 35.184 24.9253C35.6456 24.4637 36.2714 24.2041 36.9242 24.2034ZM31.4097 21.8008C30.1573 23.2011 29.4885 25.0278 29.5408 26.9058C29.5931 28.7838 30.3625 30.5704 31.6909 31.8989C33.0193 33.2273 34.806 33.9967 36.6839 34.0489C38.5619 34.1012 40.3886 33.4325 41.7889 32.18C41.6792 34.072 41.0248 35.8918 39.9045 37.4204C38.7842 38.9489 37.2458 40.1209 35.4747 40.7952C33.7035 41.4694 31.7752 41.6172 29.922 41.2206C28.0689 40.824 26.3699 39.9 25.0298 38.5599C23.6898 37.2199 22.7658 35.5209 22.3692 33.6677C21.9726 31.8145 22.1203 29.8862 22.7946 28.1151C23.4688 26.3439 24.6408 24.8056 26.1694 23.6852C27.6979 22.5649 29.5178 21.9105 31.4097 21.8008Z" fill="black" />
-                        </svg>
-                    </button>
-                    {% if user.is_superuser %}
-                    <button word-id="{{word.word_id}}" class="table-action-button admin-edit-details-button">
-                        <svg class="table-action-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path d="M55.7023 1.72304C53.4141 -0.565231 49.6862 -0.565231 47.3937 1.72304L41.6313 7.48546L19.5091 29.5991C19.1679 29.9403 18.9557 30.3772 18.9016 30.8473L17.2707 44.3645C17.1959 45.0136 17.4205 45.6627 17.8782 46.1203C18.2818 46.5238 18.8268 46.7485 19.3802 46.7485C19.4634 46.7485 19.5508 46.7485 19.634 46.736L33.1512 45.1051C33.6214 45.051 34.0665 44.8389 34.3994 44.4977L62.2838 16.6133C64.5721 14.325 64.5721 10.5972 62.2838 8.30464L55.7023 1.72304ZM31.9207 40.9614L21.8355 42.1763L23.0503 32.091L43.1371 12.0043L52.0074 20.8746L31.9207 40.9614ZM59.2811 13.6011L55.0207 17.8615L46.1504 8.99119L50.4108 4.73078C51.039 4.10254 52.0626 4.10254 52.6908 4.73078L59.2728 11.3128C59.9094 11.9494 59.9093 12.9729 59.2811 13.6011Z" fill="black"/>
-                            <path d="M61.3687 28.342C60.1954 28.342 59.2385 29.2989 59.2385 30.4722V50.3885C59.2385 55.2647 55.2651 59.2381 50.389 59.2381H13.1104C8.2342 59.2381 4.26084 55.2647 4.26084 50.3885V13.1099C4.26084 8.23378 8.2342 4.26041 13.1104 4.26041H33.0597C34.2331 4.26041 35.1899 3.30348 35.1899 2.13021C35.1899 0.956889 34.233 0 33.0597 0H13.1104C5.87926 0 0 5.87884 0 13.1104V50.389C0 57.6201 5.87883 63.4993 13.1104 63.4993H50.389C57.6201 63.4993 63.4993 57.6205 63.4993 50.389V30.4726C63.4993 29.291 62.542 28.342 61.3687 28.342Z" fill="black"/>
-                        </svg>                                 
-                    </button>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+<div class="card-container">
+    {% for word in words %}
+    <div class="card set-card word-card clickable" word-id="{{word.word_id}}">
+        <div class="card-content">
+            <h3 class="set-title">{{ word.word_ukrainian }}</h3>
+            <div>
+                <p><strong>English: </strong>{{ word.word_english }}</p>
+                <p><strong>Romanization: </strong>{{ word.word_roman }}</p>
+                <p><strong>Pronounciation: </strong>{{ word.word_pronounciation }}</p>
+            </div>
+            <!-- Progress Bar -->
+          <div class="progress-bar-container">
+            <div class="progress-bar">
+              <div class="progress-bar-fill orange" style="width: 50%;"></div>
+            </div>
+            <p class="progress-bar-percentage">50%</p>
+          </div>
+        </div>
+    </div> 
+    {% endfor%}
+<div class="background-overlay hidden"></div>
+<div id="word-details-modal" class="modal hidden">
+    <div class="modal-header-wrapper">
+        <div class="modal-left-conatainer">
+        </div>
+        <div class="modal-right-conatainer">
+            <button id="close-word-details-modal-button" class="button-transparent">Close</button>
+        </div>
+    </div>
+    <div class="modal-content-wrapper">
+        <div id="details-card-container" class="card-container">
+            <div class="card col-6 align-center justify-center">
+                <div class="card-title">Ukrainian</div>
+                <div class="card-content font-size-xxlarge" id="word-ukr">Content</div>
+            </div>
+            <div class="card col-6 align-center justify-center">
+                <div class="card-title">English</div>
+                <div class="card-content font-size-xxlarge" id="word-eng">Content</div>
+            </div>
+            <div class="card col-6 align-center justify-center">
+                <div class="card-title">Pronounciation</div>
+                <div class="card-content font-size-xxlarge" id="word-pronounce">Content</div>
+            </div>
+            <div class="card col-6 align-center justify-center">
+                <div class="card-title">Romanization</div>
+                <div class="card-content font-size-xxlarge" id="word-roman">Content</div>
+            </div>
+            <div class="card col-12 align-center justify-center">
+                <div class="card-title">Explanation</div>
+                <div id="word-explain" class="card-content font-size-large">Content</div>
+            </div>
+        </div>
     </div>
 </div>
-<div class="background-overlay hidden"></div>
+<div id="admin-edit-modal" class="modal hidden">
+    <div class="modal-header-wrapper">
+        <div class="modal-left-conatainer">
+            <button id="admin-word-edit-save-button">Save</button>
+            <button id="admin-word-edit-delete-button">Delete</button>
+        </div>
+        <div class="modal-right-conatainer">
+            <button id="close-admin-edit-modal-button" class="button-transparent">Close</button>
+        </div>
+            
+    </div>
+    <div class="modal-content-wrapper">
+       <form id="admin-word-edit-form">
+            <label for="word_id">Word ID</label>
+            <input id="word-id-input" type="number" name="word_id">
+            <label for="word_id">Ukrainian</label>
+            <input id="word-ukr-input" type="text" name="word_ukrainian">
+            <label for="word_id">English</label>
+            <input id="word-eng-input" type="text" name="word_english">
+            <label for="word_id">Romanization</label>
+            <input id="word-roman-input" type="text" name="word_roman">
+            <label for="word_id">Gender</label>
+            <input id="word-gender-input" type="text" name="word_gender">
+            <label for="word_id">Pronounciation</label>
+            <input id="word-pronounce-input" type="text" name="word_pronounciation">
+            <label for="word_id">Pronounciation Audi Link</label>
+            <input id="word-pronounce-audio-input" type="url" name="word_pronounciation_audio">
+            <label for="word_id">Explanation</label>
+            <input id="word-explain-input" type="text" name="word_explanation">
+            <label for="word_id">Usage Examples</label>
+            <textarea id="word-examples-input" name="word_examples"></textarea>
+       </form>
+    </div>
+</div><div class="background-overlay hidden"></div>
 <div id="word-details-modal" class="modal hidden">
     <div class="modal-header-wrapper">
         <div class="modal-left-conatainer">

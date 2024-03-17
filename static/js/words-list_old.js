@@ -1,13 +1,17 @@
-// Get the words list table
-const wordsListTable = $("#words-list-table");
-
 // Global word data variable, holds an array of word objects
 let wordData;
+let editWordID; // Word that is currently beind edited in the admin from
+let editAction = "NONE"; // State variable to control whether a word is being added or updated
+
+// ------------------------------------------------------------------------- DOM Elements
 
 // Get HTML elements
+const wordsListTable = $("#words-list-table");
+
+// Word Details Elements
+const showDetailsButtons = $(".show-word-details-button");
 const wordDetailsModal = $("#word-details-modal");
-const backgroundOverlay = $(".background-overlay");
-const closeModalButton = $("#close-modal-button");
+const closeWordDetailsModalButton = $("#close-word-details-modal-button");
 const detailsCardContainer = $("#details-card-container");
 const wordUkr = $("#word-ukr");
 const wordEng = $("#word-eng");
@@ -15,10 +19,70 @@ const wordPronounce = $("#word-pronounce");
 const wordRoman = $("#word-roman");
 const wordExplain = $("#word-explain");
 
-// Add event listeners
-closeModalButton.on("click", () => {
-  closeModal();
+// Admin Edit Modal Elements
+const adminEditButtons = $(".admin-edit-details-button");
+const addWordButton = $("#add-word-button");
+const adminEditModal = $("#admin-edit-modal");
+const closeAdminEditModalButton = $("#close-admin-edit-modal-button");
+const adminEditForm = $("#admin-word-edit-form");
+const adminEditFormSaveButton = $("#admin-word-edit-save-button");
+const adminEditFormDeleteButton = $("#admin-word-edit-delete-button");
+const wordIdInput = $("#word-id-input");
+const wordUkrInput = $("#word-ukr-input");
+const wordEngInput = $("#word-eng-input");
+const wordRomanInput = $("#word-roman-input");
+const wordGenderInput = $("#word-gender-input");
+const wordPronounceInput = $("#word-pronounce-input");
+const wordPronounceAudioInput = $("#word-pronounce-audio-input");
+const wordExplainInput = $("#word-explain-input");
+const wordExamplesInput = $("#word-examples-input");
+
+// Other Elements
+const backgroundOverlay = $(".background-overlay");
+
+// ------------------------------------------------------------------------- Event Listeners
+
+closeWordDetailsModalButton.on("click", () => {
+  closeWordDetailsModal();
 });
+
+closeAdminEditModalButton.on("click", () => {
+  closeAdminEditModal();
+});
+
+adminEditFormSaveButton.on("click", () => {
+  submitWordEditUpdate();
+});
+
+adminEditFormDeleteButton.on("click", () => {
+  editAction = "DELETE";
+  let confirmDetele = confirm(
+    "Are you sure you want to delete this word? This action cannot be undone"
+  );
+  if (confirmDetele) {
+    submitWordEditUpdate();
+  }
+});
+
+showDetailsButtons.each(function () {
+  $(this).on("click", function () {
+    showWordDetailsModal($(this).attr("word-id"));
+  });
+});
+
+adminEditButtons.each(function () {
+  $(this).on("click", function () {
+    editAction = "UPDATE";
+    showAdminEditModal($(this).attr("word-id"));
+  });
+});
+
+addWordButton.on("click", () => {
+  editAction = "ADD";
+  showAdminEditModal();
+});
+
+// ------------------------------------------------------------------------- FETCH Word Data
 
 // Fetch the word data from the api
 fetch("/api/words/list")
@@ -30,76 +94,16 @@ fetch("/api/words/list")
   })
   .then((data) => {
     wordData = data.data;
-  })
-  .then((data) => {
-    createTable();
   });
 
-// Function to populate the table with the retrieved word data
-function createTable() {
-  // Iterate over the data and add a row for every element in the data
-  for (let word of wordData) {
-    // Create a formatted string from the English words array
-    let englishWords = "";
-    englishWords = formatArray(word["word_english"]);
+// ------------------------------------------------------------------------- User Modal Functions
 
-    // Create the action button
-    const showDetailsButton = $(`<button class="table-action-button">
-              <svg
-              width="64"
-              height="64"
-              viewBox="0 0 64 64"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="table-action-icon"
-            >
-              <path
-                d="M2.7398 37.7833L10.4687 44.8101C16.3474 50.193 24.0292 53.1786 32 53.1786C39.9709 53.1786 47.6526 50.193 53.5313 44.8101L61.2591 37.7845C62.1224 36.9999 62.8121 36.0435 63.2842 34.9767C63.7562 33.9099 64 32.7562 64 31.5896C64 30.423 63.7562 29.2693 63.2842 28.2025C62.8121 27.1357 62.1224 26.1793 61.2591 25.3947L53.5313 18.3691C47.6528 12.9859 39.971 10 32 10C24.0291 10 16.3473 12.9859 10.4687 18.3691L2.7398 25.3959C1.87684 26.1804 1.18734 27.1367 0.715532 28.2033C0.24372 29.2699 0 30.4233 0 31.5896C0 32.7559 0.24372 33.9093 0.715532 34.9759C1.18734 36.0425 1.87684 36.9988 2.7398 37.7833ZM6.05307 29.0385L13.782 22.0117C18.756 17.4571 25.2557 14.9308 32 14.9308C38.7443 14.9308 45.244 17.4571 50.2181 22.0117L57.9458 29.0385C58.3017 29.3613 58.5861 29.7562 58.7807 30.1954C58.9753 30.6346 59.0759 31.1098 59.0759 31.5902C59.0759 32.0706 58.9753 32.5457 58.7807 32.985C58.5861 33.4242 58.3017 33.8179 57.9458 34.1406L50.2181 41.1675C45.2442 45.7225 38.7445 48.249 32 48.249C25.2556 48.249 18.7558 45.7225 13.782 41.1675L6.05307 34.1406C5.69752 33.8176 5.41343 33.4237 5.21903 32.9844C5.02463 32.5451 4.92421 32.07 4.92421 31.5896C4.92421 31.1092 5.02463 30.6341 5.21903 30.1948C5.41343 29.7554 5.69752 29.3616 6.05307 29.0385Z"
-                fill="black"
-              />
-              <path
-                d="M32 46.3623C34.9218 46.3623 37.7779 45.4959 40.2072 43.8727C42.6366 42.2494 44.53 39.9423 45.6481 37.2429C46.7662 34.5436 47.0588 31.5733 46.4888 28.7077C45.9187 25.8421 44.5118 23.2099 42.4458 21.1439C40.3798 19.0779 37.7476 17.671 34.882 17.101C32.0164 16.531 29.0461 16.8235 26.3468 17.9416C23.6475 19.0597 21.3403 20.9532 19.7171 23.3825C18.0939 25.8119 17.2275 28.668 17.2275 31.5897C17.2317 35.5063 18.7895 39.2613 21.559 42.0308C24.3284 44.8002 28.0834 46.358 32 46.3623ZM36.9242 24.2034C37.4112 24.2034 37.8872 24.3478 38.2921 24.6184C38.697 24.8889 39.0126 25.2734 39.1989 25.7233C39.3853 26.1732 39.434 26.6683 39.339 27.1459C39.244 27.6235 39.0095 28.0622 38.6652 28.4065C38.3209 28.7508 37.8822 28.9853 37.4046 29.0803C36.927 29.1753 36.4319 29.1266 35.982 28.9402C35.5321 28.7539 35.1476 28.4383 34.8771 28.0334C34.6065 27.6285 34.4621 27.1525 34.4621 26.6655C34.4628 26.0127 34.7224 25.3869 35.184 24.9253C35.6456 24.4637 36.2714 24.2041 36.9242 24.2034ZM31.4097 21.8008C30.1573 23.2011 29.4885 25.0278 29.5408 26.9058C29.5931 28.7838 30.3625 30.5704 31.6909 31.8989C33.0193 33.2273 34.806 33.9967 36.6839 34.0489C38.5619 34.1012 40.3886 33.4325 41.7889 32.18C41.6792 34.072 41.0248 35.8918 39.9045 37.4204C38.7842 38.9489 37.2458 40.1209 35.4747 40.7952C33.7035 41.4694 31.7752 41.6172 29.922 41.2206C28.0689 40.824 26.3699 39.9 25.0298 38.5599C23.6898 37.2199 22.7658 35.5209 22.3692 33.6677C21.9726 31.8145 22.1203 29.8862 22.7946 28.1151C23.4688 26.3439 24.6408 24.8056 26.1694 23.6852C27.6979 22.5649 29.5178 21.9105 31.4097 21.8008Z"
-                fill="black"
-              />
-            </svg>
-            </button>`);
-
-    // Add the word's ID as a data attribute
-    showDetailsButton.attr("word-id", word["word_id"]);
-
-    // Add event listener to the show details button
-    showDetailsButton.on("click", () => {
-      showModal(showDetailsButton.attr("word-id"));
-    });
-
-    // Create the table row for the current word
-    const wordRow = $(`<tr> 
-        <td>${word["word_ukrainian"]}</td> 
-        <td>${englishWords}</td> 
-        <td>${word["word_roman"]}</td> 
-        <td>${word["word_pronounciation"]}</td>
-        </tr>`);
-
-    // Create a <td> element to hold the action buttons
-    actionButtonsElement = $("<td></td>");
-
-    // Add the action buttons to the td element
-    actionButtonsElement.append(showDetailsButton);
-
-    // Append the action buttons element to the table row
-    wordRow.append(actionButtonsElement);
-
-    // Append the row to the table
-    wordsListTable.append(wordRow);
-  }
-}
-
-function showModal(wordId) {
+function showWordDetailsModal(wordId) {
   // Find the relevant objecty from the wordData array
   const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
 
   wordUkr.text(wordObject["word_ukrainian"]);
-  wordEng.text(formatArray(wordObject["word_english"]));
+  wordEng.text(wordObject["word_english"]);
   wordRoman.text(wordObject["word_roman"]);
   wordPronounce.text(wordObject["word_pronounciation"]);
   wordExplain.text(wordObject["word_explanation"]);
@@ -111,8 +115,16 @@ function showModal(wordId) {
   backgroundOverlay.removeClass("hidden");
 }
 
+function closeWordDetailsModal() {
+  // Hide the modal and background overlay
+  wordDetailsModal.addClass("hidden");
+  backgroundOverlay.addClass("hidden");
+
+  // Remove all the usage example elements
+  $(".usage-example").remove();
+}
+
 function loadUsageExamples(wordObject) {
-  console.log(wordObject["word_examples"]);
   // Get the usage examples object
   usageExamplesObject = wordObject["word_examples"];
 
@@ -179,13 +191,141 @@ function loadUsageExamples(wordObject) {
   }
 }
 
-function closeModal() {
-  // Hide the modal and background overlay
-  wordDetailsModal.addClass("hidden");
-  backgroundOverlay.addClass("hidden");
+// ------------------------------------------------------------------------- Admin Modal Functions
 
-  // Remove all the usage example elements
-  $(".usage-example").remove();
+function showAdminEditModal(wordId) {
+  // Populate the fields with word data if is editinng words
+  if (editAction === "UPDATE") {
+    // Find the relevant objecty from the wordData array
+    editWordID = wordId;
+    const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
+
+    populateAdminEditFields(wordObject);
+  }
+
+  adminEditModal.removeClass("hidden");
+  backgroundOverlay.removeClass("hidden");
+}
+
+function closeAdminEditModal() {
+  // Hide the modal and background overlay
+  adminEditModal.addClass("hidden");
+  backgroundOverlay.addClass("hidden");
+}
+
+function populateAdminEditFields(wordObject) {
+  console.log(wordObject);
+  // Load the data into all the form fields
+  wordIdInput.val(wordObject["word_id"]);
+  wordUkrInput.val(wordObject["word_ukrainian"]);
+  wordEngInput.val(wordObject["word_english"]);
+  wordRomanInput.val(wordObject["word_roman"]);
+  wordGenderInput.val(wordObject["word_gender"]);
+  wordPronounceInput.val(wordObject["word_pronounciation"]);
+  wordPronounceAudioInput.val(wordObject["word_pronounciation_audio"]);
+  wordExplainInput.val(wordObject["word_explanation"]);
+  wordExamplesInput.val(JSON.stringify(wordObject["word_examples"], null, 2));
+}
+
+function submitWordEditUpdate() {
+  // Get the form data object
+  const formData = new FormData(
+    document.getElementById("admin-word-edit-form")
+  );
+
+  // Parse the word examples to JSON
+  wordExamples = {};
+  try {
+    wordExamples = JSON.parse(formData.get("word_examples"));
+  } catch (error) {
+    showAlertModal("ERROR", `Error in usage examples syntax (${error})`);
+    console.log(`Error in usage examples syntax (${error})`);
+  }
+
+  // Convert the form data to JSON
+  const jsonData = {
+    word_id: Number(formData.get("word_id")),
+    word_ukrainian: formData.get("word_ukrainian"),
+    word_english: formData.get("word_english"),
+    word_roman: formData.get("word_roman"),
+    word_gender: Number(formData.get("word_gender")),
+    word_pronounciation: formData.get("word_pronounciation"),
+    word_pronounciation_audio: formData.get("word_pronounciation_audio"),
+    word_explanation: formData.get("word_explanation"),
+    word_examples: wordExamples,
+  };
+
+  if (editAction === "UPDATE") {
+    // Logic to run if updating a word record
+    fetch(`https://vocabventure.onrender.com/api/words/update/${editWordID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        // Include CSRF token as required by Django for non-GET requests
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      body: JSON.stringify(jsonData),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        showAlertModal(data.status, data.message);
+      });
+  } else if (editAction === "ADD") {
+    // Logic to run if adding a word record
+    fetch(`https://vocabventure.onrender.com/api/words/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Include CSRF token as required by Django for non-GET requests
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      body: JSON.stringify(jsonData),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        showAlertModal(data.status, data.message);
+      });
+  } else if (editAction === "DELETE") {
+    // Logic to running if deleting a word record
+    fetch(`https://vocabventure.onrender.com/api/words/delete/${editWordID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        // Include CSRF token as required by Django for non-GET requests
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        showAlertModal(data.status, data.message);
+      });
+  }
+}
+
+// ------------------------------------------------------------------------- Utility Functions
+
+// Function to get CSRF token from cookies
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
 }
 
 // Function to format an array of strings into an individual string
