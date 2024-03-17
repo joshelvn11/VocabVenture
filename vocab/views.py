@@ -198,3 +198,55 @@ def getWordSets(request, word_id):
 
     # Return the serialized data
     return Response(serializer.data)
+
+## --------------------------------------------------------------------------  POST Word Set Junction
+
+@api_view(["POST"])
+def postWordSetJunction(request, set_id, word_id):
+
+    # Check if the user is authenticated and is a superuser
+    if request.user.is_authenticated and request.user.is_superuser:
+        print("Received word set junction POST request")
+
+        try:
+            # Retrieve the word and set objects using the provided IDs from the params
+            word_set = WORD_SET.objects.get(set_id=set_id);
+            word = WORD_UKR_ENG.objects.get(word_id=word_id);
+        except WORD_SET.DoesNotExist:
+            return Response({"status": "ERROR", "message": "Set not found"}, status=status.HTTP_404_NOT_FOUND)
+        except WORD_UKR_ENG.DoesNotExist:
+            return Response({"status": "ERROR", "message": "Word not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Create a new junction table record
+        new_junction = WORD_SET_JUNCTION_UKR_ENG(word_set=word_set, word=word);
+        new_junction.save()
+
+        return Response({"status": "SUCCESS", "message": "Word added to set successfully"}, status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response({"status": "ERROR", "message": "Unauthorized: Only superusers can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
+## --------------------------------------------------------------------------  DELETE Word Set Junction
+
+@api_view(["DELETE"])
+def deleteWordSetJunction(request, set_id, word_id):
+
+    # Check if the user is authenticated and is a superuser
+    if request.user.is_authenticated and request.user.is_superuser:
+        print("Received word set junction DELETE request")
+
+        try:
+            # Retrieve the word and set objects using the provided IDs from the params
+            word_set = WORD_SET.objects.get(set_id=set_id);
+            word = WORD_UKR_ENG.objects.get(word_id=word_id);
+        except WORD_SET.DoesNotExist:
+            return Response({"status": "ERROR", "message": "Set not found"}, status=status.HTTP_404_NOT_FOUND)
+        except WORD_UKR_ENG.DoesNotExist:
+            return Response({"status": "ERROR", "message": "Word not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Create a new junction table record
+        junction = WORD_SET_JUNCTION_UKR_ENG.objects.get(word=word, word_set=word_set)
+        junction.delete()
+
+        return Response({"status": "SUCCESS", "message": "Word removed from set successfully"}, status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response({"status": "ERROR", "message": "Unauthorized: Only superusers can perform this action"}, status=status.HTTP_403_FORBIDDEN)

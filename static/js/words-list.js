@@ -53,6 +53,7 @@ closeAdminEditModalButton.on("click", () => {
 });
 
 adminEditFormSaveButton.on("click", () => {
+  console.log("saving word");
   submitWordEditUpdate();
 });
 
@@ -81,6 +82,19 @@ adminEditButton.on("click", function () {
 addWordButton.on("click", () => {
   editAction = "ADD";
   showAdminEditModal();
+});
+
+setCheckBoxes.each(function () {
+  $(this).on("change", function () {
+    // Check if the checkbox is being checked or unchecked
+    if ($(this).prop("checked")) {
+      // If it is being checked and set word junction
+      addDeleteSet($(this).attr("set-id"), true);
+    } else {
+      // If it is being unchecked remove a set word junction
+      addDeleteSet($(this).attr("set-id"), false);
+    }
+  });
 });
 
 // ------------------------------------------------------------------------- FETCH Word Data
@@ -335,6 +349,43 @@ function submitWordEditUpdate() {
       .then((data) => {
         console.log(data);
         showAlertModal(data.status, data.message);
+      });
+  }
+}
+
+function addDeleteSet(setId, addSet) {
+  if (addSet) {
+    fetch(`http://127.0.0.1:8000/api/words/sets/${setId}/add/${editWordID}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Include CSRF token as required by Django for non-GET requests
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  } else {
+    fetch(
+      `http://127.0.0.1:8000/api/words/sets/${setId}/delete/${editWordID}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          // Include CSRF token as required by Django for non-GET requests
+          "X-CSRFToken": getCookie("csrftoken"),
+        },
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
       });
   }
 }
