@@ -1,3 +1,12 @@
+const devMode = true;
+let serverURL;
+
+if (devMode) {
+  serverURL = "http://127.0.0.1:800";
+} else {
+  serverURL = "https://vocabventure.onrender.com";
+}
+
 // Global word data variable, holds an array of word objects
 let wordData;
 let editWordID; // Word that is currently beind edited in the admin from
@@ -300,7 +309,7 @@ function submitWordEditUpdate() {
 
   if (editAction === "UPDATE") {
     // Logic to run if updating a word record
-    fetch(`https://vocabventure.onrender.com/api/words/update/${editWordID}`, {
+    fetch(`${serverURL}/api/words/update/${editWordID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -317,7 +326,7 @@ function submitWordEditUpdate() {
       });
   } else if (editAction === "ADD") {
     // Logic to run if adding a word record
-    fetch(`https://vocabventure.onrender.com/api/words/add`, {
+    fetch(`${serverURL}/api/words/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -335,7 +344,7 @@ function submitWordEditUpdate() {
       });
   } else if (editAction === "DELETE") {
     // Logic to running if deleting a word record
-    fetch(`https://vocabventure.onrender.com/api/words/delete/${editWordID}`, {
+    fetch(`${serverURL}/api/words/delete/${editWordID}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -355,7 +364,7 @@ function submitWordEditUpdate() {
 
 function addDeleteSet(setId, addSet) {
   if (addSet) {
-    fetch(`http://127.0.0.1:8000/api/words/sets/${setId}/add/${editWordID}`, {
+    fetch(`${serverURL}/api/words/sets/${setId}/add/${editWordID}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -370,17 +379,14 @@ function addDeleteSet(setId, addSet) {
         console.log(data);
       });
   } else {
-    fetch(
-      `http://127.0.0.1:8000/api/words/sets/${setId}/delete/${editWordID}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          // Include CSRF token as required by Django for non-GET requests
-          "X-CSRFToken": getCookie("csrftoken"),
-        },
-      }
-    )
+    fetch(`${serverURL}/api/words/sets/${setId}/delete/${editWordID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        // Include CSRF token as required by Django for non-GET requests
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+    })
       .then((response) => {
         return response.json();
       })
