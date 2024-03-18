@@ -1,5 +1,3 @@
-import serverURL from "./config.js";
-
 let editWordID; // Word that is currently beind edited in the admin from
 let editAction = "NONE"; // State variable to control whether a word is being added or updated
 
@@ -21,7 +19,9 @@ const wordExplainInput = $("#word-explain-input");
 const wordExamplesInput = $("#word-examples-input");
 const setCheckBoxes = $(".set-checkbox");
 
-const backgroundOverlay = $(".background-overlay");
+closeAdminEditModalButton.on("click", () => {
+  closeAdminEditModal();
+});
 
 adminEditFormSaveButton.on("click", () => {
   console.log("saving word");
@@ -71,6 +71,8 @@ function showAdminEditModal(wordId) {
 
     populateAdminEditFields(wordObject);
     populateSetCheckBoxes(wordId);
+  } else if (editAction === "ADD") {
+    clearAdminEditFields();
   }
 
   adminEditModal.removeClass("hidden");
@@ -94,6 +96,18 @@ function populateAdminEditFields(wordObject) {
   wordPronounceAudioInput.val(wordObject["word_pronounciation_audio"]);
   wordExplainInput.val(wordObject["word_explanation"]);
   wordExamplesInput.val(JSON.stringify(wordObject["word_examples"], null, 2));
+}
+
+function clearAdminEditFields() {
+  wordIdInput.val("");
+  wordUkrInput.val("");
+  wordEngInput.val("");
+  wordRomanInput.val("");
+  wordGenderInput.val("");
+  wordPronounceInput.val("");
+  wordPronounceAudioInput.val("");
+  wordExplainInput.val("");
+  wordExamplesInput.val("");
 }
 
 function populateSetCheckBoxes(wordId) {
@@ -146,7 +160,7 @@ function submitWordEditUpdate() {
 
   if (editAction === "UPDATE") {
     // Logic to run if updating a word record
-    fetch(`${serverURL}/api/words/update/${editWordID}`, {
+    fetch(`/api/words/update/${editWordID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -163,7 +177,7 @@ function submitWordEditUpdate() {
       });
   } else if (editAction === "ADD") {
     // Logic to run if adding a word record
-    fetch(`${serverURL}/api/words/add`, {
+    fetch(`/api/words/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -181,7 +195,7 @@ function submitWordEditUpdate() {
       });
   } else if (editAction === "DELETE") {
     // Logic to running if deleting a word record
-    fetch(`${serverURL}/api/words/delete/${editWordID}`, {
+    fetch(`/api/words/delete/${editWordID}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -201,7 +215,7 @@ function submitWordEditUpdate() {
 
 function addDeleteSet(setId, addSet) {
   if (addSet) {
-    fetch(`${serverURL}/api/words/sets/${setId}/add/${editWordID}`, {
+    fetch(`/api/words/sets/${setId}/add/${editWordID}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -216,7 +230,7 @@ function addDeleteSet(setId, addSet) {
         console.log(data);
       });
   } else {
-    fetch(`${serverURL}/api/words/sets/${setId}/delete/${editWordID}`, {
+    fetch(`/api/words/sets/${setId}/delete/${editWordID}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
