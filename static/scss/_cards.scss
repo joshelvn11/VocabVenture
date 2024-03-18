@@ -84,8 +84,11 @@
 
 .progress-bar-container {
   width: 100%;
-  height: 8px;
   display: flex;
+
+  @media only screen and (max-width: 576px) {
+    flex-direction: column;
+  }
 }
 
 .progress-bar {
@@ -94,6 +97,12 @@
   margin-right: 14px;
   background-color: var(--gray-opaque);
   border-radius: var(--border-radius);
+}
+
+.progress-bar-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
 }
 
 .progress-bar-fill {
@@ -118,10 +127,9 @@
 }
 
 .progress-bar-title {
-  margin: -3px 12px 0 0;
-  width: 86px;
+  margin: -6px 12px 0 0;
 }
 
 .progress-bar-percentage {
-  margin: -3px 0 0 3px;
+  margin: -3px 0 0 0;
 }

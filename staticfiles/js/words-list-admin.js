@@ -1,7 +1,7 @@
 let editWordID; // Word that is currently beind edited in the admin from
 let editAction = "NONE"; // State variable to control whether a word is being added or updated
 
-const adminEditButton = $(".admin-edit-details-button");
+const adminEditButton = $("#admin-edit-details-button");
 const addWordButton = $("#add-word-button");
 const adminEditModal = $("#admin-edit-modal");
 const closeAdminEditModalButton = $("#close-admin-edit-modal-button");
@@ -41,6 +41,7 @@ adminEditFormDeleteButton.on("click", () => {
 adminEditButton.on("click", function () {
   editAction = "UPDATE";
   closeWordDetailsModal();
+  console.log;
   showAdminEditModal($(this).attr("word-id"));
 });
 

@@ -5,39 +5,37 @@
 
 <div class="card-container">
     {% for word_set in word_sets %}
-      <a href="/words/sets/{{ word_set.set_slug }}" class="card col-lg-4 col-md-6 clickable">
+      <a href="/words/sets/{{ word_set.set_slug }}" class="card col-lg-4 col-md-6 col-sm-12 clickable">
         <div class="card-content">
           <h3 class="set-title">{{ word_set.set_title }}</h3>
           <!-- Overall Progress -->
           <div class="progress-bar-container">
-            <div class="progress-bar">
-              <div class="progress-bar-fill orange" style="width: 50%;"></div>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar">
+                <div class="progress-bar-fill orange" style="width: 50%;"></div>
+              </div>
+              <p class="progress-bar-percentage">50%</p>
             </div>
-            <p class="progress-bar-percentage">50%</p>
           </div>
           <!-- UKR to ENG Progress -->
           <div class="progress-bar-container">
-            <p class="progress-bar-title">UKR to ENG</p>
-            <div class="progress-bar">
-              <div class="progress-bar-fill orange" style="width: 50%;"></div>
+            <p class="progress-bar-title">🇺🇦 > 🇬🇧</p>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar">
+                <div class="progress-bar-fill orange" style="width: 50%;"></div>
+              </div>
+              <p class="progress-bar-percentage">50%</p>
             </div>
-            <p class="progress-bar-percentage">50%</p>
           </div>
           <!-- ENG to UKR Progress -->
           <div class="progress-bar-container">
-            <p class="progress-bar-title">ENG to UKR</p>
-            <div class="progress-bar">
-              <div class="progress-bar-fill orange" style="width: 50%;"></div>
+            <p class="progress-bar-title">🇬🇧 > 🇺🇦</p>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar">
+                <div class="progress-bar-fill orange" style="width: 50%;"></div>
+              </div>
+              <p class="progress-bar-percentage">50%</p>
             </div>
-            <p class="progress-bar-percentage">50%</p>
-          </div>
-          <!-- Spelling Progress -->
-          <div class="progress-bar-container">
-            <p class="progress-bar-title">Spelling</p>
-            <div class="progress-bar">
-              <div class="progress-bar-fill orange" style="width: 50%;"></div>
-            </div>
-            <p class="progress-bar-percentage">50%</p>
           </div>
         </div>
       </a>

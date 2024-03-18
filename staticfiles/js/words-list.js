@@ -63,10 +63,8 @@ function showWordDetailsModal(wordId) {
   // Load usage examples
   loadUsageExamples(wordObject);
 
-  // Set the word id of the admin edit button if it exists
-  if (typeof variableName !== "undefined") {
-    adminEditButton.attr("word-id", wordId);
-  }
+  // Pass the current word id to the admin button
+  $("#admin-edit-details-button").attr("word-id", wordId);
 
   // Show the modal and background overlay
   wordDetailsModal.removeClass("hidden");
