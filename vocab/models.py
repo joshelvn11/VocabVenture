@@ -37,7 +37,7 @@ class WORD_SET(models.Model):
 # meaning a many-to-many relationship i.e Sets can have multiple words
 # and words can have multiple sets
 class WORD_SET_JUNCTION_UKR_ENG(models.Model):
-    word = models.ForeignKey(WORD_UKR_ENG, on_delete=models.PROTECT)
+    word = models.ForeignKey(WORD_UKR_ENG, on_delete=models.CASCADE)
     word_set = models.ForeignKey(WORD_SET, on_delete=models.PROTECT)
 
     class Meta:

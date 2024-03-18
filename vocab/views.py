@@ -218,7 +218,7 @@ def postWordSetJunction(request, set_id, word_id):
             return Response({"status": "ERROR", "message": "Word not found"}, status=status.HTTP_404_NOT_FOUND)
 
         # Create a new junction table record
-        new_junction = WORD_SET_JUNCTION_UKR_ENG(word_set=word_set, word=word);
+        new_junction = WORD_SET_JUNCTION_UKR_ENG(word_set=word_set, word=word)
         new_junction.save()
 
         return Response({"status": "SUCCESS", "message": "Word added to set successfully"}, status=status.HTTP_404_NOT_FOUND)

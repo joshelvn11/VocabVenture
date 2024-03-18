@@ -165,7 +165,8 @@ function submitWordEditUpdate() {
   };
 
   if (editAction === "UPDATE") {
-    // Logic to run if updating a word record
+    // ------------------------------------------------------ Update Word Logic
+    showAlertModal("INFO", "Updating word...");
     fetch(`/api/words/update/${editWordID}`, {
       method: "PUT",
       headers: {
@@ -182,6 +183,8 @@ function submitWordEditUpdate() {
         showAlertModal(data.status, data.message);
       });
   } else if (editAction === "ADD") {
+    // ------------------------------------------------------ ADD Word Logic
+    showAlertModal("INFO", "Adding word...");
     // Logic to run if adding a word record
     fetch(`/api/words/add`, {
       method: "POST",
@@ -197,8 +200,13 @@ function submitWordEditUpdate() {
       })
       .then((data) => {
         showAlertModal(data.status, data.message);
+        // If the operation was successful update the current edit word id to the newly created word
+        if (data.status === "SUCCESS") {
+          editWordID = jsonData["word_id"];
+        }
       });
   } else if (editAction === "DELETE") {
+    showAlertModal("INFO", "Deleting word...");
     // Logic to running if deleting a word record
     fetch(`/api/words/delete/${editWordID}`, {
       method: "DELETE",
@@ -219,6 +227,7 @@ function submitWordEditUpdate() {
 
 function addDeleteSet(setId, addSet) {
   if (addSet) {
+    showAlertModal("INFO", "Adding to set...");
     fetch(`/api/words/sets/${setId}/add/${editWordID}`, {
       method: "POST",
       headers: {
@@ -231,9 +240,10 @@ function addDeleteSet(setId, addSet) {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        showAlertModal(data.status, data.message);
       });
   } else {
+    showAlertModal("INFO", "Removing from set...");
     fetch(`/api/words/sets/${setId}/delete/${editWordID}`, {
       method: "DELETE",
       headers: {
@@ -246,7 +256,7 @@ function addDeleteSet(setId, addSet) {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        showAlertModal(data.status, data.message);
       });
   }
 }
