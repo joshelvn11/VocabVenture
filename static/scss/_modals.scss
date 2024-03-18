@@ -42,12 +42,19 @@
   height: 80%;
 }
 
-#alert-modal {
+#alert-modal-container {
   position: fixed;
   top: 0;
   right: 0;
   z-index: 99;
-  margin: 25px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#alert-modal {
+  position: relative;
   padding: 8px 24px;
   color: white;
 
