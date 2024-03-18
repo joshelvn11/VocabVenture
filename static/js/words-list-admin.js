@@ -147,8 +147,9 @@ function submitWordEditUpdate() {
   try {
     wordExamples = JSON.parse(formData.get("word_examples"));
   } catch (error) {
-    showAlertModal("ERROR", `Error in usage examples syntax (${error})`);
+    showAlertModal("ERROR", `Error in usage examples syntax`);
     console.log(`Error in usage examples syntax (${error})`);
+    return;
   }
 
   // Convert the form data to JSON
