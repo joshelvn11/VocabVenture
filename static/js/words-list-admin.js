@@ -71,6 +71,8 @@ function showAdminEditModal(wordId) {
 
     populateAdminEditFields(wordObject);
     populateSetCheckBoxes(wordId);
+  } else if (editAction === "ADD") {
+    clearAdminEditFields();
   }
 
   adminEditModal.removeClass("hidden");
@@ -94,6 +96,18 @@ function populateAdminEditFields(wordObject) {
   wordPronounceAudioInput.val(wordObject["word_pronounciation_audio"]);
   wordExplainInput.val(wordObject["word_explanation"]);
   wordExamplesInput.val(JSON.stringify(wordObject["word_examples"], null, 2));
+}
+
+function clearAdminEditFields() {
+  wordIdInput.val("");
+  wordUkrInput.val("");
+  wordEngInput.val("");
+  wordRomanInput.val("");
+  wordGenderInput.val("");
+  wordPronounceInput.val("");
+  wordPronounceAudioInput.val("");
+  wordExplainInput.val("");
+  wordExamplesInput.val("");
 }
 
 function populateSetCheckBoxes(wordId) {
