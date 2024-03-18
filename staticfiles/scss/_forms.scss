@@ -1,0 +1,39 @@
+form {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+input,
+textarea {
+  display: block;
+  margin: 5px 0px 24px 0px;
+
+  &.full-width {
+    width: 100%;
+  }
+}
+
+textarea {
+  height: 300px;
+}
+
+label {
+  display: block;
+}
+
+.checkbox-wrapper {
+  input {
+    display: inline;
+    min-width: none;
+  }
+
+  label {
+    display: inline;
+  }
+}
+
+#admin-word-edit-form {
+  width: 800px;
+  max-height: calc(80vh - 100px);
+  padding: 5px;
+}

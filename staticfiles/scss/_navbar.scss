@@ -1,9 +1,13 @@
 // The sibare itself
 #sidebar-nav {
-  width: 150px;
-  height: 100%;
+  width: 175px;
   border-right: solid 1px var(--border-color);
   padding: 50px 10px 10px 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
 
   @media only screen and (max-width: 768px) {
     position: fixed;

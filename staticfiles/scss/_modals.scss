@@ -17,6 +17,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 99;
+  max-height: 80vh;
+  max-width: 95vw;
   background-color: var(--background-color);
   border: solid 1px var(--border-color);
   padding: 10px 25px 25px 25px;
@@ -24,7 +26,7 @@
 
 .modal-header-wrapper {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   align-items: center;
   height: 50px;
 }
@@ -38,4 +40,51 @@
 #word-details-modal {
   width: 80%;
   height: 80%;
+}
+
+#alert-modal-container {
+}
+
+#alert-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 99;
+  margin: 25px;
+  padding: 8px 24px;
+  color: white;
+
+  &.success {
+    background-color: green;
+  }
+
+  &.error {
+    background-color: red;
+  }
+
+  &.info {
+    background-color: blue;
+  }
+
+  &.alert {
+    background-color: orange;
+  }
+
+  #alert-modal-close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 12px;
+    cursor: pointer;
+
+    svg {
+      max-width: 14px;
+      max-height: 14px;
+      margin: 0;
+
+      path {
+        fill: white;
+      }
+    }
+  }
 }

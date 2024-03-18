@@ -1,5 +1,3 @@
-import serverURL from "./config.js";
-
 // Global word data variable, holds an array of word objects
 let wordData;
 
@@ -27,10 +25,6 @@ const backgroundOverlay = $(".background-overlay");
 
 closeWordDetailsModalButton.on("click", () => {
   closeWordDetailsModal();
-});
-
-closeAdminEditModalButton.on("click", () => {
-  closeAdminEditModal();
 });
 
 wordCards.each(function () {
@@ -173,3 +167,7 @@ function formatArray(arr) {
 
   return formattedString;
 }
+
+$("#test-alert").on("click", () => {
+  showAlertModal("INFO", "This is a message");
+});

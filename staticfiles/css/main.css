@@ -37,32 +37,120 @@
 .card-container {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
   gap: 10px;
 }
 
 .card {
   position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
+  width: 100%;
+  padding: 24px 24px;
+  background-color: white;
   border: solid 1px var(--border-color);
   border-radius: var(--border-radius);
   -webkit-box-shadow: 0px 0px 5px 0.8px var(--gray-opaque);
   box-shadow: 0px 0px 5px 0.8px var(--gray-opaque);
 }
 
-.card-title {
-  position: absolute;
-  top: 20px;
-  left: 20px;
+.card .set-title {
+  margin: 0;
+}
+
+.card.align-center {
+  align-items: center;
+}
+
+.card.justify-center {
+  justify-content: center;
+}
+
+.card.clickable {
+  cursor: pointer;
+}
+
+.card.clickable:hover {
+  -webkit-box-shadow: 0px 0px 5px 0.8px var(--blue);
+  box-shadow: 0px 0px 5px 0.8px var(--blue);
+}
+
+.card.col-lg-4 {
+  width: calc((100% / 3) - 70px);
+}
+
+.card.col-lg-6 {
+  width: calc((100% / 2) - 60px);
+}
+
+@media only screen and (max-width: 992px) {
+  .card.col-md-6 {
+    width: calc((100% / 2) - 60px);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .card.col-sm-12 {
+    width: 100%;
+  }
 }
 
 .card-content {
   display: flex;
   flex-direction: column;
+  align-items: start;
   gap: 20px;
+  width: 100%;
+}
+
+.word-detail-content {
+  display: flex;
+  width: 100%;
   align-items: center;
+  justify-content: center;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  display: flex;
+}
+
+.progress-bar {
+  flex-grow: 1;
+  height: 8px;
+  margin-right: 14px;
+  background-color: var(--gray-opaque);
+  border-radius: var(--border-radius);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: var(--border-radius);
+}
+
+.progress-bar-fill.red {
+  background-color: red;
+}
+
+.progress-bar-fill.orange {
+  background-color: orange;
+}
+
+.progress-bar-fill.yellow {
+  background-color: gold;
+}
+
+.progress-bar-fill.green {
+  background-color: green;
+}
+
+.progress-bar-title {
+  margin: -3px 12px 0 0;
+  width: 86px;
+}
+
+.progress-bar-percentage {
+  margin: -3px 0 0 3px;
 }
 
 .font-size-regular {
@@ -79,6 +167,54 @@
 
 .font-size-xxlarge {
   font-size: 1.8rem;
+}
+
+form {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+input,
+textarea {
+  display: block;
+  margin: 5px 0px 24px 0px;
+}
+
+input.full-width,
+textarea.full-width {
+  width: 100%;
+}
+
+textarea {
+  height: 300px;
+}
+
+label {
+  display: block;
+}
+
+.checkbox-wrapper input {
+  display: inline;
+  min-width: none;
+}
+
+.checkbox-wrapper label {
+  display: inline;
+}
+
+#admin-word-edit-form {
+  width: 800px;
+  max-height: calc(80vh - 100px);
+  padding: 5px;
+}
+
+.usage-example-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 35px 0;
 }
 
 .interactive-sentence-container {
@@ -160,6 +296,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 99;
+  max-height: 80vh;
+  max-width: 95vw;
   background-color: var(--background-color);
   border: solid 1px var(--border-color);
   padding: 10px 25px 25px 25px;
@@ -167,7 +305,7 @@
 
 .modal-header-wrapper {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   align-items: center;
   height: 50px;
 }
@@ -183,11 +321,59 @@
   height: 80%;
 }
 
+#alert-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 99;
+  margin: 25px;
+  padding: 8px 24px;
+  color: white;
+}
+
+#alert-modal.success {
+  background-color: green;
+}
+
+#alert-modal.error {
+  background-color: red;
+}
+
+#alert-modal.info {
+  background-color: blue;
+}
+
+#alert-modal.alert {
+  background-color: orange;
+}
+
+#alert-modal #alert-modal-close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 12px;
+  cursor: pointer;
+}
+
+#alert-modal #alert-modal-close-button svg {
+  max-width: 14px;
+  max-height: 14px;
+  margin: 0;
+}
+
+#alert-modal #alert-modal-close-button svg path {
+  fill: white;
+}
+
 #sidebar-nav {
-  width: 150px;
-  height: 100%;
+  width: 175px;
   border-right: solid 1px var(--border-color);
   padding: 50px 10px 10px 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
 }
 
 @media only screen and (max-width: 768px) {
@@ -453,7 +639,7 @@ a {
 
 #content-container {
   height: 100%;
-  width: calc(100vw - 200px);
+  width: 100vw;
 }
 
 @media only screen and (max-width: 768px) {
@@ -493,8 +679,10 @@ a {
 }
 
 #page-content {
+  height: calc(100vh - 110px);
   padding: 25px 25px;
   overflow-y: scroll;
+  background-color: var(--gray-opaque);
 }
 
 /*# sourceMappingURL=../css/main.css.map */

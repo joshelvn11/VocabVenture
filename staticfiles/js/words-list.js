@@ -1,14 +1,18 @@
-// Get the words list table
-const wordsListTable = $("#words-list-table");
+import serverURL from "./config.js";
 
 // Global word data variable, holds an array of word objects
 let wordData;
 
+// ------------------------------------------------------------------------- DOM Elements
+
 // Get HTML elements
+const wordsListTable = $("#words-list-table");
+
+// Word Details Elements
+const wordCards = $(".word-card");
 const showDetailsButtons = $(".show-word-details-button");
 const wordDetailsModal = $("#word-details-modal");
-const backgroundOverlay = $(".background-overlay");
-const closeModalButton = $("#close-modal-button");
+const closeWordDetailsModalButton = $("#close-word-details-modal-button");
 const detailsCardContainer = $("#details-card-container");
 const wordUkr = $("#word-ukr");
 const wordEng = $("#word-eng");
@@ -16,16 +20,26 @@ const wordPronounce = $("#word-pronounce");
 const wordRoman = $("#word-roman");
 const wordExplain = $("#word-explain");
 
-// Add event listeners
-closeModalButton.on("click", () => {
-  closeModal();
+// Other Elements
+const backgroundOverlay = $(".background-overlay");
+
+// ------------------------------------------------------------------------- Event Listeners
+
+closeWordDetailsModalButton.on("click", () => {
+  closeWordDetailsModal();
 });
 
-showDetailsButtons.each(function () {
+closeAdminEditModalButton.on("click", () => {
+  closeAdminEditModal();
+});
+
+wordCards.each(function () {
   $(this).on("click", function () {
-    showModal($(this).attr("word-id"));
+    showWordDetailsModal($(this).attr("word-id"));
   });
 });
+
+// ------------------------------------------------------------------------- FETCH Word Data
 
 // Fetch the word data from the api
 fetch("/api/words/list")
@@ -37,38 +51,55 @@ fetch("/api/words/list")
   })
   .then((data) => {
     wordData = data.data;
+    console.log("Loaded word data from API");
   });
 
-function showModal(wordId) {
-  console.log(`Word id = ${wordId}`);
+// ------------------------------------------------------------------------- User Modal Functions
+
+function showWordDetailsModal(wordId) {
   // Find the relevant objecty from the wordData array
   const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
-
+  console.log(wordObject);
   wordUkr.text(wordObject["word_ukrainian"]);
-  wordEng.text(formatArray(wordObject["word_english"]));
+  wordEng.text(wordObject["word_english"]);
   wordRoman.text(wordObject["word_roman"]);
   wordPronounce.text(wordObject["word_pronounciation"]);
   wordExplain.text(wordObject["word_explanation"]);
 
+  // Load usage examples
   loadUsageExamples(wordObject);
+
+  // Set the word id of the admin edit button
+  adminEditButton.attr("word-id", wordId);
 
   // Show the modal and background overlay
   wordDetailsModal.removeClass("hidden");
   backgroundOverlay.removeClass("hidden");
 }
 
+function closeWordDetailsModal() {
+  // Hide the modal and background overlay
+  wordDetailsModal.addClass("hidden");
+  backgroundOverlay.addClass("hidden");
+
+  // Remove all the usage example elements
+  $(".usage-example").remove();
+}
+
 function loadUsageExamples(wordObject) {
-  console.log(wordObject["word_examples"]);
   // Get the usage examples object
   usageExamplesObject = wordObject["word_examples"];
 
   // Iterate through the object and create an element for every example
   for (let [index, usageExample] of usageExamplesObject.entries()) {
     // Create the example element
-    let exampleElement = $(`<div class="card col-12 usage-example">
-        <div class="card-title">Usage Example ${index + 1}</div>
-            <div class="card-content"></div>
-        </div>`);
+    let exampleElement = $(`
+      <div class="card word-detail-card align-center justify-center usage-example">
+        <div class="card-content">
+          <div class="card-title">Usage Example ${index + 1}</div>
+          <div class="usage-example-container"></div>
+        </div>
+      </div>`);
 
     // Create the sentence container
     let sentenceContainer = $(
@@ -105,7 +136,7 @@ function loadUsageExamples(wordObject) {
     }
 
     // Append the sentence container to the example element
-    exampleElement.children(".card-content").append(sentenceContainer);
+    exampleElement.find(".usage-example-container").append(sentenceContainer);
 
     // Create the english translation container
     let englishTranslation = $(`<div class="sentence-border-box">
@@ -118,21 +149,16 @@ function loadUsageExamples(wordObject) {
     });
 
     // Append the english translation box to the example element
-    exampleElement.children(".card-content").append(englishTranslation);
+    exampleElement.find(".usage-example-container").append(englishTranslation);
 
     // Append the new element to the card container
     detailsCardContainer.append(exampleElement);
   }
 }
 
-function closeModal() {
-  // Hide the modal and background overlay
-  wordDetailsModal.addClass("hidden");
-  backgroundOverlay.addClass("hidden");
+// ------------------------------------------------------------------------- Admin Modal Functions
 
-  // Remove all the usage example elements
-  $(".usage-example").remove();
-}
+// ------------------------------------------------------------------------- Utility Functions
 
 // Function to format an array of strings into an individual string
 function formatArray(arr) {
@@ -147,3 +173,7 @@ function formatArray(arr) {
 
   return formattedString;
 }
+
+$("#test-alert").on("click", () => {
+  showAlertModal("INFO", "This is a message");
+});
