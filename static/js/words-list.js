@@ -53,7 +53,6 @@ fetch("/api/words/list")
 function showWordDetailsModal(wordId) {
   // Find the relevant objecty from the wordData array
   const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
-  console.log(wordObject);
   wordUkr.text(wordObject["word_ukrainian"]);
   wordEng.text(wordObject["word_english"]);
   wordRoman.text(wordObject["word_roman"]);

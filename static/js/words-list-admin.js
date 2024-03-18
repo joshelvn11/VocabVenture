@@ -24,7 +24,6 @@ closeAdminEditModalButton.on("click", () => {
 });
 
 adminEditFormSaveButton.on("click", () => {
-  console.log("saving word");
   submitWordEditUpdate();
 });
 
@@ -41,7 +40,6 @@ adminEditFormDeleteButton.on("click", () => {
 adminEditButton.on("click", function () {
   editAction = "UPDATE";
   closeWordDetailsModal();
-  console.log;
   showAdminEditModal($(this).attr("word-id"));
 });
 
@@ -74,6 +72,7 @@ function showAdminEditModal(wordId) {
     populateSetCheckBoxes(wordId);
   } else if (editAction === "ADD") {
     clearAdminEditFields();
+    clearSetCheckBoxes();
   }
 
   adminEditModal.removeClass("hidden");
@@ -129,6 +128,12 @@ function populateSetCheckBoxes(wordId) {
           .prop("checked", true);
       });
     });
+}
+
+function clearSetCheckBoxes() {
+  setCheckBoxes.each(function () {
+    $(this).prop("checked", false);
+  });
 }
 
 function submitWordEditUpdate() {
@@ -191,7 +196,6 @@ function submitWordEditUpdate() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         showAlertModal(data.status, data.message);
       });
   } else if (editAction === "DELETE") {
@@ -208,7 +212,6 @@ function submitWordEditUpdate() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         showAlertModal(data.status, data.message);
       });
   }
