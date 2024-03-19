@@ -569,6 +569,7 @@ label {
 @media only screen and (max-width: 768px) {
   #mobile-nav-open {
     display: inline-block;
+    padding-right: 12px;
   }
 }
 
@@ -710,6 +711,12 @@ a {
   width: 100%;
   border-bottom: solid 1px var(--border-color);
   padding: 12px 30px 10px 25px;
+}
+
+@media only screen and (max-width: 768px) {
+  #page-header {
+    padding: 12px 30px 10px 12px;
+  }
 }
 
 #page-header-left-container {
