@@ -1,8 +1,13 @@
-// The sibare itself
+#navbar-logo {
+  font-size: 20px;
+  padding: 4px;
+  color: var(--primary-color);
+}
+
 #sidebar-nav {
-  width: 175px;
+  width: 200px;
   border-right: solid 1px var(--border-color);
-  padding: 50px 10px 10px 10px;
+  padding: 0 10px 10px 10px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -38,7 +43,15 @@
   margin-bottom: 2.5px;
 
   &.active {
-    background-color: var(--blue-opaque);
+    background-color: var(--primary-color);
+
+    p {
+      color: white;
+    }
+
+    .sidebar-nav-icon path {
+      fill: white !important;
+    }
   }
 
   svg {
@@ -56,14 +69,14 @@
   }
 
   &:hover {
-    background-color: var(--blue-opaque);
+    background-color: var(--primary-color-opaque);
 
     p {
-      color: black;
+      color: white;
     }
 
     path {
-      fill: black;
+      fill: white;
     }
   }
 
@@ -106,15 +119,14 @@
   }
 
   &.active {
-    background-color: rgba(51, 152, 219, 0.15);
-    color: #3498db;
+    background-color: #471cff;
 
     a {
-      color: #3498db;
+      color: #471cff;
     }
 
     .sidebar-nav-icon path {
-      fill: #3498db !important;
+      fill: white !important;
     }
   }
 }

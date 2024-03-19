@@ -24,7 +24,6 @@ closeAdminEditModalButton.on("click", () => {
 });
 
 adminEditFormSaveButton.on("click", () => {
-  console.log("saving word");
   submitWordEditUpdate();
 });
 
@@ -41,7 +40,6 @@ adminEditFormDeleteButton.on("click", () => {
 adminEditButton.on("click", function () {
   editAction = "UPDATE";
   closeWordDetailsModal();
-  console.log;
   showAdminEditModal($(this).attr("word-id"));
 });
 
@@ -74,6 +72,7 @@ function showAdminEditModal(wordId) {
     populateSetCheckBoxes(wordId);
   } else if (editAction === "ADD") {
     clearAdminEditFields();
+    clearSetCheckBoxes();
   }
 
   adminEditModal.removeClass("hidden");
@@ -131,6 +130,12 @@ function populateSetCheckBoxes(wordId) {
     });
 }
 
+function clearSetCheckBoxes() {
+  setCheckBoxes.each(function () {
+    $(this).prop("checked", false);
+  });
+}
+
 function submitWordEditUpdate() {
   // Get the form data object
   const formData = new FormData(
@@ -142,8 +147,9 @@ function submitWordEditUpdate() {
   try {
     wordExamples = JSON.parse(formData.get("word_examples"));
   } catch (error) {
-    showAlertModal("ERROR", `Error in usage examples syntax (${error})`);
+    showAlertModal("ERROR", `Error in usage examples syntax`);
     console.log(`Error in usage examples syntax (${error})`);
+    return;
   }
 
   // Convert the form data to JSON
@@ -160,7 +166,8 @@ function submitWordEditUpdate() {
   };
 
   if (editAction === "UPDATE") {
-    // Logic to run if updating a word record
+    // ------------------------------------------------------ Update Word Logic
+    showAlertModal("INFO", "Updating word...");
     fetch(`/api/words/update/${editWordID}`, {
       method: "PUT",
       headers: {
@@ -177,6 +184,8 @@ function submitWordEditUpdate() {
         showAlertModal(data.status, data.message);
       });
   } else if (editAction === "ADD") {
+    // ------------------------------------------------------ ADD Word Logic
+    showAlertModal("INFO", "Adding word...");
     // Logic to run if adding a word record
     fetch(`/api/words/add`, {
       method: "POST",
@@ -191,10 +200,14 @@ function submitWordEditUpdate() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         showAlertModal(data.status, data.message);
+        // If the operation was successful update the current edit word id to the newly created word
+        if (data.status === "SUCCESS") {
+          editWordID = jsonData["word_id"];
+        }
       });
   } else if (editAction === "DELETE") {
+    showAlertModal("INFO", "Deleting word...");
     // Logic to running if deleting a word record
     fetch(`/api/words/delete/${editWordID}`, {
       method: "DELETE",
@@ -208,7 +221,6 @@ function submitWordEditUpdate() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         showAlertModal(data.status, data.message);
       });
   }
@@ -216,6 +228,7 @@ function submitWordEditUpdate() {
 
 function addDeleteSet(setId, addSet) {
   if (addSet) {
+    showAlertModal("INFO", "Adding to set...");
     fetch(`/api/words/sets/${setId}/add/${editWordID}`, {
       method: "POST",
       headers: {
@@ -228,9 +241,10 @@ function addDeleteSet(setId, addSet) {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        showAlertModal(data.status, data.message);
       });
   } else {
+    showAlertModal("INFO", "Removing from set...");
     fetch(`/api/words/sets/${setId}/delete/${editWordID}`, {
       method: "DELETE",
       headers: {
@@ -243,7 +257,7 @@ function addDeleteSet(setId, addSet) {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        showAlertModal(data.status, data.message);
       });
   }
 }
