@@ -17,6 +17,7 @@ const wordEng = $("#word-eng");
 const wordPronounce = $("#word-pronounce");
 const wordRoman = $("#word-roman");
 const wordExplain = $("#word-explain");
+const wordPronounceAudioButton = $("#pronounciation-audio-button");
 
 // Other Elements
 const backgroundOverlay = $(".background-overlay");
@@ -46,6 +47,7 @@ fetch("/api/words/list")
   .then((data) => {
     wordData = data.data;
     console.log("Loaded word data from API");
+    console.log(wordData);
   });
 
 // ------------------------------------------------------------------------- User Modal Functions
@@ -64,6 +66,29 @@ function showWordDetailsModal(wordId) {
 
   // Pass the current word id to the admin button
   $("#admin-edit-details-button").attr("word-id", wordId);
+
+  // Check if the pronounciation audio has a valid extension
+  if (wordObject["word_pronounciation_audio"].split(".").pop() == "m4a") {
+    // Load the pronounciation audio
+    const audio = new Audio(wordObject["word_pronounciation_audio"]);
+
+    audio.onerror = function (error) {
+      console.error("Error loading audio:", error);
+      showAlertModal("ERROR", "Error loading pronounciation audio");
+    };
+
+    wordPronounceAudioButton.removeClass("hidden");
+
+    // Remove previous event listeners
+    wordPronounceAudioButton.off("click");
+
+    // Add an event listener to the audio button to play the prounciation audio
+    wordPronounceAudioButton.on("click", () => {
+      audio.play();
+    });
+  } else {
+    wordPronounceAudioButton.addClass("hidden");
+  }
 
   // Show the modal and background overlay
   wordDetailsModal.removeClass("hidden");
