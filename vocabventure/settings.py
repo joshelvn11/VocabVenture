@@ -31,6 +31,7 @@ SECRET_KEY = 'django-insecure-ldu$*@bfhdujw@-6*^cm6+nb5a!m6yw9%zac(72hlclb67atet
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1',
+                 '192.168.1.40'
                  '.render.com',
                  '.onrender.com',
                  '.herokuapp.com',]

@@ -623,7 +623,7 @@ th {
   min-width: calc(100% - 8px);
 }
 
-.noselect, .interactive-word-container p, .nav-submenu-container {
+.noselect, .transparent-button, .button-transparent, .icon-button, .interactive-word-container p, .nav-item, .nav-submenu-container {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
