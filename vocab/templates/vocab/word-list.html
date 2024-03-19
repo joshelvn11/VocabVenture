@@ -8,8 +8,8 @@
 
 {% block page_buttons %} 
 {% if user.is_superuser %}
-<button id="add-word-button">Add Word</button>
-<button id="test-alert">Test Alert</button>
+<button id="add-word-button" class="border-button">Add Word</button>
+<button id="test-alert" class="border-button">Test Alert</button>
 {% endif %}
 {% endblock %}
 
@@ -42,12 +42,12 @@
     <div class="modal-header-wrapper">
         <div class="modal-left-conatainer">
             {% if user.is_superuser %}
-            <button id="admin-edit-details-button">Edit Word</button>
+            <button id="admin-edit-details-button" class="border-button">Edit Word</button>
             {% endif %}
-            <button id="pronounciation-audio-button">Audio</button>
+            <button id="pronounciation-audio-button" class="border-button">Audio</button>
         </div>
         <div class="modal-right-conatainer">
-            <button id="close-word-details-modal-button" class="button-transparent">Close</button>
+            <button id="close-word-details-modal-button" class="border-button">Close</button>
         </div>
     </div>
     <div class="modal-content-wrapper">
@@ -99,11 +99,11 @@
 <div id="admin-edit-modal" class="modal hidden">
     <div class="modal-header-wrapper">
         <div class="modal-left-conatainer">
-            <button id="admin-word-edit-save-button">Save</button>
-            <button id="admin-word-edit-delete-button">Delete</button>
+            <button id="admin-word-edit-save-button" class="border-button">Save</button>
+            <button id="admin-word-edit-delete-button" class="border-button">Delete</button>
         </div>
         <div class="modal-right-conatainer">
-            <button id="close-admin-edit-modal-button" class="button-transparent">Close</button>
+            <button id="close-admin-edit-modal-button" class="border-button">Close</button>
         </div>
             
     </div>
