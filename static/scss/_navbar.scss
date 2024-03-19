@@ -43,16 +43,17 @@
   border-radius: 8px;
   margin-bottom: 2.5px;
   transition: all 0.1s ease-in-out;
+  border: solid 1px rgba(255, 255, 255, 0);
 
   &.active {
-    background-color: var(--primary-color);
+    border: solid 1px var(--primary-color);
 
     p {
-      color: white;
+      color: var(--primary-color);
     }
 
     .nav-icon path {
-      fill: white !important;
+      fill: var(--primary-color) !important;
     }
   }
 
@@ -61,14 +62,14 @@
   }
 
   &:hover {
-    background-color: var(--primary-color-opaque);
+    border: solid 1px var(--primary-color);
 
     .nav-item-text {
-      color: white;
+      color: var(--primary-color);
     }
 
     .nav-icon path {
-      fill: white;
+      fill: var(--primary-color);
     }
   }
 
