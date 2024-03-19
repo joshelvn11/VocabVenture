@@ -44,3 +44,11 @@ function closeAlertModal(alertModal) {
   // Remove the modal from the DOM
   alertModal.remove();
 }
+
+const profileButton = $("#nav-profile-button");
+const profileSubMenu = $("#nav-profile-submenu");
+
+profileButton.on("click", () => {
+  console.log("toggling");
+  profileSubMenu.toggleClass("hidden");
+});

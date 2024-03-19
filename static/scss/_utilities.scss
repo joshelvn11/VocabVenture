@@ -11,3 +11,9 @@
 .col-12 {
   min-width: calc(100% - 8px);
 }
+
+.noselect {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}

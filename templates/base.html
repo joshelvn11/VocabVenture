@@ -25,16 +25,16 @@
         <div id="nav-top-wrapper">
           <!-- Home -->
           <h1 id="navbar-logo">VocabVenture</h1>
-          <div class="nav-item-wrapper {% if request.path == '/' %}active{% endif %}">
-            <a href="/">
-              <div class="nav-item-text">
+          <div class="nav-item {% if request.path == '/' %}active{% endif %}">
+            <a class="nav-item-link-wrapper" href="/">
+              <div class="nav-item-content">
                 <svg
                 width="64"
                 height="64"
                 viewBox="0 0 64 64"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                class="sidebar-nav-icon"
+                class="nav-icon"
               >
                 <rect width="64" height="64" fill="none" />
                 <path
@@ -44,21 +44,21 @@
                   fill="black"
                 />
               </svg>
-                <p>Home</p>
+                <p class="nav-item-text">Home</p>
               </div>
             </a>
           </div>
           <!-- Words -->
-          <div class="nav-item-wrapper {% if '/words/' in request.path %}active{% endif %}"">
-            <a href="/words/sets">
-              <div class="nav-item-text">
+          <div class="nav-item {% if '/words/' in request.path %}active{% endif %}"">
+            <a class="nav-item-link-wrapper" href="/words/sets">
+              <div class="nav-item-content">
                 <svg
                 width="64"
                 height="64"
                 viewBox="0 0 64 64"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                class="sidebar-nav-icon"
+                class="nav-icon"
               >
                 <g clip-path="url(#clip0_13_8)">
                   <path
@@ -78,21 +78,21 @@
                   </clipPath>
                 </defs>
               </svg>
-                <p>Words</p>
+                <p class="nav-item-text">Words</p>
               </div>
             </a>
           </div>
           <!-- Phrases -->
-          <div class="nav-item-wrapper">
-            <a href="/words/list">
-              <div class="nav-item-text">
+          <div class="nav-item">
+            <a class="nav-item-link-wrapper" href="/words/list">
+              <div class="nav-item-content">
                 <svg
                 width="64"
                 height="64"
                 viewBox="0 0 64 64"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                class="sidebar-nav-icon"
+                class="nav-icon"
               >
                 <g clip-path="url(#clip0_13_16)">
                   <path
@@ -116,17 +116,31 @@
                   </clipPath>
                 </defs></svg
               >
-                <p>Phrases</p>
+                <p class="nav-item-text">Phrases</p>
               </div>
             </a>
           </div>
         </div>
         <div id="nav-bottom-wrapper">
           {% if user.is_authenticated %}
-          <div class="nav-item-wrapper">
-            <a href="#">
-              <div class="nav-item-text">
-                <svg class="sidebar-nav-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Profile Item -->
+          <div class="nav-item">
+            <!-- Profile Sub-Menu -->
+            <div id="nav-profile-submenu" class="nav-submenu-container hidden">
+              <div id="profile-details" class="nav-submenu-item">
+                <p id="profile">{{ user.username }}</p>
+                <p id="email">{{ user.email }}</p>
+              </div>
+              <div class="nav-submenu-item">
+                <a class="nav-submenu-item-link-wrappaer" href="{% url 'account_logout' %}">
+                  <p class="nav-submenu-item-text">Log out</p>
+                </a>
+              </div>
+            </div>
+            <!-- Profile Item Content -->
+            <a id="nav-profile-button" class="nav-item-link-wrapper" href="#">
+              <div class="nav-item-content">
+                <svg class="nav-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip0_46_2)">
                   <path d="M61.4217 52.1945V52.1943C61.4176 41.6095 52.8158 33.0072 42.2308 33.0072H20.7872C10.2021 33.0072 1.6 41.6216 1.6 52.1945V54.064C1.6 59.6516 6.13761 64.1892 11.7252 64.1892H51.2965C56.8841 64.1892 61.4217 59.6516 61.4217 54.064V52.1945ZM56.5527 52.1987V52.1989L56.5533 54.0683C56.5533 54.0683 56.5533 54.0684 56.5533 54.0684C56.5532 56.9675 54.1919 59.3288 51.2928 59.3288H11.7246C8.82551 59.3288 6.46413 56.9674 6.46413 54.0683V52.1987C6.46413 44.3021 12.8902 37.8762 20.7866 37.8762H42.2302C50.1268 37.8762 56.5527 44.3023 56.5527 52.1987Z" fill="black" stroke="black" stroke-width="0.8"/>
                   <path d="M46.1234 16.2428C46.1234 7.61852 39.1049 0.6 30.4806 0.6C21.8564 0.6 14.8378 7.61852 14.8378 16.2428C14.8378 24.867 21.8564 31.8856 30.4806 31.8856C39.1087 31.8856 46.1234 24.8791 46.1234 16.2428ZM19.7026 16.2428C19.7026 10.2951 24.533 5.46474 30.4806 5.46474C36.4283 5.46474 41.2587 10.2951 41.2587 16.2428C41.2587 22.1904 36.4283 27.0208 30.4806 27.0208C24.5446 27.0208 19.7026 22.1901 19.7026 16.2428Z" fill="black" stroke="black" stroke-width="0.8"/>
@@ -137,15 +151,26 @@
                   </clipPath>
                   </defs>
                 </svg>  
-                <p>Profile</p>
+                <p class="nav-item-text">Profile</p>
               </div>
             </a>
           </div>
           {% else %}
-          <div class="nav-item-wrapper">
-            <a href="{{ login_url }}">
-              <div class="nav-item-text">
-                <p>Login / Sign Up</p>
+          <div class="nav-item">
+            <a class="nav-item-link-wrapper" href="{{ login_url }}">
+              <div class="nav-item-content">
+                <svg class="nav-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_46_2)">
+                  <path d="M61.4217 52.1945V52.1943C61.4176 41.6095 52.8158 33.0072 42.2308 33.0072H20.7872C10.2021 33.0072 1.6 41.6216 1.6 52.1945V54.064C1.6 59.6516 6.13761 64.1892 11.7252 64.1892H51.2965C56.8841 64.1892 61.4217 59.6516 61.4217 54.064V52.1945ZM56.5527 52.1987V52.1989L56.5533 54.0683C56.5533 54.0683 56.5533 54.0684 56.5533 54.0684C56.5532 56.9675 54.1919 59.3288 51.2928 59.3288H11.7246C8.82551 59.3288 6.46413 56.9674 6.46413 54.0683V52.1987C6.46413 44.3021 12.8902 37.8762 20.7866 37.8762H42.2302C50.1268 37.8762 56.5527 44.3023 56.5527 52.1987Z" fill="black" stroke="black" stroke-width="0.8"/>
+                  <path d="M46.1234 16.2428C46.1234 7.61852 39.1049 0.6 30.4806 0.6C21.8564 0.6 14.8378 7.61852 14.8378 16.2428C14.8378 24.867 21.8564 31.8856 30.4806 31.8856C39.1087 31.8856 46.1234 24.8791 46.1234 16.2428ZM19.7026 16.2428C19.7026 10.2951 24.533 5.46474 30.4806 5.46474C36.4283 5.46474 41.2587 10.2951 41.2587 16.2428C41.2587 22.1904 36.4283 27.0208 30.4806 27.0208C24.5446 27.0208 19.7026 22.1901 19.7026 16.2428Z" fill="black" stroke="black" stroke-width="0.8"/>
+                  </g>
+                  <defs>
+                  <clipPath id="clip0_46_2">
+                  <rect width="64" height="64" fill="white"/>
+                  </clipPath>
+                  </defs>
+                </svg>  
+                <p class="nav-item-text">Login</p>
               </div>
             </a>
           </div>

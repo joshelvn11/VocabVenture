@@ -20,11 +20,9 @@
 }
 
 .interactive-word-container p {
+  @extend .noselect;
   margin: 0;
   padding: 0;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
 }
 
 .interactive-word-container:hover p {
