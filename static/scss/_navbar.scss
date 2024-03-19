@@ -41,6 +41,7 @@
   align-items: center;
   border-radius: 8px;
   margin-bottom: 2.5px;
+  transition: all 0.1s ease-in-out;
 
   &.active {
     background-color: var(--primary-color);

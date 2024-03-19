@@ -16,6 +16,7 @@
   border-radius: var(--border-radius);
   -webkit-box-shadow: 0px 0px 5px 0.8px var(--gray-opaque);
   box-shadow: 0px 0px 5px 0.8px var(--gray-opaque);
+  transition: all 0.3s ease-in-out;
 
   .set-title {
     margin: 0;
@@ -36,8 +37,9 @@
   }
 
   &.clickable:hover {
-    -webkit-box-shadow: 0px 0px 5px 0.8px var(--blue);
-    box-shadow: 0px 0px 5px 0.8px var(--blue);
+    //-webkit-box-shadow: 0px 0px 5px 0.8px var(--blue);
+    //box-shadow: 0px 0px 5px 0.8px var(--blue);
+    border: solid 1px var(--primary-color);
   }
 
   &.col-lg-4 {
