@@ -48,6 +48,16 @@
   }
 }
 
+.flashcard-buttons-container {
+  width: 100%;
+  display: flex;
+  gap: 5px;
+
+  button {
+    flex-grow: 1;
+  }
+}
+
 .flashcard-controls-container {
   width: 600px;
   max-width: 100%;

@@ -7,6 +7,12 @@ flashcardAnswerText = $("#flashcard-answer");
 incorrectButton = $("#incorrect-button");
 correctButton = $("#correct-button");
 flipCardButton = $("#flip-card-button");
+questionShowPronouncationButton = $("#question-show-pronounciation-button");
+questionShowRomanisationButton = $("#question-show-romananisation-button");
+questionPlayAudioButton = $("#question-play-audio-button");
+answerShowPronouncationButton = $("#answer-show-pronounciation-button");
+answerShowRomanisationButton = $("#answer-show-romananisation-button");
+answerPlayAudioButton = $("#answer-play-audio-button");
 restartButton = $("#restart-button");
 returnButton = $("#return-button");
 testButton = $("#test-button");
@@ -56,6 +62,129 @@ function setFlashcardData() {
   flashcardQuestionText.text(flashcardData[0]["question"]);
   flashcardAnswerText.text(flashcardData[0]["answer"]);
   cardsRemaining.text(flashcardData.length);
+
+  // Reset the button text
+  questionShowRomanisationButton.text("Show Romanisation");
+  // Check if the question has a romanisation property
+  if ("question-roman" in flashcardData[0]) {
+    // Add an event listener to show the romanisation
+    questionShowRomanisationButton.on("click", () => {
+      questionShowRomanisationButton.text(flashcardData[0]["question-roman"]);
+    });
+    // Show the romanisation button
+    questionShowRomanisationButton.removeClass("hidden");
+  } else {
+    questionShowRomanisationButton.addClass("hidden");
+  }
+
+  // Reset the button text
+  questionShowPronouncationButton.text("Show Pronounciation");
+  // Check if the question has a pronounciation property
+  if ("question-pronounciation" in flashcardData[0]) {
+    // Add an event listener to show the pronounciation
+    questionShowPronouncationButton.on("click", () => {
+      questionShowPronouncationButton.text(
+        flashcardData[0]["question-pronounciation"]
+      );
+    });
+    // Show the pronounciation button
+    questionShowPronouncationButton.removeClass("hidden");
+  } else {
+    questionShowPronouncationButton.addClass("hidden");
+  }
+
+  // Check if the question has a pronounciation audio property
+  if ("question-pronounciation-audio" in flashcardData[0]) {
+    // Check if the pronounciation audio has a valid extension
+    if (
+      flashcardData[0]["question-pronounciation-audio"].split(".").pop() ==
+      "m4a"
+    ) {
+      // Load the pronounciation audio
+      const audio = new Audio(
+        flashcardData[0]["question-pronounciation-audio"]
+      );
+
+      audio.onerror = function (error) {
+        console.error("Error loading audio:", error);
+        showAlertModal("ERROR", "Error loading pronounciation audio");
+      };
+
+      // Remove previous event listeners
+      questionPlayAudioButton.off("click");
+
+      // Add an event listener to play the prononounciation audio
+      questionPlayAudioButton.on("click", () => {
+        audio.play();
+      });
+      // Show the pronounciation audio button
+      questionPlayAudioButton.removeClass("hidden");
+    } else {
+      questionPlayAudioButton.addClass("hidden");
+    }
+  } else {
+    questionPlayAudioButton.addClass("hidden");
+  }
+
+  // Reset the button text
+  answerShowRomanisationButton.text("Show Romanisation");
+  // Check if the answer has a romanisation property
+  if ("answer-roman" in flashcardData[0]) {
+    // Add an event listener to show the romanisation
+    answerShowRomanisationButton.on("click", () => {
+      answerShowRomanisationButton.text(flashcardData[0]["answer-roman"]);
+    });
+    // Show the romanisation button
+    answerShowRomanisationButton.removeClass("hidden");
+  } else {
+    answerShowRomanisationButton.addClass("hidden");
+  }
+
+  // Reset the button text
+  answerShowPronouncationButton.text("Show Pronounciation");
+  // Check if the answer has a pronounciation property
+  if ("answer-pronounciation" in flashcardData[0]) {
+    // Add an event listener to show the pronounciation
+    answerShowPronouncationButton.on("click", () => {
+      answerShowPronouncationButton.text(
+        flashcardData[0]["answer-pronounciation"]
+      );
+    });
+    // Show the pronounciation button
+    answerShowPronouncationButton.removeClass("hidden");
+  } else {
+    answerShowPronouncationButton.addClass("hidden");
+  }
+
+  // Check if the answer has a pronounciation audio property
+  if ("answer-pronounciation-audio" in flashcardData[0]) {
+    // Check if the pronounciation audio has a valid extension
+    if (
+      flashcardData[0]["answer-pronounciation-audio"].split(".").pop() == "m4a"
+    ) {
+      // Load the pronounciation audio
+      const audio = new Audio(flashcardData[0]["answer-pronounciation-audio"]);
+
+      audio.onerror = function (error) {
+        console.error("Error loading audio:", error);
+        showAlertModal("ERROR", "Error loading pronounciation audio");
+      };
+
+      // Remove previous event listeners
+      answerPlayAudioButton.off("click");
+
+      // Add an event listener to play the prononounciation audio
+      answerPlayAudioButton.on("click", () => {
+        audio.play();
+      });
+      // Show the pronounciation audio button
+      answerPlayAudioButton.removeClass("hidden");
+    } else {
+      answerPlayAudioButton.addClass("hidden");
+    }
+  } else {
+    answerPlayAudioButton.addClass("hidden");
+  }
 }
 
 function startFlashcards(restart = false) {

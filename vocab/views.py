@@ -73,8 +73,11 @@ def practice_flashcards(request):
 
         # Create the UKR to ENG flash card data
         flashcard_ukr_to_eng = {
-            "title": "Translate the following word to English",
+            "title": "What is the meaning of this word in English",
             "question": word.word_ukrainian,
+            "question-pronounciation": word.word_pronounciation,
+            "question-pronounciation-audio": word.word_pronounciation_audio,
+            "question-roman": word.word_roman,
             "answer": word.word_english,
         }
 
@@ -82,9 +85,12 @@ def practice_flashcards(request):
         
         # Create the ENG to UKR flash card data
         flashcard_eng_to_ukr = {
-            "title": "Translate the following word to Ukrainian",
+            "title": "What Ukrainian word has the following meaning",
             "question": word.word_english,
             "answer": word.word_ukrainian,
+            "answer-pronounciation": word.word_pronounciation,
+            "answer-pronounciation-audio": word.word_pronounciation_audio,
+            "answer-roman": word.word_roman,
         }
 
         # Append it to the flash card array

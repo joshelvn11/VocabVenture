@@ -239,6 +239,16 @@
   transform: rotateY(0);
 }
 
+.flashcard-buttons-container {
+  width: 100%;
+  display: flex;
+  gap: 5px;
+}
+
+.flashcard-buttons-container button {
+  flex-grow: 1;
+}
+
 .flashcard-controls-container {
   width: 600px;
   max-width: 100%;
