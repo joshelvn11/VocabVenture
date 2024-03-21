@@ -1,11 +1,3 @@
-// Hide the URL bar
-window.addEventListener("load", function () {
-  setTimeout(function () {
-    // Scroll just enough to hide the URL bar
-    window.scrollTo(0, 1);
-  }, 0);
-});
-
 // Mobile Nav Controls
 const sideBarNav = $("#sidebar-nav");
 
