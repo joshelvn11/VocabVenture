@@ -7,7 +7,9 @@ urlpatterns = [
     ## --------------------------------------------------------------- Words URLS
     path('words/sets', views.word_sets, name='sets_list'), 
     path('words/sets/<slug:set_slug>', views.set_list, name='set_detail'),
-    path('words/list', word_list_ukr_eng, name='word_list'), 
+    path('words/list', word_list_ukr_eng, name='word_list'),
+    ## --------------------------------------------------------------- Practice URLS
+    path('practice/flashcards', views.practice_flashcards, name='practice_flashcards'),
     ## --------------------------------------------------------------- API URLS
     path('api/words/list', get_word_list, name='get_word_list'), 
     path('api/word/list', views.getWordList, name='getWordList'), 

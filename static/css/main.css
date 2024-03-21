@@ -19,6 +19,16 @@
   color: white;
 }
 
+.border-button.disabled {
+  color: var(--gray-light);
+  border: solid 1px var(--gray-light);
+}
+
+.border-button.disabled:hover {
+  color: var(--gray-light);
+  background-color: rgba(0, 0, 0, 0);
+}
+
 .transparent-button {
   background-color: rgba(0, 0, 0, 0);
   border: none;
@@ -179,6 +189,70 @@
 
 .progress-bar-percentage {
   margin: -3px 0 0 0;
+}
+
+#flashcard-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#flashcard-container {
+  position: relative;
+  width: 600px;
+  max-width: 100%;
+  height: 400px;
+  max-height: 90%;
+  perspective: 150rem;
+}
+
+.flashcard {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  box-sizing: border-box;
+  border-radius: var(--border-radius);
+  background-color: white;
+  backface-visibility: hidden;
+  transition: all 0.8s ease;
+}
+
+#question-flashcard.flipped {
+  -webkit-transform: rotateY(-180deg);
+  transform: rotateY(-180deg);
+}
+
+#answer-flashcard {
+  transform: rotateY(180deg);
+}
+
+#answer-flashcard.flipped {
+  -webkit-transform: rotateY(0);
+  transform: rotateY(0);
+}
+
+.flashcard-controls-container {
+  width: 600px;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+#flashcard-instruction {
+  text-align: center;
+}
+
+#flip-card-button {
+  flex-grow: 1.5;
 }
 
 .font-size-regular {
@@ -743,6 +817,26 @@ a {
   padding: 25px 25px;
   overflow-y: scroll;
   background-color: var(--gray-opaque);
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid var(--primary-color);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /*# sourceMappingURL=../css/main.css.map */

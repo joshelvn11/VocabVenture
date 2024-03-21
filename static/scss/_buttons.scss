@@ -15,6 +15,16 @@
     background-color: var(--primary-color);
     color: white;
   }
+
+  &.disabled {
+    color: var(--gray-light);
+    border: solid 1px var(--gray-light);
+  }
+
+  &.disabled:hover {
+    color: var(--gray-light);
+    background-color: rgba(0, 0, 0, 0);
+  }
 }
 
 .transparent-button {

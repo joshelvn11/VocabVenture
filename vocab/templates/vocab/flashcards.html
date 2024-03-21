@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block page_title %}{{ page_title }} Flashcards{% endblock %}
+
+{% block page_buttons %} 
+<button id="exit-button" class="border-button">Exit</button>
+{% endblock %}
+
+{% block content %}
+<div id="flashcard-page">
+    <div class="flashcard-controls-container">
+        <p>Cards Remaining: <span id="cards-remaining">14</span></p>
+    </div>
+    <div id="flashcard-container" class="clickable">
+        <div id="question-flashcard" class="flashcard">
+            <p id="flashcard-instruction">Translate the following word to Ukrainian</p>
+            <p id="flashcard-question" class="font-size-xxlarge">Hello</p>
+            <div>
+            </div>
+        </div>
+        <div id="answer-flashcard" class="flashcard">
+            <p id=""></p>
+            <p id="flashcard-answer" class="font-size-xxlarge">Hello</p>
+            <div>
+            </div>
+        </div>
+    </div>
+    <div class="flashcard-controls-container">
+        <button id="incorrect-button" class="border-button">Incorrect</button>
+        <button id="flip-card-button" class="border-button">Flip</button>
+        <button id="correct-button" class="border-button">Correct</button>
+        <button id="restart-button" class="border-button hidden">Restart</button>
+        <button id="return-button" class="border-button hidden">Return</button>
+        <button id="test-button" class="border-button hidden">Test Me</button>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    // Pass the JSON data to JavaScript
+    let flashcardData = JSON.parse('{{ flashcard_data|escapejs }}');
+</script>
+
+<script type="text/javascript" src="{% static '/js/flashcards.js' %}"></script>
+{% endblock %}

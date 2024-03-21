@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 import json
+import random
 from .models import WORD_SET, WORD_UKR_ENG, WORD_SET_JUNCTION_UKR_ENG
 from .serializers import WordUkrEngSerializer, SetUkrEngSerializer
 
@@ -40,7 +41,7 @@ def set_list(request, set_slug):
     # Get all set objects
     sets = WORD_SET.objects.all()
 
-    context = {'words': words, 'set_title': word_set.set_title, "sets": sets}
+    context = {'words': words, 'set_title': word_set.set_title, 'set_id': word_set.set_id, "sets": sets}
 
     return render(request, "vocab/word-list.html", context,)
 
@@ -49,6 +50,57 @@ def word_list_ukr_eng(request):
     sets = WORD_SET.objects.all()
 
     return render(request, "vocab/word-list.html", {"words": words, "sets": sets},)
+
+def practice_flashcards(request):
+    
+    # Get the set pass a URL paramater
+    set_param = request.GET.get('set', '1')
+
+    # Retrieve the word set using the slug
+    word_set = get_object_or_404(WORD_SET, set_id=set_param)
+
+    # Query the junction table for words in the set and retrieve the word objects
+    words_in_set = WORD_SET_JUNCTION_UKR_ENG.objects.filter(word_set=word_set).select_related('word')
+
+    # Extract the WORD_UKR_ENG objects from the queryset
+    words = [junction.word for junction in words_in_set]
+
+    # Create list to hold flash cards
+    flashcard_list = []
+
+    # Iterate through the words an create a flashcard dict. for each
+    for word in words:
+
+        # Create the UKR to ENG flash card data
+        flashcard_ukr_to_eng = {
+            "title": "Translate the following word to English",
+            "question": word.word_ukrainian,
+            "answer": word.word_english,
+        }
+
+        flashcard_list.append(flashcard_ukr_to_eng)
+        
+        # Create the ENG to UKR flash card data
+        flashcard_eng_to_ukr = {
+            "title": "Translate the following word to Ukrainian",
+            "question": word.word_english,
+            "answer": word.word_ukrainian,
+        }
+
+        # Append it to the flash card array
+        flashcard_list.append(flashcard_eng_to_ukr)
+
+    # Shuffle the flashcard list
+    random.shuffle(flashcard_list)
+
+    # Convert it to JSON
+    flashcard_data = json.dumps(flashcard_list)
+
+    # Create context
+    context = {"page_title": word_set.set_title, "flashcard_data": flashcard_data}
+
+    # Render template using context
+    return render(request, "vocab/flashcards.html", context)
 
 ## ------------------------------------------------------------------------------------------------------------------------ API Views
 
@@ -250,3 +302,4 @@ def deleteWordSetJunction(request, set_id, word_id):
         return Response({"status": "SUCCESS", "message": "Word removed from set successfully"}, status=status.HTTP_404_NOT_FOUND)
     else:
         return Response({"status": "ERROR", "message": "Unauthorized: Only superusers can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+

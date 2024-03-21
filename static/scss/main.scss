@@ -1,6 +1,7 @@
 // Import stylesheets
 @import "buttons";
 @import "cards";
+@import "flashcard";
 @import "fonts";
 @import "forms";
 @import "interactive-words";
@@ -105,4 +106,24 @@ a {
   padding: 25px 25px;
   overflow-y: scroll;
   background-color: var(--gray-opaque);
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid var(--primary-color);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
