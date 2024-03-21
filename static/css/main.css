@@ -266,6 +266,11 @@
   flex-grow: 1.5;
 }
 
+#check-lottie {
+  width: 150px;
+  height: 150px;
+}
+
 .font-size-regular {
   font-size: 1rem;
 }

@@ -209,8 +209,12 @@ function startFlashcards(restart = false) {
 }
 
 function endFlashcards() {
+  cardsRemaining.text("0");
+
   flashcardInstructionText.text("Flashcard set completed! 🎉");
-  flashcardQuestionText.text("Well done!");
+  flashcardQuestionText.html(
+    `<dotlottie-player id="check-lottie" src="https://lottie.host/54868f8e-d8e8-49b1-84b8-0e0973d5d8f1/UtUsM19WMG.json" background="transparent" speed="1" autoplay></dotlottie-player>`
+  );
 
   // Disable the flip button
   flipCardButton.prop("disabled", true);
@@ -219,6 +223,9 @@ function endFlashcards() {
   flipCardButton.addClass("hidden");
   incorrectButton.addClass("hidden");
   correctButton.addClass("hidden");
+  questionShowRomanisationButton.addClass("hidden");
+  questionShowPronouncationButton.addClass("hidden");
+  questionPlayAudioButton.addClass("hidden");
 
   // Show buttons
   restartButton.removeClass("hidden");
