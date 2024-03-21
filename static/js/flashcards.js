@@ -57,6 +57,10 @@ restartButton.on("click", () => {
   startFlashcards(true);
 });
 
+returnButton.on("click", () => {
+  window.history.back();
+});
+
 function setFlashcardData() {
   flashcardInstructionText.text(flashcardData[0]["title"]);
   flashcardQuestionText.text(flashcardData[0]["question"]);
