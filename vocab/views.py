@@ -108,6 +108,54 @@ def practice_flashcards(request):
     # Render template using context
     return render(request, "vocab/flashcards.html", context)
 
+def practice_spelling(request):
+
+    # Get the set pass a URL paramater
+    set_param = request.GET.get('set', '1')
+
+    # Retrieve the word set using the slug
+    word_set = get_object_or_404(WORD_SET, set_id=set_param)
+
+    # Query the junction table for words in the set and retrieve the word objects
+    words_in_set = WORD_SET_JUNCTION_UKR_ENG.objects.filter(word_set=word_set).select_related('word')
+
+    # Extract the WORD_UKR_ENG objects from the queryset
+    words = [junction.word for junction in words_in_set]
+
+    # Create list to hold spelling cards
+    spellingcards_list = []
+
+    # Iterate through the words an create a spellingcard dict. for each
+    for word in words:
+
+        # Get a random usage example as a dictionary
+        usage_example = word.word_examples[random.randint(0, (len(word.word_examples) - 1))]
+
+
+        spellingcard = {
+            "word_ukr": word.word_ukrainian,
+            "word_eng": word.word_english,
+            "sentence_ukr": usage_example["ukrainian"],
+            "word_index": usage_example["word-index"],
+            "sentence_eng": usage_example["english-word-for-word"],
+            "sentence_roman": usage_example["roman-word-for-word"],
+            "sentence_translation": usage_example["english"],
+            "pronounciation_audio": word.word_pronounciation_audio,
+        }
+
+        spellingcards_list.append(spellingcard)
+
+    # Shuffle the list
+    random.shuffle(spellingcards_list)
+    
+    # Convert the card to JSON
+    spellingcard_data = json.dumps(spellingcards_list)
+
+    # Create the context
+    context = {"page_title": word_set.set_title, "spelling_data": spellingcard_data}
+
+    return render(request, "vocab/spelling.html", context)
+
 ## ------------------------------------------------------------------------------------------------------------------------ API Views
 
 ## --------------------------------------------------------------------------  GET Word List 

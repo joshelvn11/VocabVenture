@@ -1,8 +1,8 @@
-flashcardContainer = $("#flashcard-container");
+flashcardContainer = $("#practice-card-container");
 questionFlashcard = $("#question-flashcard");
 answerFlashcard = $("#answer-flashcard");
-flashcardInstructionText = $("#flashcard-instruction");
-flashcardQuestionText = $("#flashcard-question");
+flashcardInstructionText = $("#practice-card-instruction");
+flashcardQuestionText = $("#practice-card-question");
 flashcardAnswerText = $("#flashcard-answer");
 incorrectButton = $("#incorrect-button");
 correctButton = $("#correct-button");

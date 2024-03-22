@@ -191,7 +191,7 @@
   margin: -3px 0 0 0;
 }
 
-#flashcard-page {
+#practice-page {
   width: 100%;
   height: 100%;
   display: flex;
@@ -200,7 +200,7 @@
   align-items: center;
 }
 
-#flashcard-container {
+#practice-card-container {
   position: relative;
   width: 600px;
   max-width: 100%;
@@ -239,18 +239,18 @@
   transform: rotateY(0);
 }
 
-.flashcard-buttons-container {
+.practice-card-button-container {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
 }
 
-.flashcard-buttons-container button {
+.practice-card-button-container button {
   flex-grow: 1;
 }
 
-.flashcard-controls-container {
+.practice-controls-container {
   width: 600px;
   max-width: 100%;
   display: flex;
@@ -258,7 +258,7 @@
   gap: 5px;
 }
 
-#flashcard-instruction {
+#practice-card-instruction {
   text-align: center;
 }
 
@@ -269,6 +269,19 @@
 #check-lottie {
   width: 150px;
   height: 150px;
+}
+
+#spelling-input {
+  background-color: var(--gray-opaque);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1.2rem;
+  margin: -6px 2px 2px 0px;
+  padding: 4px 12px;
+}
+
+#spelling-input:focus {
+  outline: 2px solid var(--primary-color);
 }
 
 .font-size-regular {

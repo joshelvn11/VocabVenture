@@ -10,6 +10,7 @@ urlpatterns = [
     path('words/list', word_list_ukr_eng, name='word_list'),
     ## --------------------------------------------------------------- Practice URLS
     path('practice/flashcards', views.practice_flashcards, name='practice_flashcards'),
+    path('practice/spelling', views.practice_spelling, name='practice_spelling'),
     ## --------------------------------------------------------------- API URLS
     path('api/words/list', get_word_list, name='get_word_list'), 
     path('api/word/list', views.getWordList, name='getWordList'), 
