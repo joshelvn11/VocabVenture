@@ -107,6 +107,7 @@
   flex-wrap: wrap;
   flex-direction: row;
   gap: 10px;
+  padding: 0 5px;
 }
 
 .card {
@@ -147,7 +148,7 @@
 }
 
 .card.col-lg-6 {
-  width: calc((100% / 2) - 60px);
+  width: calc((100% / 2) - 55px);
 }
 
 @media only screen and (max-width: 992px) {
@@ -257,7 +258,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
+  padding: 24px;
   box-sizing: border-box;
   border-radius: var(--border-radius);
   background-color: white;
@@ -405,6 +406,9 @@ label {
   display: flex;
   flex-direction: row;
   gap: 3.3px;
+  max-width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .interactive-word-container {

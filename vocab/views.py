@@ -136,7 +136,7 @@ def practice_spelling(request):
             "word_ukr": word.word_ukrainian,
             "word_eng": word.word_english,
             "sentence_ukr": usage_example["ukrainian"],
-            "word_index": usage_example["word-index"],
+            "word_index": usage_example["index"],
             "sentence_eng": usage_example["english"],
             "sentence_roman": usage_example["roman"],
             "sentence_translation": usage_example["translation"],

@@ -3,6 +3,7 @@
   flex-wrap: wrap;
   flex-direction: row;
   gap: 10px;
+  padding: 0 5px;
 }
 
 .card {
@@ -47,7 +48,7 @@
   }
 
   &.col-lg-6 {
-    width: calc((100% / 2) - 60px);
+    width: calc((100% / 2) - 55px);
   }
 
   &.col-md-6 {

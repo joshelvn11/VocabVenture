@@ -1,6 +1,3 @@
-// Global word data variable, holds an array of word objects
-let wordData;
-
 // ------------------------------------------------------------------------- DOM Elements
 
 // Get HTML elements
@@ -21,6 +18,11 @@ const wordPronounceAudioButton = $("#pronounciation-audio-button");
 
 // Other Elements
 const backgroundOverlay = $(".background-overlay");
+
+// ------------------------------------------------------------------------- Global Variables
+
+// Global word data variable, holds an array of word objects
+let wordData;
 
 // ------------------------------------------------------------------------- Event Listeners
 

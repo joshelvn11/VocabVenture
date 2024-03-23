@@ -1,23 +1,31 @@
-flashcardContainer = $("#practice-card-container");
-questionFlashcard = $("#question-flashcard");
-answerFlashcard = $("#answer-flashcard");
-flashcardInstructionText = $("#practice-card-instruction");
-flashcardQuestionText = $("#practice-card-question");
-flashcardAnswerText = $("#flashcard-answer");
-incorrectButton = $("#incorrect-button");
-correctButton = $("#correct-button");
-flipCardButton = $("#flip-card-button");
-questionShowPronouncationButton = $("#question-show-pronounciation-button");
-questionShowRomanisationButton = $("#question-show-romananisation-button");
-questionPlayAudioButton = $("#question-play-audio-button");
-answerShowPronouncationButton = $("#answer-show-pronounciation-button");
-answerShowRomanisationButton = $("#answer-show-romananisation-button");
-answerPlayAudioButton = $("#answer-play-audio-button");
-restartButton = $("#restart-button");
-returnButton = $("#return-button");
-testButton = $("#test-button");
-cardsRemaining = $("#cards-remaining");
-exitButton = $("#exit-button");
+// ------------------------------------------------------------------------- DOM Nodes
+
+const flashcardContainer = $("#practice-card-container");
+const questionFlashcard = $("#question-flashcard");
+const answerFlashcard = $("#answer-flashcard");
+const flashcardInstructionText = $("#practice-card-instruction");
+const flashcardQuestionText = $("#practice-card-question");
+const flashcardAnswerText = $("#flashcard-answer");
+const incorrectButton = $("#incorrect-button");
+const correctButton = $("#correct-button");
+const flipCardButton = $("#flip-card-button");
+const questionShowPronouncationButton = $(
+  "#question-show-pronounciation-button"
+);
+const questionShowRomanisationButton = $(
+  "#question-show-romananisation-button"
+);
+const questionPlayAudioButton = $("#question-play-audio-button");
+const answerShowPronouncationButton = $("#answer-show-pronounciation-button");
+const answerShowRomanisationButton = $("#answer-show-romananisation-button");
+const answerPlayAudioButton = $("#answer-play-audio-button");
+const restartButton = $("#restart-button");
+const returnButton = $("#return-button");
+const testButton = $("#test-button");
+const cardsRemaining = $("#cards-remaining");
+const exitButton = $("#exit-button");
+
+// ------------------------------------------------------------------------- Global Variables
 
 // State variable to manage whether the flashcard is in its flipped state
 flipped = false;
@@ -25,7 +33,7 @@ flipped = false;
 // Array to hold the completed flash card data
 flashcardDataCompleted = [];
 
-startFlashcards();
+// ------------------------------------------------------------------------- Event Listeners
 
 correctButton.on("click", () => {
   flashcardDataCompleted.push(flashcardData.shift());
@@ -60,6 +68,8 @@ restartButton.on("click", () => {
 returnButton.on("click", () => {
   window.history.back();
 });
+
+// ------------------------------------------------------------------------- Functions
 
 function setFlashcardData() {
   flashcardInstructionText.text(flashcardData[0]["title"]);
@@ -259,3 +269,7 @@ function enableAnswerButtons(enable) {
     incorrectButton.addClass("disabled");
   }
 }
+
+// ------------------------------------------------------------------------- Starting Function
+
+startFlashcards();

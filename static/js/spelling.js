@@ -1,3 +1,5 @@
+// ------------------------------------------------------------------------- DOM Nodes
+
 const spellingCard = $("#practice-card-container");
 const questionContainer = $("#practice-card-question-container");
 const sentenceContainer = $("#practice-card-question");
@@ -8,16 +10,19 @@ const wordsRemaining = $("#words-remaining");
 let spellingInputField;
 let englishTranslation;
 
+// ------------------------------------------------------------------------- Global Variables
+
 // Variable to hold the index of the current question in the spelling data array
 currentQuestion = 0;
 
 // Variable to hold the current question word
 let currentQuestionWord = "";
 
+// ------------------------------------------------------------------------- Event Listeners
+
 checkButton.on("click", checkSpelling);
 
-// Load the first question
-loadQuestion();
+// ------------------------------------------------------------------------- Functions
 
 function loadQuestion() {
   // Empty the container
@@ -178,3 +183,8 @@ function endQuiz() {
     `<dotlottie-player id="check-lottie" src="https://lottie.host/54868f8e-d8e8-49b1-84b8-0e0973d5d8f1/UtUsM19WMG.json" background="transparent" speed="1" autoplay></dotlottie-player>`
   );
 }
+
+// ------------------------------------------------------------------------- Script Start
+
+// Load the first question
+loadQuestion();
