@@ -1,6 +1,7 @@
 questionContainer = $("#practice-card-question-container");
 sentenceContainer = $("#practice-card-question");
 instructionText = $("#practice-card-instruction");
+wordTranslation = $("#word-translation");
 checkButton = $("#check-button");
 wordsRemaining = $("#words-remaining");
 spellingInputField = null;
@@ -25,6 +26,9 @@ function loadQuestion() {
 
   // Load the current question sentence as an object
   currentQuestionObject = spellingData[currentQuestion];
+
+  // Set the instruction
+  wordTranslation.text(currentQuestionObject["word_eng"]);
 
   // Get the index of the word being questioned
   wordIndex = currentQuestionObject["word_index"];
