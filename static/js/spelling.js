@@ -57,6 +57,13 @@ function loadQuestion() {
       <input id="spelling-input" type=text placeholder="${currentQuestionWord}">
         `);
 
+      spellingInputField.keypress(function (event) {
+        // Check spelling when enter is pressed
+        if (event.which == 13 || event.keyCode == 13) {
+          checkSpelling();
+        }
+      });
+
       // Create a temporary span to measure the text width
       const tempSpan = $("<span>")
         .text(word)
@@ -135,8 +142,6 @@ function checkSpelling() {
   spellingInput = spellingInputField.val().toLowerCase().trim();
 
   if (spellingInput == currentQuestionWord.toLowerCase()) {
-    showAlertModal("SUCCESS", "Correct spelling");
-
     currentQuestion++;
 
     if (currentQuestion == spellingData.length) {
