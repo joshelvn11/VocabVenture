@@ -48,6 +48,14 @@
   }
 }
 
+#practice-card-question-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
 .practice-card-button-container {
   width: 100%;
   display: flex;

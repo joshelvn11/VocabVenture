@@ -1,3 +1,4 @@
+questionContainer = $("#practice-card-question-container");
 sentenceContainer = $("#practice-card-question");
 instructionText = $("#practice-card-instruction");
 checkButton = $("#check-button");
@@ -55,6 +56,7 @@ function loadQuestion() {
       // Append it to the body to measure its width
       $("body").append(tempSpan);
       const textWidth = tempSpan.width();
+      tempSpan.remove();
 
       spellingInputField.width(textWidth + 8);
 
@@ -87,6 +89,20 @@ function loadQuestion() {
       sentenceContainer.append(wordContainer);
     }
   }
+
+  // Create the english translation container
+  let englishTranslation = $(`<div class="sentence-border-box">
+    <p>Show Translation</p>
+    </div>`);
+
+  questionContainer.append(englishTranslation);
+
+  // Add event listener to translation box
+  englishTranslation.on("click", () => {
+    englishTranslation
+      .children("p")
+      .text(currentQuestionObject["sentence_translation"]);
+  });
 }
 
 function checkSpelling() {

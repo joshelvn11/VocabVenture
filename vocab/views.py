@@ -137,9 +137,9 @@ def practice_spelling(request):
             "word_eng": word.word_english,
             "sentence_ukr": usage_example["ukrainian"],
             "word_index": usage_example["word-index"],
-            "sentence_eng": usage_example["english-word-for-word"],
-            "sentence_roman": usage_example["roman-word-for-word"],
-            "sentence_translation": usage_example["english"],
+            "sentence_eng": usage_example["english"],
+            "sentence_roman": usage_example["roman"],
+            "sentence_translation": usage_example["translation"],
             "pronounciation_audio": word.word_pronounciation_audio,
         }
 

@@ -158,11 +158,11 @@ function loadUsageExamples(wordObject) {
 
       // Create the corresponding tooltips and append them to the tooltip container
       let englishTooltip = $(`<div class="interactive-word-tooltip">
-                            ${usageExample["english-word-for-word"][index]}
+                            ${usageExample["english"][index]}
                         </div>`);
       tooltipContainer.append(englishTooltip);
       let romanTooltip = $(`<div class="interactive-word-tooltip">
-                            ${usageExample["roman-word-for-word"][index]}
+                            ${usageExample["roman"][index]}
                         </div>`);
       tooltipContainer.append(romanTooltip);
 

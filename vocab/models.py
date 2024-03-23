@@ -16,6 +16,7 @@ class WORD_UKR_ENG(models.Model):
     word_gender = models.IntegerField(choices=GENDER, default=0)
     word_pronounciation = models.CharField(max_length=100)
     word_pronounciation_audio = models.URLField(null=True)
+    word_definition = models.TextField(null=True)
     word_explanation = models.TextField(null=True)
     word_examples = models.JSONField(null=True, editable=True)
 
