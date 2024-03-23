@@ -5,6 +5,7 @@
 @import "flashcard";
 @import "fonts";
 @import "forms";
+@import "header";
 @import "interactive-words";
 @import "modals";
 @import "navbar";
@@ -33,6 +34,8 @@
   --blue-opaque: rgba(25, 130, 196, 0.2);
   --green: rgba(138, 201, 38, 1);
   --green-opaque: rgba(138, 201, 38, 0.5);
+  --font-size-small: 0.9rem;
+  --font-size-regular: 1rem;
   /* Color references:
   https://coolors.co/palette/ff595e-ffca3a-8ac926-1982c4-6a4c93
   https://coolors.co/palette/595959-7f7f7f-a5a5a5-cccccc-f2f2f2
@@ -78,10 +81,10 @@ a {
   box-sizing: border-box;
   width: 100%;
   border-bottom: solid 1px var(--border-color);
-  padding: 12px 30px 10px 25px;
+  padding: 12px 15px 10px 25px;
 
   @media only screen and (max-width: 768px) {
-    padding: 12px 30px 10px 12px;
+    padding: 12px 15px 10px 12px;
   }
 }
 
@@ -91,10 +94,11 @@ a {
   align-items: center;
 }
 
-#page-header-left-container {
+#page-header-right-container {
   display: flex;
   justify-content: end;
   align-items: center;
+  gap: 6px;
 }
 
 #page-title {

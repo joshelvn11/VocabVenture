@@ -16,6 +16,13 @@ const wordRoman = $("#word-roman");
 const wordExplain = $("#word-explain");
 const wordPronounceAudioButton = $("#pronounciation-audio-button");
 
+// Header Button Elements
+const quizButton = $("#quiz-button");
+const quizSubmenu = $("#quiz-submenu");
+const practiceModeToggle = $("#practice-mode-toggle");
+const flashcardsLink = $("#flashcards-link");
+const spellingLink = $("#spelling-link");
+
 // Other Elements
 const backgroundOverlay = $(".background-overlay");
 
@@ -34,6 +41,30 @@ wordCards.each(function () {
   $(this).on("click", function () {
     showWordDetailsModal($(this).attr("word-id"));
   });
+});
+
+quizButton.on("click", () => {
+  quizSubmenu.toggleClass("hidden");
+});
+
+flashcardsLink.on("click", function (event) {
+  event.preventDefault();
+
+  let href = $(this).attr("href");
+  const practiceParam = `&practice=${practiceModeToggle.prop("checked")}`;
+  href += practiceParam;
+
+  window.location.href = href;
+});
+
+spellingLink.on("click", function (event) {
+  event.preventDefault();
+
+  let href = $(this).attr("href");
+  const practiceParam = `&practice=${practiceModeToggle.prop("checked")}`;
+  href += practiceParam;
+
+  window.location.href = href;
 });
 
 // ------------------------------------------------------------------------- FETCH Word Data
