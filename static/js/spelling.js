@@ -64,6 +64,8 @@ function loadQuestion() {
         }
       });
 
+      spellingInputField.focus();
+
       // Create a temporary span to measure the text width
       const tempSpan = $("<span>")
         .text(word)
@@ -136,6 +138,9 @@ function loadQuestion() {
       .children("p")
       .text(currentQuestionObject["sentence_translation"]);
   });
+
+  // Add focus to the input field
+  spellingInputField.focus();
 }
 
 function checkSpelling() {
