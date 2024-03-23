@@ -38,19 +38,31 @@ flashcardDataCompleted = [];
 correctButton.on("click", () => {
   flashcardDataCompleted.push(flashcardData.shift());
 
+  flashcardContainer.addClass("flashing-border-green");
+
   if (flashcardData.length === 0) {
     endFlashcards();
   } else {
-    setTimeout(setFlashcardData, 250);
+    setTimeout(setFlashcardData, 1250);
   }
 
-  flipCard();
+  setTimeout(() => {
+    flipCard();
+    flashcardContainer.removeClass("flashing-border-green");
+  }, 1000);
 });
 
 incorrectButton.on("click", () => {
   flashcardData.push(flashcardData.shift());
-  flipCard();
-  setTimeout(setFlashcardData, 250);
+
+  flashcardContainer.addClass("flashing-border-red");
+
+  setTimeout(setFlashcardData, 1250);
+
+  setTimeout(() => {
+    flipCard();
+    flashcardContainer.removeClass("flashing-border-red");
+  }, 1000);
 });
 
 flipCardButton.on("click", () => {

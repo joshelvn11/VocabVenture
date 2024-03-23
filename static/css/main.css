@@ -232,112 +232,6 @@
   margin: -3px 0 0 0;
 }
 
-#practice-page {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#practice-card-container {
-  position: relative;
-  width: 600px;
-  max-width: 100%;
-  height: 400px;
-  max-height: 90%;
-  perspective: 150rem;
-}
-
-.flashcard {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px;
-  box-sizing: border-box;
-  border-radius: var(--border-radius);
-  background-color: white;
-  backface-visibility: hidden;
-  transition: all 0.8s ease;
-}
-
-#question-flashcard.flipped {
-  -webkit-transform: rotateY(-180deg);
-  transform: rotateY(-180deg);
-}
-
-#answer-flashcard {
-  transform: rotateY(180deg);
-}
-
-#answer-flashcard.flipped {
-  -webkit-transform: rotateY(0);
-  transform: rotateY(0);
-}
-
-#practice-card-question-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-}
-
-.practice-card-button-container {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.practice-card-button-container button {
-  flex-grow: 1;
-}
-
-.practice-controls-container {
-  width: 600px;
-  max-width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-}
-
-#practice-card-instruction {
-  text-align: center;
-}
-
-#flip-card-button {
-  flex-grow: 1.5;
-}
-
-#check-lottie {
-  width: 150px;
-  height: 150px;
-}
-
-#spelling-input {
-  background-color: var(--gray-opaque);
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: 1.2rem;
-  margin: -6px 2px 2px 0px;
-  padding: 4px 12px;
-}
-
-#spelling-input:focus {
-  outline: 2px solid var(--primary-color);
-}
-
-#word-translation {
-  font-style: italic;
-  font-weight: 900;
-}
-
 .font-size-regular {
   font-size: 1rem;
 }
@@ -839,6 +733,112 @@ label {
     top: 20px;
     right: 20px;
   }
+}
+
+#practice-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#practice-card-container {
+  position: relative;
+  width: 600px;
+  max-width: 100%;
+  height: 400px;
+  max-height: 90%;
+  perspective: 150rem;
+}
+
+.flashcard {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  box-sizing: border-box;
+  border-radius: var(--border-radius);
+  background-color: white;
+  backface-visibility: hidden;
+  transition: all 0.8s ease;
+}
+
+#question-flashcard.flipped {
+  -webkit-transform: rotateY(-180deg);
+  transform: rotateY(-180deg);
+}
+
+#answer-flashcard {
+  transform: rotateY(180deg);
+}
+
+#answer-flashcard.flipped {
+  -webkit-transform: rotateY(0);
+  transform: rotateY(0);
+}
+
+#practice-card-question-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.practice-card-button-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.practice-card-button-container button {
+  flex-grow: 1;
+}
+
+.practice-controls-container {
+  width: 600px;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+#practice-card-instruction {
+  text-align: center;
+}
+
+#flip-card-button {
+  flex-grow: 1.5;
+}
+
+#check-lottie {
+  width: 150px;
+  height: 150px;
+}
+
+#spelling-input {
+  background-color: var(--gray-opaque);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1.2rem;
+  margin: -6px 2px 2px 0px;
+  padding: 4px 12px;
+}
+
+#spelling-input:focus {
+  outline: 2px solid var(--primary-color);
+}
+
+#word-translation {
+  font-style: italic;
+  font-weight: 900;
 }
 
 table {
