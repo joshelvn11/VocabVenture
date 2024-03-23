@@ -1,16 +1,18 @@
-questionContainer = $("#practice-card-question-container");
-sentenceContainer = $("#practice-card-question");
-instructionText = $("#practice-card-instruction");
-wordTranslation = $("#word-translation");
-checkButton = $("#check-button");
-wordsRemaining = $("#words-remaining");
-spellingInputField = null;
+const spellingCard = $("#practice-card-container");
+const questionContainer = $("#practice-card-question-container");
+const sentenceContainer = $("#practice-card-question");
+const instructionText = $("#practice-card-instruction");
+const wordTranslation = $("#word-translation");
+const checkButton = $("#check-button");
+const wordsRemaining = $("#words-remaining");
+let spellingInputField;
+let englishTranslation;
 
 // Variable to hold the index of the current question in the spelling data array
 currentQuestion = 0;
 
 // Variable to hold the current question word
-currentQuestionWord = "";
+let currentQuestionWord = "";
 
 checkButton.on("click", checkSpelling);
 
@@ -25,13 +27,13 @@ function loadQuestion() {
   wordsRemaining.text(spellingData.length - (currentQuestion + 1));
 
   // Load the current question sentence as an object
-  currentQuestionObject = spellingData[currentQuestion];
+  let currentQuestionObject = spellingData[currentQuestion];
 
   // Set the instruction
   wordTranslation.text(currentQuestionObject["word_eng"]);
 
   // Get the index of the word being questioned
-  wordIndex = currentQuestionObject["word_index"];
+  const wordIndex = currentQuestionObject["word_index"];
 
   // Append each word in the question sentence to the sentence container
   for (let [index, word] of currentQuestionObject["sentence_ukr"].entries()) {
@@ -39,9 +41,20 @@ function loadQuestion() {
     if (index == wordIndex) {
       currentQuestionWord = word;
 
+      // Removing trailing punctuation
+      let lastChar = currentQuestionWord.charAt(currentQuestionWord.length - 1);
+      if (
+        lastChar === "!" ||
+        lastChar === "," ||
+        lastChar === ":" ||
+        lastChar === "?"
+      ) {
+        currentQuestionWord = currentQuestionWord.slice(0, -1);
+      }
+
       // If it is create an input field for the question word
       spellingInputField = $(`
-      <input id="spelling-input" type=text placeholder="${word}">
+      <input id="spelling-input" type=text placeholder="${currentQuestionWord}">
         `);
 
       // Create a temporary span to measure the text width
@@ -65,6 +78,15 @@ function loadQuestion() {
       spellingInputField.width(textWidth + 8);
 
       sentenceContainer.append(spellingInputField);
+
+      if (
+        lastChar === "!" ||
+        lastChar === "," ||
+        lastChar === ":" ||
+        lastChar === "?"
+      ) {
+        //sentenceContainer.append(lastChar);
+      }
     } else {
       // Create the word container and insert the Ukrainian example word
       let wordContainer = $(
@@ -95,7 +117,7 @@ function loadQuestion() {
   }
 
   // Create the english translation container
-  let englishTranslation = $(`<div class="sentence-border-box">
+  englishTranslation = $(`<div class="sentence-border-box">
     <p>Show Translation</p>
     </div>`);
 
@@ -118,12 +140,25 @@ function checkSpelling() {
     currentQuestion++;
 
     if (currentQuestion == spellingData.length) {
-      endQuiz();
+      spellingCard.addClass("flashing-border-green");
+      setTimeout(() => {
+        spellingCard.removeClass("flashing-border-green");
+        englishTranslation.remove();
+        endQuiz();
+      }, 1000);
     } else {
-      loadQuestion();
+      spellingCard.addClass("flashing-border-green");
+      setTimeout(() => {
+        spellingCard.removeClass("flashing-border-green");
+        englishTranslation.remove();
+        loadQuestion();
+      }, 1000);
     }
   } else {
-    showAlertModal("ERROR", "INCorrect spelling");
+    spellingCard.addClass("flashing-border-red");
+    setTimeout(() => {
+      spellingCard.removeClass("flashing-border-red");
+    }, 1000);
   }
 }
 
