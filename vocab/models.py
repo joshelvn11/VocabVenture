@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 
 GENDER = ((0, "None"), (1, "Male"), (2, "Female"))
+PART_OF_SPEECH = ((0, "Noun"), (1, "Verb"), (2, "Adjective"))
 
 def default_english_words():
     return {"No Translation"}
@@ -18,6 +19,10 @@ class WORD_UKR_ENG(models.Model):
     word_pronounciation_audio = models.URLField(null=True)
     word_definition = models.TextField(null=True)
     word_explanation = models.TextField(null=True)
+    word_part_of_speech = models.IntegerField(choices=PART_OF_SPEECH, default=0)
+    word_aspect_examples = models.JSONField(null=True, editable=True)
+    word_declension = models.JSONField(null=True, editable=True)
+    word_conjugation = models.JSONField(null=True, editable=True)
     word_examples = models.JSONField(null=True, editable=True)
 
     def __str__(self):
