@@ -127,6 +127,10 @@
   &.green {
     background-color: green;
   }
+
+  &.purple {
+    background-color: var(--primary-color);
+  }
 }
 
 .progress-bar-title {

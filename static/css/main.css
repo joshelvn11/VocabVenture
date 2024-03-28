@@ -224,6 +224,10 @@
   background-color: green;
 }
 
+.progress-bar-fill.purple {
+  background-color: var(--primary-color);
+}
+
 .progress-bar-title {
   margin: -6px 12px 0 0;
 }

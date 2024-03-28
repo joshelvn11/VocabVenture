@@ -12,9 +12,11 @@
           <div class="progress-bar-container">
             <div class="progress-bar-wrapper">
               <div class="progress-bar">
-                <div class="progress-bar-fill orange" style="width: 50%;"></div>
+                <div class="progress-bar-fill {{ word_set.set_total_score_color }}" style="width: {{ word_set.set_total_score }}%;"></div>
               </div>
-              <p class="progress-bar-percentage">50%</p>
+              <p class="progress-bar-percentage">
+                {{ word_set.set_total_score }}%
+              </p>
             </div>
           </div>
           <!-- UKR to ENG Progress -->
@@ -22,9 +24,11 @@
             <p class="progress-bar-title">Flash Cards: 🇺🇦 > 🇬🇧</p>
             <div class="progress-bar-wrapper">
               <div class="progress-bar">
-                <div class="progress-bar-fill orange" style="width: 50%;"></div>
+                <div class="progress-bar-fill {{ word_set.set_flashcard_eng_ukr_score_color }}" style="width: {{ word_set.set_flashcard_eng_ukr_score }}%;"></div>
               </div>
-              <p class="progress-bar-percentage">50%</p>
+              <p class="progress-bar-percentage">
+                {{ word_set.set_flashcard_eng_ukr_score }}%
+              </p>
             </div>
           </div>
           <!-- ENG to UKR Progress -->
@@ -32,9 +36,9 @@
             <p class="progress-bar-title">Flash Cards: 🇬🇧 > 🇺🇦</p>
             <div class="progress-bar-wrapper">
               <div class="progress-bar">
-                <div class="progress-bar-fill orange" style="width: 50%;"></div>
+                <div class="progress-bar-fill {{ word_set.set_flashcard_ukr_eng_score_color }}" style="width: {{ word_set.set_flashcard_ukr_eng_score }}%;"></div>
               </div>
-              <p class="progress-bar-percentage">50%</p>
+              <p class="progress-bar-percentage">{{ word_set.set_flashcard_ukr_eng_score }}%</p>
             </div>
           </div>
           <!-- UKR to ENG Progress -->
@@ -42,19 +46,11 @@
             <p class="progress-bar-title">Spelling: 🇺🇦 > 🇬🇧</p>
             <div class="progress-bar-wrapper">
               <div class="progress-bar">
-                <div class="progress-bar-fill orange" style="width: 50%;"></div>
+                <div class="progress-bar-fill {{ word_set.set_spelling_eng_ukr_score_color }}" style="width: {{ word_set.set_spelling_eng_ukr_score }}%;"></div>
               </div>
-              <p class="progress-bar-percentage">50%</p>
-            </div>
-          </div>
-          <!-- ENG to UKR Progress -->
-          <div class="progress-bar-container">
-            <p class="progress-bar-title">Spelling: 🇬🇧 > 🇺🇦</p>
-            <div class="progress-bar-wrapper">
-              <div class="progress-bar">
-                <div class="progress-bar-fill orange" style="width: 50%;"></div>
-              </div>
-              <p class="progress-bar-percentage">100%</p>
+              <p class="progress-bar-percentage">
+                {{ word_set.set_spelling_eng_ukr_score }}%  
+              </p>
             </div>
           </div>
         </div>

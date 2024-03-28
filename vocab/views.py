@@ -1,6 +1,7 @@
 
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
+from django.db.models import Prefetch
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -20,7 +21,33 @@ def word_sets(request):
     """
     Renders a page of avaialble word sets ordered by the specified set_order field.
     """
-    word_sets = WORD_SET.objects.all().order_by("set_order")
+    # Retrieve WORD_SET objects, ordered by 'set_order'
+    word_sets = WORD_SET.objects.order_by("set_order")
+
+    # Iterate over each word_set to find and append the related SET_UKR_ENG_SCORES fields
+    for word_set in word_sets:
+        try:
+            # Attempt to find the related SET_UKR_ENG_SCORES object for the current user
+            set_score = SET_UKR_ENG_SCORES.objects.get(user=request.user, word_set=word_set)
+            # Manually append fields from set_score to word_set
+            word_set.set_total_score = set_score.set_total_score
+            word_set.set_total_score_color = get_score_color(set_score.set_total_score)
+            word_set.set_flashcard_eng_ukr_score = set_score.set_flashcard_eng_ukr_score
+            word_set.set_flashcard_eng_ukr_score_color = get_score_color(set_score.set_flashcard_eng_ukr_score)
+            word_set.set_flashcard_ukr_eng_score = set_score.set_flashcard_ukr_eng_score
+            word_set.set_flashcard_ukr_eng_score_color = get_score_color(set_score.set_flashcard_ukr_eng_score)
+            word_set.set_spelling_eng_ukr_score = set_score.set_spelling_eng_ukr_score
+            word_set.set_spelling_eng_ukr_score_color = get_score_color(set_score.set_spelling_eng_ukr_score)
+        except SET_UKR_ENG_SCORES.DoesNotExist:
+            # If no related set_score is found, you can set default values or skip
+            word_set.set_total_score = 0
+            word_set.set_total_score_color = get_score_color(0)
+            word_set.set_flashcard_eng_ukr_score = 0
+            word_set.set_flashcard_eng_ukr_score_color = get_score_color(0)
+            word_set.set_flashcard_ukr_eng_score = 0
+            word_set.set_flashcard_ukr_eng_score_color = get_score_color(0)
+            word_set.set_spelling_eng_ukr_score = 0
+            word_set.set_spelling_eng_ukr_score_color = get_score_color(0)
 
     return render(request, "vocab/word-sets.html", {"word_sets": word_sets})
 
@@ -418,7 +445,7 @@ def updateUserWordScore(request):
                             word_score.save()
                 
                 # Update the word total score
-                word_score.word_total_score = math.ceil((word_score.word_flashcard_eng_ukr_score + word_score.word_flashcard_ukr_eng_score + word_score.word_spelling_eng_ukr_score) / 3)
+                word_score.word_total_score = (word_score.word_flashcard_eng_ukr_score + word_score.word_flashcard_ukr_eng_score + word_score.word_spelling_eng_ukr_score) / 3
                 word_score.save()
 
                 # Convert the list to a set to get rid of duplicate objects
@@ -484,10 +511,24 @@ def update_set_scores(word_sets, user):
                 set_flashcard_ukr_eng_score=0,
                 set_spelling_eng_ukr_score=0
             )
-            
+
         # Update the scores with the calculated values
         set_scores.set_flashcard_eng_ukr_score = set_flashcard_eng_ukr_score
         set_scores.set_flashcard_ukr_eng_score = set_flashcard_ukr_eng_score
         set_scores.set_spelling_eng_ukr_score = set_spelling_eng_ukr_score
         set_scores.set_total_score = set_total_score
         set_scores.save()
+
+def get_score_color(score):
+
+    if score < 25:
+        return "red"
+    elif score >= 25 and score < 50:
+        return "orange"
+    elif score >= 50 and score < 75:
+        return "yellow"
+    elif score >= 75 and score < 100:
+        return "green"
+    elif score == 100:
+        return "purple"
+    

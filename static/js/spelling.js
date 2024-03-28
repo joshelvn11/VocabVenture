@@ -192,14 +192,9 @@ loadQuestion();
 function incrementScores() {
   scoresObjects = [
     {
-      word_id: 1,
+      word_id: 4568808,
       score: "word_spelling_eng_ukr_score",
-      increment_value: 90,
-    },
-    {
-      word_id: 1232135,
-      score: "word_spelling_eng_ukr_score",
-      increment_value: 5,
+      increment_value: 20,
     },
   ];
 
