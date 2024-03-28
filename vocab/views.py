@@ -161,6 +161,7 @@ def practice_spelling(request):
 
 
         spellingcard = {
+            "word_id": word.word_id,
             "word_ukr": word.word_ukrainian,
             "word_eng": word.word_english,
             "sentence_ukr": usage_example["ukrainian"],

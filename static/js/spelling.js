@@ -1,3 +1,5 @@
+console.log(spellingData);
+
 // ------------------------------------------------------------------------- DOM Nodes
 
 const spellingCard = $("#practice-card-container");
@@ -12,11 +14,20 @@ let englishTranslation;
 
 // ------------------------------------------------------------------------- Global Variables
 
+// URL Paramters
+const PARAMS = new URLSearchParams(window.location.search);
+
+// Const to hold the practice state
+const PRACTICE = PARAMS.get("practice") === "true";
+
 // Variable to hold the index of the current question in the spelling data array
 currentQuestion = 0;
 
 // Variable to hold the current question word
 let currentQuestionWord = "";
+
+// Array to hold score incrementation objects
+let scoreIncrements = [];
 
 // ------------------------------------------------------------------------- Event Listeners
 
@@ -59,7 +70,9 @@ function loadQuestion() {
 
       // If it is create an input field for the question word
       spellingInputField = $(`
-      <input id="spelling-input" type=text placeholder="${currentQuestionWord}">
+      <input id="spelling-input" type=text placeholder="${
+        PRACTICE ? currentQuestionWord : ""
+      }">
         `);
 
       spellingInputField.keypress(function (event) {
@@ -152,6 +165,15 @@ function checkSpelling() {
   spellingInput = spellingInputField.val().toLowerCase().trim();
 
   if (spellingInput == currentQuestionWord.toLowerCase()) {
+    // If in test mode append the score increment to the score increments array
+    if (!PRACTICE) {
+      scoreIncrements.push({
+        word_id: spellingData[currentQuestion]["word_id"],
+        score: "word_spelling_eng_ukr_score",
+        increment_value: 10,
+      });
+    }
+
     currentQuestion++;
 
     if (currentQuestion == spellingData.length) {
@@ -171,17 +193,44 @@ function checkSpelling() {
     }
   } else {
     spellingCard.addClass("flashing-border-red");
-    setTimeout(() => {
-      spellingCard.removeClass("flashing-border-red");
-    }, 1000);
+
+    if (PRACTICE) {
+      currentQuestion++;
+      setTimeout(() => {
+        spellingCard.removeClass("flashing-border-red");
+      }, 1000);
+    } else {
+      scoreIncrements.push({
+        word_id: spellingData[currentQuestion]["word_id"],
+        score: "word_spelling_eng_ukr_score",
+        increment_value: -5,
+      });
+      currentQuestion++;
+      if (currentQuestion == spellingData.length) {
+        setTimeout(() => {
+          spellingCard.removeClass("flashing-border-red");
+          englishTranslation.remove();
+          endQuiz();
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          spellingCard.removeClass("flashing-border-red");
+          englishTranslation.remove();
+          loadQuestion();
+        }, 1000);
+      }
+    }
   }
 }
 
 function endQuiz() {
+  checkButton.remove();
+
   instructionText.text("Spelling set completed! 🎉");
   sentenceContainer.html(
     `<dotlottie-player id="check-lottie" src="https://lottie.host/54868f8e-d8e8-49b1-84b8-0e0973d5d8f1/UtUsM19WMG.json" background="transparent" speed="1" autoplay></dotlottie-player>`
   );
+  incrementScores();
 }
 
 // ------------------------------------------------------------------------- Script Start
@@ -190,14 +239,6 @@ function endQuiz() {
 loadQuestion();
 
 function incrementScores() {
-  scoresObjects = [
-    {
-      word_id: 4568808,
-      score: "word_spelling_eng_ukr_score",
-      increment_value: 20,
-    },
-  ];
-
   fetch(`/api/scores/update`, {
     method: "PUT",
     headers: {
@@ -205,7 +246,7 @@ function incrementScores() {
       // Include CSRF token as required by Django for non-GET requests
       "X-CSRFToken": getCookie("csrftoken"),
     },
-    body: JSON.stringify(scoresObjects),
+    body: JSON.stringify(scoreIncrements),
   });
 }
 
