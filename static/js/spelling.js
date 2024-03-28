@@ -188,3 +188,44 @@ function endQuiz() {
 
 // Load the first question
 loadQuestion();
+
+function incrementScores() {
+  scoresObjects = [
+    {
+      word_id: 1,
+      score: "word_spelling_eng_ukr_score",
+      increment_value: 90,
+    },
+    {
+      word_id: 1232135,
+      score: "word_spelling_eng_ukr_score",
+      increment_value: 5,
+    },
+  ];
+
+  fetch(`/api/scores/update`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      // Include CSRF token as required by Django for non-GET requests
+      "X-CSRFToken": getCookie("csrftoken"),
+    },
+    body: JSON.stringify(scoresObjects),
+  });
+}
+
+// Function to get CSRF token from cookies
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}

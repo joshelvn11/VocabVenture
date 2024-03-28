@@ -6,7 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 import json
 import random
-from .models import WORD_SET, WORD_UKR_ENG, WORD_SET_JUNCTION_UKR_ENG
+import math
+from .models import WORD_SET, WORD_UKR_ENG, WORD_SET_JUNCTION_UKR_ENG, WORD_UKR_ENG_SCORES, SET_UKR_ENG_SCORES
 from .serializers import WordUkrEngSerializer, SetUkrEngSerializer
 
 ## ------------------------------------------------------------------------------------------------------------------------ Template Rendering Views
@@ -316,8 +317,8 @@ def postWordSetJunction(request, set_id, word_id):
 
         try:
             # Retrieve the word and set objects using the provided IDs from the params
-            word_set = WORD_SET.objects.get(set_id=set_id);
-            word = WORD_UKR_ENG.objects.get(word_id=word_id);
+            word_set = WORD_SET.objects.get(set_id=set_id)
+            word = WORD_UKR_ENG.objects.get(word_id=word_id)
         except WORD_SET.DoesNotExist:
             return Response({"status": "ERROR", "message": "Set not found"}, status=status.HTTP_404_NOT_FOUND)
         except WORD_UKR_ENG.DoesNotExist:
@@ -342,8 +343,8 @@ def deleteWordSetJunction(request, set_id, word_id):
 
         try:
             # Retrieve the word and set objects using the provided IDs from the params
-            word_set = WORD_SET.objects.get(set_id=set_id);
-            word = WORD_UKR_ENG.objects.get(word_id=word_id);
+            word_set = WORD_SET.objects.get(set_id=set_id)
+            word = WORD_UKR_ENG.objects.get(word_id=word_id)
         except WORD_SET.DoesNotExist:
             return Response({"status": "ERROR", "message": "Set not found"}, status=status.HTTP_404_NOT_FOUND)
         except WORD_UKR_ENG.DoesNotExist:
@@ -357,3 +358,136 @@ def deleteWordSetJunction(request, set_id, word_id):
     else:
         return Response({"status": "ERROR", "message": "Unauthorized: Only superusers can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 
+
+## --------------------------------------------------------------------------  UPDATE User Word Score
+
+@api_view(["PUT"])
+def updateUserWordScore(request):
+
+    # Check if the user is authenticated
+    if request.user.is_authenticated:
+        # Get the user making the request
+        user = request.user
+
+        # Convert the request body to a Python dictionary
+        try:
+            request_data = json.loads(request.body)
+            print(request_data)
+        except json.JSONDecodeError:
+            return Response({"status": "ERROR", "message": "Invalid JSON format"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Create a list of Word Sets to be updated
+        set_list = []
+
+        # Iterate over the score update objects
+        for score_data in request_data:
+            word_id = score_data.get("word_id")
+            score = score_data.get("score")
+            increment_value = int(score_data.get("increment_value"))
+
+            try:
+                # Retrieve the word object using the provided word_id
+                word = WORD_UKR_ENG.objects.get(word_id=word_id)
+                # Retrieve the word score object for the user and word, or create a new one if it doesn't exist
+                word_score, created = WORD_UKR_ENG_SCORES.objects.get_or_create(user=user, word=word, defaults={score: increment_value})
+                
+                # Retrieve all set junctions for the current word
+                set_junctions = WORD_SET_JUNCTION_UKR_ENG.objects.filter(word=word)
+                # Extract the set objects from the junctions
+                sets_for_word = [junction.word_set for junction in set_junctions]
+                # Add the sets to the set_list
+                set_list.extend(sets_for_word)
+
+                if not created:
+                    # If the word score object already exists, update the score
+                    match score:
+                        case "word_flashcard_eng_ukr_score":
+                            word_score.word_flashcard_eng_ukr_score += increment_value
+                            if word_score.word_flashcard_eng_ukr_score > 100:
+                                word_score.word_flashcard_eng_ukr_score = 100
+                            word_score.save()
+                        case "word_flashcard_ukr_eng_score":
+                            word_score.word_flashcard_ukr_eng_score += increment_value
+                            if word_score.word_flashcard_ukr_eng_scor > 100:
+                                word_score.word_flashcard_ukr_eng_scor = 100
+                            word_score.save()
+                        case "word_spelling_eng_ukr_score":
+                            word_score.word_spelling_eng_ukr_score += increment_value
+                            if word_score.word_spelling_eng_ukr_score > 100:
+                                word_score.word_spelling_eng_ukr_score = 100
+                            word_score.save()
+                
+                # Update the word total score
+                word_score.word_total_score = math.ceil((word_score.word_flashcard_eng_ukr_score + word_score.word_flashcard_ukr_eng_score + word_score.word_spelling_eng_ukr_score) / 3)
+                word_score.save()
+
+                # Convert the list to a set to get rid of duplicate objects
+                word_sets = set(set_list)
+                # Update the set scores
+                update_set_scores(word_sets, user)
+                
+            except WORD_UKR_ENG.DoesNotExist:
+                return Response({"status": "ERROR", "message": "Word not found"}, status=status.HTTP_404_NOT_FOUND)
+            except Exception as e:
+                return Response({"status": "ERROR", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"status": "SUCCESS", "message": "Word score updated successfully"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"status": "ERROR", "message": "Unauthorized: Only logged in can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
+def update_set_scores(word_sets, user):
+
+    # Convert word sets to set type if it is not already a set
+    if not isinstance(word_sets, set):
+        word_sets = set(word_sets)
+
+    for word_set in word_sets:
+        # Retrieve all word objects that are part of the current word_set
+        words_in_set = WORD_SET_JUNCTION_UKR_ENG.objects.filter(word_set=word_set).select_related('word')
+
+        # Extract the word IDs from the queryset
+        word_ids = [junction.word.id for junction in words_in_set]
+
+        # Retrieve the word_score objects for the words in the current set
+        word_scores_in_set = WORD_UKR_ENG_SCORES.objects.filter(word_id__in=word_ids)
+        # Get the set length
+        set_length = len(word_scores_in_set)
+
+        # Iterate over the word_scores_in_set to get score totals
+        set_flashcard_eng_ukr_score = 0
+        set_flashcard_ukr_eng_score = 0
+        set_spelling_eng_ukr_score = 0
+
+        for word_score in word_scores_in_set:
+            set_flashcard_eng_ukr_score += word_score.word_flashcard_eng_ukr_score
+            set_flashcard_ukr_eng_score += word_score.word_flashcard_ukr_eng_score
+            set_spelling_eng_ukr_score += word_score.word_spelling_eng_ukr_score
+
+        # Divide each score by the set_length to get the average score
+        set_flashcard_eng_ukr_score = set_flashcard_eng_ukr_score / set_length
+        set_flashcard_ukr_eng_score = set_flashcard_eng_ukr_score / set_length
+        set_spelling_eng_ukr_score = set_spelling_eng_ukr_score / set_length
+
+        # Get the total average score
+        set_total_score = (set_flashcard_eng_ukr_score + set_flashcard_ukr_eng_score + set_spelling_eng_ukr_score) / 3
+
+        # Set the set score values
+        try:
+            # Attempt to retrieve the SET_UKR_ENG_SCORES object for the current word_set
+            set_scores = SET_UKR_ENG_SCORES.objects.get(word_set=word_set, user=user)
+        except SET_UKR_ENG_SCORES.DoesNotExist:
+            # If the SET_UKR_ENG_SCORES object does not exist, create a new one
+            set_scores = SET_UKR_ENG_SCORES.objects.create(
+                user=user,
+                word_set=word_set,
+                set_total_score=0,
+                set_flashcard_eng_ukr_score=0,
+                set_flashcard_ukr_eng_score=0,
+                set_spelling_eng_ukr_score=0
+            )
+            
+        # Update the scores with the calculated values
+        set_scores.set_flashcard_eng_ukr_score = set_flashcard_eng_ukr_score
+        set_scores.set_flashcard_ukr_eng_score = set_flashcard_ukr_eng_score
+        set_scores.set_spelling_eng_ukr_score = set_spelling_eng_ukr_score
+        set_scores.set_total_score = set_total_score
+        set_scores.save()

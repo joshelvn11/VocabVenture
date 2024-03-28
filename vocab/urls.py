@@ -20,6 +20,8 @@ urlpatterns = [
     path('api/words/sets/<int:word_id>', views.getWordSets, name="getWordSets"),
     path('api/words/sets/<int:set_id>/add/<int:word_id>', views.postWordSetJunction, name="postWordSetJunction"),
     path('api/words/sets/<int:set_id>/delete/<int:word_id>', views.deleteWordSetJunction, name="deleteWordSetJunction"),
+    path('api/scores/update', views.updateUserWordScore, name="updateUserWordScore"),
+
     # path('api/words/sets/add'),
     # path('api/words/sets/update'),  
    ## path('api/words/<int:word_id>', WordUkrEngUpdateView.as_view(), name='word_update'), 
