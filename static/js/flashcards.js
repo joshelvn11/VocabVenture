@@ -27,15 +27,32 @@ const exitButton = $("#exit-button");
 
 // ------------------------------------------------------------------------- Global Variables
 
+// URL Paramters
+const PARAMS = new URLSearchParams(window.location.search);
+
+// Const to hold the practice state
+const PRACTICE = PARAMS.get("practice") === "true";
+
 // State variable to manage whether the flashcard is in its flipped state
 flipped = false;
 
 // Array to hold the completed flash card data
 flashcardDataCompleted = [];
 
+// Array to hold score incrementation objects
+let scoreIncrements = [];
+
 // ------------------------------------------------------------------------- Event Listeners
 
 correctButton.on("click", () => {
+  if (!PRACTICE) {
+    scoreIncrements.push({
+      word_id: flashcardData[0]["word_id"],
+      score: flashcardData[0]["score"],
+      increment_value: 10,
+    });
+  }
+
   flashcardDataCompleted.push(flashcardData.shift());
 
   flashcardContainer.addClass("flashing-border-green");
@@ -53,16 +70,35 @@ correctButton.on("click", () => {
 });
 
 incorrectButton.on("click", () => {
-  flashcardData.push(flashcardData.shift());
+  if (!PRACTICE) {
+    scoreIncrements.push({
+      word_id: flashcardData[0]["word_id"],
+      score: flashcardData[0]["score"],
+      increment_value: -5,
+    });
+    flashcardDataCompleted.push(flashcardData.shift());
+
+    if (flashcardData.length === 0) {
+      endFlashcards();
+    } else {
+      setTimeout(setFlashcardData, 1250);
+    }
+    setTimeout(() => {
+      flipCard();
+      flashcardContainer.removeClass("flashing-border-red");
+    }, 1000);
+  } else {
+    flashcardData.push(flashcardData.shift());
+
+    setTimeout(setFlashcardData, 1250);
+
+    setTimeout(() => {
+      flipCard();
+      flashcardContainer.removeClass("flashing-border-red");
+    }, 1000);
+  }
 
   flashcardContainer.addClass("flashing-border-red");
-
-  setTimeout(setFlashcardData, 1250);
-
-  setTimeout(() => {
-    flipCard();
-    flashcardContainer.removeClass("flashing-border-red");
-  }, 1000);
 });
 
 flipCardButton.on("click", () => {
@@ -235,6 +271,9 @@ function startFlashcards(restart = false) {
 }
 
 function endFlashcards() {
+  if (!PRACTICE) {
+    incrementScores();
+  }
   cardsRemaining.text("0");
 
   flashcardInstructionText.text("Flashcard set completed! 🎉");
@@ -282,6 +321,46 @@ function enableAnswerButtons(enable) {
     correctButton.addClass("disabled");
     incorrectButton.addClass("disabled");
   }
+}
+
+function incrementScores() {
+  fetch(`/api/scores/update`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      // Include CSRF token as required by Django for non-GET requests
+      "X-CSRFToken": getCookie("csrftoken"),
+    },
+    body: JSON.stringify(scoreIncrements),
+  });
+}
+
+// Function to get CSRF token from cookies
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+function incrementScores() {
+  fetch(`/api/scores/update`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      // Include CSRF token as required by Django for non-GET requests
+      "X-CSRFToken": getCookie("csrftoken"),
+    },
+    body: JSON.stringify(scoreIncrements),
+  });
 }
 
 // ------------------------------------------------------------------------- Starting Function

@@ -5,7 +5,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
 
 GENDER = ((0, "None"), (1, "Male"), (2, "Female"))
-PART_OF_SPEECH = ((0, "Noun"), (1, "Verb"), (2, "Adjective"))
+PART_OF_SPEECH = ((0, "Noun"), (1, "Verb"), (2, "Adjective"), (3, "Adverb"), (4, "Pronoun"), (5, "Numeral"), (6, "Preposition"), (7, "Conjunction"), (8, "Interjection"), (9, "Particle"))
 
 def default_english_words():
     return {"No Translation"}
@@ -118,3 +118,6 @@ class SET_UKR_ENG_SCORES(models.Model):
     class Meta:
         verbose_name = "Set Score (UKR/ENG)"
         verbose_name_plural = "Set Scores (UKR/ENG)"
+
+    def __str__(self):
+        return f"[User] {self.user.username} [SET] {self.word_set}"

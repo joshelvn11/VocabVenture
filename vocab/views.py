@@ -101,24 +101,28 @@ def practice_flashcards(request):
 
         # Create the UKR to ENG flash card data
         flashcard_ukr_to_eng = {
+            "word_id": word.word_id,
             "title": "What is the meaning of this word in English",
             "question": word.word_ukrainian,
             "question-pronounciation": word.word_pronounciation,
             "question-pronounciation-audio": word.word_pronounciation_audio,
             "question-roman": word.word_roman,
             "answer": word.word_english,
+            "score": "word_flashcard_ukr_eng_score",
         }
 
         flashcard_list.append(flashcard_ukr_to_eng)
         
         # Create the ENG to UKR flash card data
         flashcard_eng_to_ukr = {
+            "word_id": word.word_id,
             "title": "What Ukrainian word has the following meaning",
             "question": word.word_english,
             "answer": word.word_ukrainian,
             "answer-pronounciation": word.word_pronounciation,
             "answer-pronounciation-audio": word.word_pronounciation_audio,
             "answer-roman": word.word_roman,
+            "score": "word_flashcard_eng_ukr_score",
         }
 
         # Append it to the flash card array
@@ -400,7 +404,6 @@ def updateUserWordScore(request):
         # Convert the request body to a Python dictionary
         try:
             request_data = json.loads(request.body)
-            print(request_data)
         except json.JSONDecodeError:
             return Response({"status": "ERROR", "message": "Invalid JSON format"}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -436,7 +439,7 @@ def updateUserWordScore(request):
                             word_score.save()
                         case "word_flashcard_ukr_eng_score":
                             word_score.word_flashcard_ukr_eng_score += increment_value
-                            if word_score.word_flashcard_ukr_eng_scor > 100:
+                            if word_score.word_flashcard_ukr_eng_score > 100:
                                 word_score.word_flashcard_ukr_eng_scor = 100
                             word_score.save()
                         case "word_spelling_eng_ukr_score":
@@ -457,6 +460,7 @@ def updateUserWordScore(request):
             except WORD_UKR_ENG.DoesNotExist:
                 return Response({"status": "ERROR", "message": "Word not found"}, status=status.HTTP_404_NOT_FOUND)
             except Exception as e:
+                print(e)
                 return Response({"status": "ERROR", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response({"status": "SUCCESS", "message": "Word score updated successfully"}, status=status.HTTP_200_OK)
     else:
@@ -475,10 +479,10 @@ def update_set_scores(word_sets, user):
         # Extract the word IDs from the queryset
         word_ids = [junction.word.id for junction in words_in_set]
 
-        # Retrieve the word_score objects for the words in the current set
-        word_scores_in_set = WORD_UKR_ENG_SCORES.objects.filter(word_id__in=word_ids)
+        # Retrieve the word_score objects for the words in the current set that match the current user
+        word_scores_in_set = WORD_UKR_ENG_SCORES.objects.filter(word_id__in=word_ids, user=user)
         # Get the set length
-        set_length = len(word_scores_in_set)
+        set_length = len(words_in_set)
 
         # Iterate over the word_scores_in_set to get score totals
         set_flashcard_eng_ukr_score = 0
@@ -492,7 +496,7 @@ def update_set_scores(word_sets, user):
 
         # Divide each score by the set_length to get the average score
         set_flashcard_eng_ukr_score = set_flashcard_eng_ukr_score / set_length
-        set_flashcard_ukr_eng_score = set_flashcard_eng_ukr_score / set_length
+        set_flashcard_ukr_eng_score = set_flashcard_ukr_eng_score / set_length
         set_spelling_eng_ukr_score = set_spelling_eng_ukr_score / set_length
 
         # Get the total average score
