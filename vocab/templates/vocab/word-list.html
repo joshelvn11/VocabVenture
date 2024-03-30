@@ -160,16 +160,26 @@
             <input id="word-eng-input" type="text" name="word_english" class="full-width">
             <label for="word_id">Romanization</label>
             <input id="word-roman-input" type="text" name="word_roman" class="full-width">
-            <label for="word_id">Gender</label>
-            <input id="word-gender-input" type="text" name="word_gender" class="full-width">
             <label for="word_id">Pronounciation</label>
             <input id="word-pronounce-input" type="text" name="word_pronounciation" class="full-width">
+            <label for="word_id">Gender</label>
+            <input id="word-gender-input" type="text" name="word_gender" class="full-width">
+            <label for="word_id">Part of Speech</label>
+            <input id="word-pos-input" type="text" name="word_part_of_speech" class="full-width">
             <label for="word_id">Pronounciation Audio Link</label>
-            <input id="word-pronounce-audio-input" type="url" name="word_pronounciation_audio" class="full-width">
+            <input id="word-pronounce-audio-input" type="url" value="https://example.com" name="word_pronounciation_audio" class="full-width">
+            <label for="word_id">Definition</label>
+            <input id="word-definition-input" type="text" name="word_definition" class="full-width">
             <label for="word_id">Explanation</label>
             <input id="word-explain-input" type="text" name="word_explanation" class="full-width">
             <label for="word_id">Usage Examples</label>
             <textarea id="word-examples-input" name="word_examples" class="full-width"></textarea>
+            <label for="word_id">Aspects</label>
+            <textarea id="word-aspect-input" name="word_aspect_examples" class="full-width"></textarea>
+            <label for="word_id">Conjugation</label>
+            <textarea id="word-conjugation-input" name="word_conjugation" class="full-width"></textarea>
+            <label for="word_id">Declension</label>
+            <textarea id="word-declension-input" name="word_declension" class="full-width"></textarea>
             {% for set in sets %}
             <div class="checkbox-wrapper">
                 <input type="checkbox" set-id="{{set.set_id}}" id="{{set.set_slug}}" class="set-checkbox inline">

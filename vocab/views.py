@@ -207,10 +207,14 @@ def get_word_list(request):
             "word_english": word.word_english,
             "word_roman": word.word_roman,
             "word_gender": word.word_gender,
+            "word_part_of_speech": word.word_part_of_speech,
             "word_pronounciation": word.word_pronounciation,
             "word_pronounciation_audio": word.word_pronounciation_audio,
             "word_explanation": word.word_explanation,
             "word_examples": word.word_examples,
+            "word_aspect_examples": word.word_aspect_examples,
+            "word_declension": word.word_declension,
+            "word_conjugation": word.word_conjugation,
         }
 
         data.append(word_data)

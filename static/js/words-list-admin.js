@@ -1,5 +1,4 @@
-let editWordID; // Word that is currently beind edited in the admin from
-let editAction = "NONE"; // State variable to control whether a word is being added or updated
+// ------------------------------------------------------------------------- DOM Elements
 
 const adminEditButton = $("#admin-edit-details-button");
 const addWordButton = $("#add-word-button");
@@ -15,9 +14,21 @@ const wordRomanInput = $("#word-roman-input");
 const wordGenderInput = $("#word-gender-input");
 const wordPronounceInput = $("#word-pronounce-input");
 const wordPronounceAudioInput = $("#word-pronounce-audio-input");
+const wordPartOfSpeechInput = $("#word-pos-input");
+const wordDefinitionInput = $("#word-definition-input");
 const wordExplainInput = $("#word-explain-input");
 const wordExamplesInput = $("#word-examples-input");
+const wordAspectInput = $("#word-aspect-input");
+const wordDeclensionInput = $("#word-declension-input");
+const wordCojugationInput = $("#word-conjugation-input");
 const setCheckBoxes = $(".set-checkbox");
+
+// ------------------------------------------------------------------------- Global Variables
+
+let editWordID; // Word that is currently beind edited in the admin from
+let editAction = "NONE"; // State variable to control whether a word is being added or updated
+
+// ------------------------------------------------------------------------- Event Listeners
 
 closeAdminEditModalButton.on("click", () => {
   closeAdminEditModal();
@@ -61,6 +72,8 @@ setCheckBoxes.each(function () {
   });
 });
 
+// ------------------------------------------------------------------------- Functions
+
 function showAdminEditModal(wordId) {
   // Populate the fields with word data if is editinng words
   if (editAction === "UPDATE") {
@@ -92,10 +105,20 @@ function populateAdminEditFields(wordObject) {
   wordEngInput.val(wordObject["word_english"]);
   wordRomanInput.val(wordObject["word_roman"]);
   wordGenderInput.val(wordObject["word_gender"]);
+  wordPartOfSpeechInput.val(wordObject["word_part_of_speech"]);
   wordPronounceInput.val(wordObject["word_pronounciation"]);
   wordPronounceAudioInput.val(wordObject["word_pronounciation_audio"]);
   wordExplainInput.val(wordObject["word_explanation"]);
   wordExamplesInput.val(JSON.stringify(wordObject["word_examples"], null, 2));
+  wordDeclensionInput.val(
+    JSON.stringify(wordObject["word_declension"], null, 2)
+  );
+  wordAspectInput.val(
+    JSON.stringify(wordObject["word_aspect_examples"], null, 2)
+  );
+  wordCojugationInput.val(
+    JSON.stringify(wordObject["word_conjugation"], null, 2)
+  );
 }
 
 function clearAdminEditFields() {
@@ -108,6 +131,9 @@ function clearAdminEditFields() {
   wordPronounceAudioInput.val("");
   wordExplainInput.val("");
   wordExamplesInput.val("");
+  wordDeclensionInput.val(JSON.stringify({ value: null }, null, 2));
+  wordAspectInput.val(JSON.stringify({ value: null }, null, 2));
+  wordCojugationInput.val(JSON.stringify({ value: null }, null, 2));
 }
 
 function populateSetCheckBoxes(wordId) {
@@ -142,10 +168,16 @@ function submitWordEditUpdate() {
     document.getElementById("admin-word-edit-form")
   );
 
-  // Parse the word examples to JSON
+  // Parse the word JSON fields to JSON
   wordExamples = {};
+  wordAspect = {};
+  wordDeclension = {};
+  wordConjugation = {};
   try {
     wordExamples = JSON.parse(formData.get("word_examples"));
+    wordAspect = JSON.parse(formData.get("word_aspect_examples"));
+    wordDeclension = JSON.parse(formData.get("word_declension"));
+    wordConjugation = JSON.parse(formData.get("word_conjugation"));
   } catch (error) {
     showAlertModal("ERROR", `Error in usage examples syntax`);
     console.log(`Error in usage examples syntax (${error})`);
@@ -159,14 +191,18 @@ function submitWordEditUpdate() {
     word_english: formData.get("word_english"),
     word_roman: formData.get("word_roman"),
     word_gender: Number(formData.get("word_gender")),
+    word_part_of_speech: Number(formData.get("word_part_of_speech")),
     word_pronounciation: formData.get("word_pronounciation"),
     word_pronounciation_audio: formData.get("word_pronounciation_audio"),
+    word_definition: formData.get("word_definition"),
     word_explanation: formData.get("word_explanation"),
     word_examples: wordExamples,
+    word_aspect_examples: wordAspect,
+    word_declension: wordDeclension,
+    word_conjugation: wordConjugation,
   };
-
+  // ------------------------------------------------------ Update Word Logic
   if (editAction === "UPDATE") {
-    // ------------------------------------------------------ Update Word Logic
     showAlertModal("INFO", "Updating word...");
     fetch(`/api/words/update/${editWordID}`, {
       method: "PUT",
