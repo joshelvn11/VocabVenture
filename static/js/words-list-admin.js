@@ -108,6 +108,7 @@ function populateAdminEditFields(wordObject) {
   wordPartOfSpeechInput.val(wordObject["word_part_of_speech"]);
   wordPronounceInput.val(wordObject["word_pronounciation"]);
   wordPronounceAudioInput.val(wordObject["word_pronounciation_audio"]);
+  wordDefinitionInput.val(wordObject["word_definition"]);
   wordExplainInput.val(wordObject["word_explanation"]);
   wordExamplesInput.val(JSON.stringify(wordObject["word_examples"], null, 2));
   wordDeclensionInput.val(
@@ -122,7 +123,9 @@ function populateAdminEditFields(wordObject) {
 }
 
 function clearAdminEditFields() {
-  wordIdInput.val("");
+  // Generate a random eight-digit number
+  randomId = Math.floor(10000000 + Math.random() * 90000000);
+  wordIdInput.val(randomId);
   wordUkrInput.val("");
   wordEngInput.val("");
   wordRomanInput.val("");

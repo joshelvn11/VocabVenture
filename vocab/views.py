@@ -210,6 +210,7 @@ def get_word_list(request):
             "word_part_of_speech": word.word_part_of_speech,
             "word_pronounciation": word.word_pronounciation,
             "word_pronounciation_audio": word.word_pronounciation_audio,
+            "word_definition": word.word_definition,
             "word_explanation": word.word_explanation,
             "word_examples": word.word_examples,
             "word_aspect_examples": word.word_aspect_examples,
