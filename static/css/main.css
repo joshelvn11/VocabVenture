@@ -181,12 +181,8 @@
 .progress-bar-container {
   width: 100%;
   display: flex;
-}
-
-@media only screen and (max-width: 576px) {
-  .progress-bar-container {
-    flex-direction: column;
-  }
+  flex-direction: column;
+  gap: 5px;
 }
 
 .progress-bar {

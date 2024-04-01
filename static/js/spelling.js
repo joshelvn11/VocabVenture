@@ -195,9 +195,9 @@ function checkSpelling() {
     spellingCard.addClass("flashing-border-red");
 
     if (PRACTICE) {
-      currentQuestion++;
       setTimeout(() => {
         spellingCard.removeClass("flashing-border-red");
+        spellingInputField.val("");
       }, 1000);
     } else {
       scoreIncrements.push({
@@ -233,11 +233,6 @@ function endQuiz() {
   incrementScores();
 }
 
-// ------------------------------------------------------------------------- Script Start
-
-// Load the first question
-loadQuestion();
-
 function incrementScores() {
   fetch(`/api/scores/update`, {
     method: "PUT",
@@ -249,6 +244,11 @@ function incrementScores() {
     body: JSON.stringify(scoreIncrements),
   });
 }
+
+// ------------------------------------------------------------------------- Script Start
+
+// Load the first question
+loadQuestion();
 
 // Function to get CSRF token from cookies
 function getCookie(name) {
