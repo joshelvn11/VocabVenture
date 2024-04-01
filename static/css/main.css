@@ -828,7 +828,7 @@ label {
   border: none;
   border-radius: var(--border-radius);
   font-size: 1.2rem;
-  margin: -6px 2px 2px 0px;
+  margin: -6px 2px 2px 2px;
   padding: 4px 12px;
 }
 
