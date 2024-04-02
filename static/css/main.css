@@ -829,7 +829,7 @@ label {
   border-radius: var(--border-radius);
   font-size: 1.2rem;
   margin: -6px 2px 2px 2px;
-  padding: 4px 12px;
+  padding: 4px 14px;
 }
 
 #spelling-input:focus {
