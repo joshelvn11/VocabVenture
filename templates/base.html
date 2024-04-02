@@ -1,3 +1,4 @@
+{% load pwa %}
 {% load static %} {% url 'home' as home_url %} 
 {% url '/words/' as words_url %} 
 {% url 'account_login' as login_url %}
@@ -12,6 +13,7 @@
     <title>VocabVenture</title>
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     {% block stylesheets %} {% endblock %}
+    {% progressive_web_app_meta %}
   </head>
   <body>
     <div id="root-container">

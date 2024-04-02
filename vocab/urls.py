@@ -1,9 +1,14 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from .views import home, set_list, word_list_ukr_eng, get_word_list
+from django.views.decorators.cache import cache_page
+from django.conf import settings
+from django.conf.urls.static import static
+from pwa import views as pwa_views
 
 urlpatterns = [
     path('', home, name='home'),
+    path('', include('pwa.urls')),
     ## --------------------------------------------------------------- Words URLS
     path('words/sets', views.word_sets, name='sets_list'), 
     path('words/sets/<slug:set_slug>', views.set_list, name='set_detail'),
@@ -21,6 +26,9 @@ urlpatterns = [
     path('api/words/sets/<int:set_id>/add/<int:word_id>', views.postWordSetJunction, name="postWordSetJunction"),
     path('api/words/sets/<int:set_id>/delete/<int:word_id>', views.deleteWordSetJunction, name="deleteWordSetJunction"),
     path('api/scores/update', views.updateUserWordScore, name="updateUserWordScore"),
+    ## --------------------------------------------------------------- PWA URLS
+    #path('offline/', cache_page(settings.PWA_APP_NAME)(pwa_views.OfflineView.as_view())),
+
 
     # path('api/words/sets/add'),
     # path('api/words/sets/update'),  

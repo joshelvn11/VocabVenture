@@ -8,6 +8,7 @@ defusedxml==0.7.1
 dj-database-url==2.1.0
 Django==5.0.2
 django-allauth==0.61.1
+django-pwa==1.1.0
 django-sass==1.1.0
 django-summernote==0.8.20.0
 djangorestframework==3.14.0
