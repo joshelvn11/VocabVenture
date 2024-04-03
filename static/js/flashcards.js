@@ -305,6 +305,7 @@ function endFlashcards() {
 function flipCard() {
   // Invert the flipped state
   flipped = !flipped;
+
   // Toggle the flipped classes trigerring the flipping animations
   questionFlashcard.toggleClass("flipped");
   answerFlashcard.toggleClass("flipped");

@@ -815,6 +815,8 @@ label {
   background-color: white;
   backface-visibility: hidden;
   transition: all 0.8s ease;
+  transform: translate3d(0, 0, 0);
+  /* Force hardware acceleration */
 }
 
 #question-flashcard.flipped {
@@ -823,6 +825,7 @@ label {
 }
 
 #answer-flashcard {
+  -webkit-transform: rotateY(180deg);
   transform: rotateY(180deg);
 }
 
