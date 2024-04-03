@@ -5,10 +5,11 @@ from django.db.models import Prefetch
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from django.utils import timezone
 import json
 import random
 import math
-from .models import WORD_SET, WORD_UKR_ENG, WORD_SET_JUNCTION_UKR_ENG, WORD_UKR_ENG_SCORES, SET_UKR_ENG_SCORES
+from .models import WORD_SET, WORD_UKR_ENG, WORD_SET_JUNCTION_UKR_ENG, WORD_UKR_ENG_SCORES, SET_UKR_ENG_SCORES, USER_UKR_ENG_META, USER_UKR_ENG_TEST_LOG
 from .serializers import WordUkrEngSerializer, SetUkrEngSerializer
 
 ## ------------------------------------------------------------------------------------------------------------------------ Template Rendering Views
@@ -18,6 +19,14 @@ def home(request):
     context = {}
 
     if request.user.is_authenticated:
+
+        # Get the user's streak data
+        streak_data = USER_UKR_ENG_META.objects.get(user=request.user)
+        streak_flashcards_longest = streak_data.streak_flashcards_longest
+        streak_flashcards_current = streak_data.streak_flashcards_current
+        streak_spelling_longest = streak_data.streak_spelling_longest
+        streak_spelling_current = streak_data.streak_spelling_current
+
         # Get the total number of words
         words_count = WORD_UKR_ENG.objects.count()
 
@@ -47,6 +56,10 @@ def home(request):
         mastered_of_scored_percent = round(((mastered_words / word_scores_length) * 100), 2)
 
         context = {
+            "streak_flashcards_longest": streak_flashcards_longest,
+            "streak_flashcards_current": streak_flashcards_current,
+            "streak_spelling_longest": streak_spelling_longest,
+            "streak_spelling_current": streak_spelling_current,
             "new_words": new_words,
             "new_of_total_percent": new_of_total_percent,
             "new_of_scored_percent": new_of_scored_percent,
@@ -457,6 +470,14 @@ def updateUserWordScore(request):
         # Get the user making the request
         user = request.user
 
+        # Get the quiz type
+        quiz_type = request.headers.get('Quiz-Type', None)
+        if not quiz_type:
+            return Response({"status": "ERROR", "message": "Quiz type is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Update the test log
+        update_test_log(user, int(quiz_type))
+
         # Convert the request body to a Python dictionary
         try:
             request_data = json.loads(request.body)
@@ -579,6 +600,74 @@ def update_set_scores(word_sets, user):
         set_scores.set_spelling_eng_ukr_score = set_spelling_eng_ukr_score
         set_scores.set_total_score = set_total_score
         set_scores.save()
+
+def update_test_log(user, quiz_type):
+    
+    # Get today's date in the appropriate format
+    today_date = timezone.now().date()
+
+    # Check if an entry matching today's date, the quiz type and requesting user exist
+    test_log_exists = USER_UKR_ENG_TEST_LOG.objects.filter(user=user, quiz_type=quiz_type, test_date=today_date).exists()
+
+    # If the entry does not exist, create a new one
+    if not test_log_exists:
+        test_log = USER_UKR_ENG_TEST_LOG.objects.create(
+            user=user,
+            quiz_type=quiz_type
+        )
+        test_log.save()
+        print(f"New test log entry created for user: {user.username}, quiz type: {quiz_type}")
+        
+        # Update the user's streak
+        update_streak(user, quiz_type)
+    else:
+        print(f"Test log entry already exists for user: {user.username}, quiz type: {quiz_type}")
+
+
+def update_streak(user, quiz_type):
+    # Initialize the streak counter
+    streak_count = 0
+
+    # Get all test_log entries for the user and quiz type, ordered by date in descending order
+    test_logs = USER_UKR_ENG_TEST_LOG.objects.filter(user=user, quiz_type=quiz_type).order_by('-test_date')
+
+    # Check if there are any test logs
+    if test_logs.exists():
+        # Get the most recent test log's date
+        last_date = test_logs.first().test_date
+
+        # Iterate through the test logs to count the streak
+        for log in test_logs:
+            # Calculate the difference in days between the last date and the current log's date
+            delta = (last_date - log.test_date).days
+
+            # If the difference is 1, it means the streak continues
+            if delta == 1:
+                streak_count += 1
+                # Update the last_date to the current log's date
+                last_date = log.test_date
+            # If the difference is 0, it means it's the same day, so we skip
+            elif delta == 0:
+                continue
+            # If the difference is more than 1, the streak breaks
+            else:
+                break
+
+    # Update the user's streak in the USER_UKR_ENG_META model
+    user_meta, created = USER_UKR_ENG_META.objects.get_or_create(user=user)
+    if quiz_type == 1: 
+        user_meta.streak_flashcards_current = streak_count
+        # Check if the current streak is the longest streak
+        if streak_count > user_meta.streak_flashcards_longest:
+            user_meta.streak_flashcards_longest = streak_count
+    elif quiz_type == 0: 
+        user_meta.streak_spelling_current = streak_count
+        # Check if the current streak is the longest streak
+        if streak_count > user_meta.streak_spelling_longest:
+            user_meta.streak_spelling_longest = streak_count
+    user_meta.save()
+
+    print(f"Updated streak for user: {user.username}, quiz type: {quiz_type}, current streak: {streak_count}")
 
 def get_score_color(score):
 

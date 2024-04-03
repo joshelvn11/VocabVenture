@@ -239,6 +239,7 @@ function incrementScores() {
       "Content-Type": "application/json",
       // Include CSRF token as required by Django for non-GET requests
       "X-CSRFToken": getCookie("csrftoken"),
+      "Quiz-Type": 0,
     },
     body: JSON.stringify(scoreIncrements),
   });

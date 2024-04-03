@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 GENDER = ((0, "None"), (1, "Male"), (2, "Female"))
 PART_OF_SPEECH = ((0, "Noun"), (1, "Verb"), (2, "Adjective"), (3, "Adverb"), (4, "Pronoun"), (5, "Numeral"), (6, "Preposition"), (7, "Conjunction"), (8, "Interjection"), (9, "Particle"))
+QUIZ_TYPE = ((0, "SPELLING"), (1, "FLASHCARD"))
 
 def default_english_words():
     return {"No Translation"}
@@ -140,6 +141,7 @@ class USER_UKR_ENG_META(models.Model):
 class USER_UKR_ENG_TEST_LOG(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='test_log_user')
     test_date = models.DateField(auto_now_add=True)
+    quiz_type = models.IntegerField(choices=QUIZ_TYPE, default=0)
 
     class Meta:
         verbose_name = "User Test Log Record"

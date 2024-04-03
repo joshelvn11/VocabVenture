@@ -3,10 +3,34 @@
 {% block content %}
 {% if user.is_authenticated %}
 <div class="card-container-grid">
+    <div class="grid-card">
+        <div class="row">
+            <p>Flashcard Current Streak</p>
+            <p>{{ streak_flashcards_current }} Days</p>
+        </div>
+    </div>
+    <div class="grid-card">
+        <div class="row">
+            <p>Flashcard Longest Streak</p>
+            <p>{{ streak_flashcards_longest }} Days</p>
+        </div>
+    </div>
+    <div class="grid-card">
+        <div class="row">
+            <p>Spelling Current Streak</p>
+            <p>{{ streak_spelling_current }} Days</p>
+        </div>
+    </div>
+    <div class="grid-card">
+        <div class="row">
+            <p>Spelling Longest Streak</p>
+            <p>{{ streak_spelling_longest }} Days</p>
+        </div>
+    </div>
     <div class="grid-card full-width">
         <div class="row">
             <p>Word Progress</p>
-            <p> (12.2%)</p>
+            <p></p>
         </div>
         <div class="row">
             <div class="progress-bar-wrapper">
