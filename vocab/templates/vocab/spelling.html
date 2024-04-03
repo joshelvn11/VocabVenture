@@ -38,6 +38,6 @@
     // Pass the JSON data to JavaScript
     let spellingData = JSON.parse('{{ spelling_data|escapejs }}');
 </script>
-<script type="text/javascript" src="{% static '/js/spelling.js' %}"></script>
+<script type="module" src="{% static '/js/spelling.js' %}"></script>
 <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 {% endblock %}

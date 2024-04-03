@@ -50,6 +50,6 @@
     // Pass the JSON data to JavaScript
     let flashcardData = JSON.parse('{{ flashcard_data|escapejs }}');
 </script>
-<script type="text/javascript" src="{% static '/js/flashcards.js' %}"></script>
+<script type="module" src="{% static '/js/flashcards.js' %}"></script>
 <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 {% endblock %}

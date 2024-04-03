@@ -1,3 +1,5 @@
+import { SCORE_INCREASE, SCORE_DECREASE, getCookie } from "./config.js";
+
 // ------------------------------------------------------------------------- DOM Nodes
 
 const flashcardContainer = $("#practice-card-container");
@@ -34,10 +36,10 @@ const PARAMS = new URLSearchParams(window.location.search);
 const PRACTICE = PARAMS.get("practice") === "true";
 
 // State variable to manage whether the flashcard is in its flipped state
-flipped = false;
+let flipped = false;
 
 // Array to hold the completed flash card data
-flashcardDataCompleted = [];
+let flashcardDataCompleted = [];
 
 // Array to hold score incrementation objects
 let scoreIncrements = [];
@@ -49,7 +51,7 @@ correctButton.on("click", () => {
     scoreIncrements.push({
       word_id: flashcardData[0]["word_id"],
       score: flashcardData[0]["score"],
-      increment_value: 10,
+      increment_value: SCORE_INCREASE,
     });
   }
 
@@ -74,7 +76,7 @@ incorrectButton.on("click", () => {
     scoreIncrements.push({
       word_id: flashcardData[0]["word_id"],
       score: flashcardData[0]["score"],
-      increment_value: -5,
+      increment_value: SCORE_DECREASE,
     });
     flashcardDataCompleted.push(flashcardData.shift());
 
@@ -321,34 +323,6 @@ function enableAnswerButtons(enable) {
     correctButton.addClass("disabled");
     incorrectButton.addClass("disabled");
   }
-}
-
-function incrementScores() {
-  fetch(`/api/scores/update`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      // Include CSRF token as required by Django for non-GET requests
-      "X-CSRFToken": getCookie("csrftoken"),
-    },
-    body: JSON.stringify(scoreIncrements),
-  });
-}
-
-// Function to get CSRF token from cookies
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
-    const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === name + "=") {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
 }
 
 function incrementScores() {

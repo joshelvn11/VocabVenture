@@ -1,5 +1,4 @@
-console.log(spellingData);
-
+import { SCORE_INCREASE, SCORE_DECREASE, getCookie } from "./config";
 // ------------------------------------------------------------------------- DOM Nodes
 
 const spellingCard = $("#practice-card-container");
@@ -170,7 +169,7 @@ function checkSpelling() {
       scoreIncrements.push({
         word_id: spellingData[currentQuestion]["word_id"],
         score: "word_spelling_eng_ukr_score",
-        increment_value: 10,
+        increment_value: SCORE_INCREASE,
       });
     }
 
@@ -203,7 +202,7 @@ function checkSpelling() {
       scoreIncrements.push({
         word_id: spellingData[currentQuestion]["word_id"],
         score: "word_spelling_eng_ukr_score",
-        increment_value: -5,
+        increment_value: SCORE_DECREASE,
       });
       currentQuestion++;
       if (currentQuestion == spellingData.length) {
@@ -249,19 +248,3 @@ function incrementScores() {
 
 // Load the first question
 loadQuestion();
-
-// Function to get CSRF token from cookies
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
-    const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === name + "=") {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
