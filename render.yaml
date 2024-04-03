@@ -27,4 +27,4 @@ services:
     startCommand: celery -A vocabventure beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: your_project.settings
+        value: vocabventure.settings

@@ -184,10 +184,10 @@ LOGGING = {
         },
     },
     'loggers': {
-        '': {  # This configures logging for all modules
+        'celery': {
             'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
+            'level': 'INFO',
+            'propagate': True,
         },
     },
 }
