@@ -20,12 +20,20 @@ def home(request):
 
     if request.user.is_authenticated:
 
-        # Get the user's streak data
-        streak_data = USER_UKR_ENG_META.objects.get(user=request.user)
-        streak_flashcards_longest = streak_data.streak_flashcards_longest
-        streak_flashcards_current = streak_data.streak_flashcards_current
-        streak_spelling_longest = streak_data.streak_spelling_longest
-        streak_spelling_current = streak_data.streak_spelling_current
+        try:
+            # Get the user's streak data if it exists
+            streak_data = USER_UKR_ENG_META.objects.get(user=request.user)
+            streak_flashcards_longest = streak_data.streak_flashcards_longest
+            streak_flashcards_current = streak_data.streak_flashcards_current
+            streak_spelling_longest = streak_data.streak_spelling_longest
+            streak_spelling_current = streak_data.streak_spelling_current
+        except USER_UKR_ENG_META.DoesNotExist:
+            # Get the user's streak data does not exist create default values
+            streak_flashcards_longest = 0
+            streak_flashcards_current = 0
+            streak_spelling_longest = 0
+            streak_spelling_current = 0
+        
 
         # Get the total number of words
         words_count = WORD_UKR_ENG.objects.count()
@@ -33,6 +41,9 @@ def home(request):
         # Retrieve all word scores for the current user
         word_scores = WORD_UKR_ENG_SCORES.objects.filter(user=request.user)
         word_scores_length = len(word_scores)
+
+        if (word_scores_length == 0):
+            word_scores_length = 1
 
         # Create stats for each learning stage
         new_words = len([score for score in word_scores if 0 <= score.word_total_score < 20])
