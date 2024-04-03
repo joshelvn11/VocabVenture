@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery, signals
+from celery import shared_task
 import logging
 
 # set the default Django settings module for the 'celery' program.

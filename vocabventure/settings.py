@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'django_sass',
     'rest_framework',
     'pwa',
+    'django_celery_beat',
     'vocab',
 ]
 
