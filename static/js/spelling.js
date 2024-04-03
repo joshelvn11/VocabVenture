@@ -161,7 +161,7 @@ function loadQuestion() {
 }
 
 function checkSpelling() {
-  spellingInput = spellingInputField.val().toLowerCase().trim();
+  let spellingInput = spellingInputField.val().toLowerCase().trim();
 
   if (spellingInput == currentQuestionWord.toLowerCase()) {
     // If in test mode append the score increment to the score increments array
