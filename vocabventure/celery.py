@@ -15,6 +15,8 @@ app.autodiscover_tasks()
 
 logger = logging.getLogger('celery')
 
+app.conf.broker_url = os.environ.get('CELERY_BROKER_URL')
+
 @signals.task_prerun.connect
 def task_prerun_handler(*args, **kwargs):
     task = kwargs.get('sender')
