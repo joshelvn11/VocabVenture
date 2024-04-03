@@ -121,3 +121,29 @@ class SET_UKR_ENG_SCORES(models.Model):
 
     def __str__(self):
         return f"[User] {self.user.username} [SET] {self.word_set}"
+
+
+class USER_UKR_ENG_META(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_meta_user')
+    streak_flashcards_longest = models.IntegerField(default=0)
+    streak_flashcards_current = models.IntegerField(default=0)
+    streak_spelling_longest = models.IntegerField(default=0)
+    streak_spelling_current = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name = "User Meta"
+        verbose_name_plural = "User Meta Data"
+
+    def __str__(self):
+        return f"[User] {self.user.username}"
+    
+class USER_UKR_ENG_TEST_LOG(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='test_log_user')
+    test_date = models.DateField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "User Test Log Record"
+        verbose_name_plural = "User Test Log Records"
+
+    def __str__(self):
+        return f"[User] {self.user.username} [DATE] {self.test_date}"
