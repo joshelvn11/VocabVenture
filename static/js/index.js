@@ -1,12 +1,20 @@
 // Mobile Nav Controls
 const sideBarNav = $("#sidebar-nav");
+const menuBackgroundOverlay = $("#menu-background-overlay");
 
 $("#mobile-nav-open").on("click", () => {
   sideBarNav.addClass("active");
+  menuBackgroundOverlay.removeClass("hidden");
 });
 
 $("#mobile-nav-close").on("click", () => {
   sideBarNav.removeClass("active");
+  menuBackgroundOverlay.addClass("hidden");
+});
+
+menuBackgroundOverlay.on("click", () => {
+  sideBarNav.removeClass("active");
+  menuBackgroundOverlay.addClass("hidden");
 });
 
 const alertModalContainer = $("#alert-modal-container");
