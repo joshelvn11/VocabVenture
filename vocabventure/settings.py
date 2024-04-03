@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from celery.schedules import crontab
 
 if os.path.isfile('env.py'):
     import env
@@ -191,6 +192,8 @@ LOGGING = {
     },
 }
 
+# ------------------------------------------------------------------------------ PWA Config
+
 PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
 PWA_APP_NAME = 'VocabVenture'
 PWA_APP_DESCRIPTION = "Learn languages interactively online"
@@ -222,3 +225,12 @@ PWA_APP_SPLASH_SCREEN = [
 ]
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'en-US'
+
+# ------------------------------------------------------------------------------ Celery Config
+
+CELERY_BEAT_SCHEDULE = {
+    'update_user_streaks': {
+        'task': 'vocab.tasks.update_user_streaks',
+        'schedule': crontab(minute='*'),
+    },
+}

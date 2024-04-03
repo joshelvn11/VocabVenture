@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: django-app
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt && python manage.py migrate
+    startCommand: gunicorn your_project.wsgi:application --bind 0.0.0.0:10000
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: vocabventure.settings
+
+  - type: worker
+    name: celery-worker
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A vocabventure worker --loglevel=info
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: vocabventure.settings
+
+  - type: worker
+    name: celery-beat
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: celery -A vocabventure beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: your_project.settings
