@@ -1,7 +1,76 @@
 {% extends 'base.html' %} 
 {% block page_title %}Home{% endblock %}
 {% block content %}
-<p>
-  
-</p>
+{% if user.is_authenticated %}
+<div class="card-container-grid">
+    <div class="grid-card full-width">
+        <div class="row">
+            <p>Word Progress</p>
+            <p> (12.2%)</p>
+        </div>
+        <div class="row">
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-fill purple" style="width: {{ mastered_of_total_bar_length }}%;"></div>
+                    <div class="progress-bar-fill green" style="width: {{ learnt_of_total_bar_length }}%;"></div>
+                    <div class="progress-bar-fill orange" style="width: {{ learning_of_total_bar_length }}%;"></div>
+                    <div class="progress-bar-fill red" style="width: {{ new_of_total_bar_length }}%;"></div>
+                </div>
+              </div>
+        </div>
+    </div>
+    <div class="grid-card">
+        <div class="row">
+            <p>New</p>
+            <p>{{ new_words }} ({{ new_of_scored_percent }}%)</p>
+        </div>
+        <div class="row">
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-fill red" style="width: {{ new_of_scored_percent }}%;"></div>
+                </div>
+              </div>
+        </div>
+    </div>
+    <div class="grid-card">
+        <div class="row">
+            <p>Learning</p>
+            <p>{{ learning_words }} ({{ learning_of_scored_percent }}%)</p>
+        </div>
+        <div class="row">
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-fill green" style="width: {{ learning_of_scored_percent }}%;"></div>
+                </div>
+              </div>
+        </div>
+    </div>
+    <div class="grid-card">
+        <div class="row">
+            <p>Learnt</p>
+            <p>{{ learnt_words }} ({{ learnt_of_scored_percent }}%)</p>
+        </div>
+        <div class="row">
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-fill green" style="width: {{ learnt_of_scored_percent }}%;"></div>
+                </div>
+              </div>
+        </div>
+    </div>
+    <div class="grid-card">
+        <div class="row">
+            <p>Mastered</p>
+            <p>{{ mastered_words }} ({{ mastered_of_scored_percent }}%)</p>
+        </div>
+        <div class="row">
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-fill green" style="width: {{ mastered_of_scored_percent }}%;"></div>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

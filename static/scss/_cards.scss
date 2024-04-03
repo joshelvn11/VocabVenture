@@ -92,7 +92,14 @@
   gap: 5px;
 }
 
+.progress-bar-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+}
+
 .progress-bar {
+  position: relative;
   flex-grow: 1;
   height: 8px;
   margin-right: 14px;
@@ -100,13 +107,10 @@
   border-radius: var(--border-radius);
 }
 
-.progress-bar-wrapper {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-}
-
 .progress-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   border-radius: var(--border-radius);
 
@@ -137,4 +141,46 @@
 
 .progress-bar-percentage {
   margin: -3px 0 0 0;
+}
+
+.card-container-grid {
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  @media only screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid-card {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: relative;
+  padding: 24px 24px;
+  gap: 12px;
+  background-color: white;
+  border: solid 1px var(--border-color);
+  border-radius: var(--border-radius);
+  -webkit-box-shadow: 0px 0px 5px 0.8px var(--gray-opaque);
+  box-shadow: 0px 0px 5px 0.8px var(--gray-opaque);
+  transition: all 0.3s ease-in-out;
+
+  &.full-width {
+    @media only screen and (min-width: 768px) {
+      grid-column: 1 / 3;
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
 }

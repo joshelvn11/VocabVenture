@@ -15,7 +15,57 @@ from .serializers import WordUkrEngSerializer, SetUkrEngSerializer
 
 def home(request):
 
-    return render(request, "vocab/index.html")
+    context = {}
+
+    if request.user.is_authenticated:
+        # Get the total number of words
+        words_count = WORD_UKR_ENG.objects.count()
+
+        # Retrieve all word scores for the current user
+        word_scores = WORD_UKR_ENG_SCORES.objects.filter(user=request.user)
+        word_scores_length = len(word_scores)
+
+        # Create stats for each learning stage
+        new_words = len([score for score in word_scores if 0 <= score.word_total_score < 20])
+        new_of_total_percent = round(((new_words / words_count) * 100), 2)
+        new_of_total_bar_length = new_of_total_percent
+        new_of_scored_percent = round(((new_words / word_scores_length) * 100), 2)
+
+        learning_words = len([score for score in word_scores if 20 <= score.word_total_score < 60])
+        learning_of_total_percent = round(((learning_words / words_count) * 100), 2)
+        learning_of_total_bar_length = learning_of_total_percent + new_of_total_bar_length
+        learning_of_scored_percent = round(((learning_words / word_scores_length) * 100), 2)
+
+        learnt_words = len([score for score in word_scores if 60 <= score.word_total_score < 100])
+        learnt_of_total_percent = round(((learnt_words / words_count) * 100), 2)
+        learnt_of_total_bar_length = learnt_of_total_percent + learning_of_total_bar_length
+        learnt_of_scored_percent = round(((learnt_words / word_scores_length) * 100), 2)
+
+        mastered_words = len([score for score in word_scores if score.word_total_score == 100])
+        mastered_of_total_percent = round(((mastered_words / words_count) * 100), 2)
+        mastered_of_total_bar_length = mastered_of_total_percent + learnt_of_total_bar_length
+        mastered_of_scored_percent = round(((mastered_words / word_scores_length) * 100), 2)
+
+        context = {
+            "new_words": new_words,
+            "new_of_total_percent": new_of_total_percent,
+            "new_of_scored_percent": new_of_scored_percent,
+            "new_of_total_bar_length": new_of_total_bar_length,
+            "learning_words": learning_words,
+            "learning_of_total_percent": learning_of_total_percent,
+            "learning_of_total_bar_length": learning_of_total_bar_length,
+            "learning_of_scored_percent": learning_of_scored_percent,
+            "learnt_words": learnt_words,
+            "learnt_of_total_percent": learnt_of_total_percent,
+            "learnt_of_total_bar_length": learnt_of_total_bar_length,
+            "learnt_of_scored_percent": learnt_of_scored_percent,
+            "mastered_words": mastered_words,
+            "mastered_of_total_percent": mastered_of_total_percent,
+            "mastered_of_total_bar_length": mastered_of_total_bar_length,
+            "mastered_of_scored_percent": mastered_of_scored_percent
+        }
+
+    return render(request, "vocab/index.html", context)
 
 def word_sets(request):
     """
