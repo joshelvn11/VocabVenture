@@ -1,4 +1,4 @@
-import { SCORE_INCREASE, SCORE_DECREASE, getCookie } from "./config";
+import { SCORE_INCREASE, SCORE_DECREASE, getCookie } from "./config.js";
 // ------------------------------------------------------------------------- DOM Nodes
 
 const spellingCard = $("#practice-card-container");
@@ -20,7 +20,7 @@ const PARAMS = new URLSearchParams(window.location.search);
 const PRACTICE = PARAMS.get("practice") === "true";
 
 // Variable to hold the index of the current question in the spelling data array
-currentQuestion = 0;
+let currentQuestion = 0;
 
 // Variable to hold the current question word
 let currentQuestionWord = "";
