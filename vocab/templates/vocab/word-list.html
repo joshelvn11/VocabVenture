@@ -67,15 +67,17 @@
                 <p><strong>Romanization: </strong>{{ word.word_roman }}</p>
                 <p><strong>Pronounciation: </strong>{{ word.word_pronounciation }}</p>
             </div>
+            {% if user.is_authenticated %}
             <!-- Progress Bar -->
-          <div class="progress-bar-container">
-            <div class="progress-bar-wrapper">
-                <div class="progress-bar">
-                  <div class="progress-bar-fill orange" style="width: 50%;"></div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar">
+                    <div class="progress-bar-fill orange" style="width: 50%;"></div>
+                    </div>
+                    <p class="progress-bar-percentage">50%</p>
                 </div>
-                <p class="progress-bar-percentage">50%</p>
-              </div>
-          </div>
+            </div>
+            {% endif %}
         </div>
     </div> 
     {% endfor%}
