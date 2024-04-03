@@ -51,3 +51,8 @@ profileButton.on("click", () => {
   console.log("toggling");
   profileSubMenu.toggleClass("hidden");
 });
+
+window.addEventListener("resize", () => {
+  const originalHeight = window.innerHeight;
+  document.body.style.height = originalHeight + "px";
+});
