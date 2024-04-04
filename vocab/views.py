@@ -634,7 +634,6 @@ def update_test_log(user, quiz_type):
     else:
         print(f"Test log entry already exists for user: {user.username}, quiz type: {quiz_type}")
 
-
 def update_streak(user, quiz_type):
     # Initialize the streak counter
     streak_count = 0
@@ -657,9 +656,9 @@ def update_streak(user, quiz_type):
                 streak_count += 1
                 # Update the last_date to the current log's date
                 last_date = log.test_date
-            # If the difference is 0, it means it's the same day, so we skip
+            # If the difference is 0, it means it's the same day, so set the streak to 1 day
             elif delta == 0:
-                continue
+                streak_count = 1
             # If the difference is more than 1, the streak breaks
             else:
                 break

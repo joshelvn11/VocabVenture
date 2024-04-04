@@ -232,9 +232,9 @@ PWA_APP_LANG = 'en-US'
 
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
 
-CELERY_BEAT_SCHEDULE = {
-    'update_user_streaks': {
-        'task': 'vocab.tasks.update_user_streaks',
-        'schedule': crontab(minute='*'),
-    },
-}
+# CELERY_BEAT_SCHEDULE = {
+#     'update_user_streaks': {
+#         'task': 'vocab.tasks.update_user_streaks',
+#         'schedule': crontab(minute='*'),
+#     },
+# }
