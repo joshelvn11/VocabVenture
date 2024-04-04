@@ -683,10 +683,8 @@ def get_score_color(score):
 
     if score < 25:
         return "red"
-    elif score >= 25 and score < 50:
+    elif score >= 25 and score < 75:
         return "orange"
-    elif score >= 50 and score < 75:
-        return "yellow"
     elif score >= 75 and score < 100:
         return "green"
     elif score == 100:
