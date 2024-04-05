@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.db.models import Prefetch
@@ -6,11 +5,27 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from django.utils import timezone
+from django.utils.timezone import now, timedelta
 import json
 import random
-import math
+import os
+import logging
 from .models import WORD_SET, WORD_UKR_ENG, WORD_SET_JUNCTION_UKR_ENG, WORD_UKR_ENG_SCORES, SET_UKR_ENG_SCORES, USER_UKR_ENG_META, USER_UKR_ENG_TEST_LOG
 from .serializers import WordUkrEngSerializer, SetUkrEngSerializer
+
+# Create or get a logger
+logger = logging.getLogger(__name__)  
+
+# Set log level
+logger.setLevel(logging.INFO)
+
+# Define file handler and set formatter
+file_handler = logging.FileHandler('logfile.log')
+formatter    = logging.Formatter('%(asctime)s : %(levelname)s : %(name)s : %(message)s')
+file_handler.setFormatter(formatter)
+
+# Add file handler to logger
+logger.addHandler(file_handler)
 
 ## ------------------------------------------------------------------------------------------------------------------------ Template Rendering Views
 
@@ -470,7 +485,6 @@ def deleteWordSetJunction(request, set_id, word_id):
     else:
         return Response({"status": "ERROR", "message": "Unauthorized: Only superusers can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 
-
 ## --------------------------------------------------------------------------  UPDATE User Word Score
 
 @api_view(["PUT"])
@@ -553,6 +567,63 @@ def updateUserWordScore(request):
         return Response({"status": "SUCCESS", "message": "Word score updated successfully"}, status=status.HTTP_200_OK)
     else:
         return Response({"status": "ERROR", "message": "Unauthorized: Only logged in can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
+## --------------------------------------------------------------------------  GET Update User Streaks [JOB]
+
+@api_view(["GET"])
+def job_update_user_streaks(request):
+
+    # Log a message
+    logger.info("Starting the job to update user streaks.")
+
+    # Fetch the job_secret_key from environment variables
+    job_secret_key = os.environ.get('JOB_SECRET_KEY')
+
+    # Fetch the secret_key from the query parameters
+    query_secret_key = request.query_params.get('secret_key')
+
+    # Check if the secret key is valid
+    if query_secret_key is None:
+        return Response({"status": "ERROR", "message": "Missing secret_key in query parameters"}, status=status.HTTP_400_BAD_REQUEST)
+    elif query_secret_key != job_secret_key:
+        return Response({"status": "ERROR", "message": "Incorrect secret key value in query parameters"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Get all user meta data objects
+    user_meta = USER_UKR_ENG_META.objects.all()
+
+    # Calculate yesterday's date
+    yesterday = now() - timedelta(days=1)
+
+    # Get all test logs for the previous day
+    test_logs = USER_UKR_ENG_TEST_LOG.objects.filter(test_date=yesterday.date())
+
+    # Loop through the list of user meta and check if they took a test yesterday
+    for user_meta_object in user_meta:
+        user_test_logs = test_logs.filter(user=user_meta_object.user)
+
+        flashcards_tested = False
+        spelling_tested = False
+
+        # Loop through their test logs an update the tested bools
+        for user_test_log in user_test_logs:
+            if user_test_log.quiz_type == 0:
+                spelling_tested = True
+            elif user_test_log.quiz_type == 1:
+                flashcards_tested = True
+        
+        # Update their streak to 0 if they did not take a test
+        if not spelling_tested:
+            user_meta_object.streak_spelling_current = 0
+        
+        if not flashcards_tested:
+            user_meta_object.streak_flashcards_current = 0
+
+        # Save the user meta object
+        user_meta_object.save()
+
+    # After all operations are successfully completed, return a success HTTP response
+    return Response({"status": "SUCCESS", "message": "Streaks and scores updated successfully"}, status=status.HTTP_200_OK)
+
 
 def update_set_scores(word_sets, user):
 
