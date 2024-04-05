@@ -140,6 +140,7 @@ class USER_UKR_ENG_META(models.Model):
     
 class USER_UKR_ENG_TEST_LOG(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='test_log_user')
+    user_meta = models.ForeignKey(USER_UKR_ENG_META, on_delete=models.CASCADE, related_name='user_ukr_eng_meta')
     test_date = models.DateField(auto_now_add=True)
     quiz_type = models.IntegerField(choices=QUIZ_TYPE, default=0)
 
