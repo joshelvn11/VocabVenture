@@ -573,57 +573,60 @@ def updateUserWordScore(request):
 @api_view(["GET"])
 def job_update_user_streaks(request):
 
-    # Log a message
-    logger.info("Starting the job to update user streaks.")
+    try:
+        # Log a message
+        logger.info("Starting the job to update user streaks.")
 
-    # Fetch the job_secret_key from environment variables
-    job_secret_key = os.environ.get('JOB_SECRET_KEY')
+        # Fetch the job_secret_key from environment variables
+        job_secret_key = os.environ.get('JOB_SECRET_KEY')
 
-    # Fetch the secret_key from the query parameters
-    query_secret_key = request.query_params.get('secret_key')
+        # Fetch the secret_key from the query parameters
+        query_secret_key = request.query_params.get('secret_key')
 
-    # Check if the secret key is valid
-    if query_secret_key is None:
-        return Response({"status": "ERROR", "message": "Missing secret_key in query parameters"}, status=status.HTTP_400_BAD_REQUEST)
-    elif query_secret_key != job_secret_key:
-        return Response({"status": "ERROR", "message": "Incorrect secret key value in query parameters"}, status=status.HTTP_400_BAD_REQUEST)
+        # Check if the secret key is valid
+        if query_secret_key is None:
+            return Response({"status": "ERROR", "message": "Missing secret_key in query parameters"}, status=status.HTTP_400_BAD_REQUEST)
+        elif query_secret_key != job_secret_key:
+            return Response({"status": "ERROR", "message": "Incorrect secret key value in query parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Get all user meta data objects
-    user_meta = USER_UKR_ENG_META.objects.all()
+        # Get all user meta data objects
+        user_meta = USER_UKR_ENG_META.objects.all()
 
-    # Calculate yesterday's date
-    yesterday = now() - timedelta(days=1)
+        # Calculate yesterday's date
+        yesterday = now() - timedelta(days=1)
 
-    # Get all test logs for the previous day
-    test_logs = USER_UKR_ENG_TEST_LOG.objects.filter(test_date=yesterday.date())
+        # Get all test logs for the previous day
+        test_logs = USER_UKR_ENG_TEST_LOG.objects.filter(test_date=yesterday.date())
 
-    # Loop through the list of user meta and check if they took a test yesterday
-    for user_meta_object in user_meta:
-        user_test_logs = test_logs.filter(user=user_meta_object.user)
+        # Loop through the list of user meta and check if they took a test yesterday
+        for user_meta_object in user_meta:
+            user_test_logs = test_logs.filter(user=user_meta_object.user)
 
-        flashcards_tested = False
-        spelling_tested = False
+            flashcards_tested = False
+            spelling_tested = False
 
-        # Loop through their test logs an update the tested bools
-        for user_test_log in user_test_logs:
-            if user_test_log.quiz_type == 0:
-                spelling_tested = True
-            elif user_test_log.quiz_type == 1:
-                flashcards_tested = True
-        
-        # Update their streak to 0 if they did not take a test
-        if not spelling_tested:
-            user_meta_object.streak_spelling_current = 0
-        
-        if not flashcards_tested:
-            user_meta_object.streak_flashcards_current = 0
+            # Loop through their test logs an update the tested bools
+            for user_test_log in user_test_logs:
+                if user_test_log.quiz_type == 0:
+                    spelling_tested = True
+                elif user_test_log.quiz_type == 1:
+                    flashcards_tested = True
+            
+            # Update their streak to 0 if they did not take a test
+            if not spelling_tested:
+                user_meta_object.streak_spelling_current = 0
+            
+            if not flashcards_tested:
+                user_meta_object.streak_flashcards_current = 0
 
-        # Save the user meta object
-        user_meta_object.save()
+            # Save the user meta object
+            user_meta_object.save()
 
-    # After all operations are successfully completed, return a success HTTP response
-    return Response({"status": "SUCCESS", "message": "Streaks and scores updated successfully"}, status=status.HTTP_200_OK)
-
+        # After all operations are successfully completed, return a success HTTP response
+        return Response({"status": "SUCCESS", "message": "Streaks and scores updated successfully"}, status=status.HTTP_200_OK)
+    except Exception as e:
+        logger.error(f"An error occurred while updating user streaks: {str(e)}")
+        return Response({"status": "ERROR", "message": "An error occurred while processing the request"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def update_set_scores(word_sets, user):
 
