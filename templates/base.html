@@ -205,10 +205,12 @@
             {% block page_buttons %} {% endblock %}
           </div>
         </div>
-        <div id="page-content">{% block content %}{% endblock %}</div>
+        <div id="page-content">
+          <div id="alert-modal-container"></div>
+          {% block content %}{% endblock %}
+        </div>
       </div>
     </div>
-    <div id="alert-modal-container"></div>
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{% static 'js/index.js' %}"></script>

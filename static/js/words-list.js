@@ -257,6 +257,6 @@ function formatArray(arr) {
   return formattedString;
 }
 
-$("#test-alert").on("click", () => {
-  showAlertModal("INFO", "This is a message");
-});
+// $("#test-alert").on("click", () => {
+//   showAlertModal("ERROR", "This is a message");
+// });
