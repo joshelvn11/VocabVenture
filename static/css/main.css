@@ -338,17 +338,22 @@
 form {
   overflow-x: hidden;
   overflow-y: scroll;
+  position: relative;
 }
 
 input,
 textarea {
   display: block;
   margin: 5px 0px 24px 0px;
+  border-radius: var(--border-radius);
+  border: solid 1px var(--border-color);
+  padding: 6px 12px;
+  font-size: 1rem;
 }
 
 input.full-width,
 textarea.full-width {
-  width: 100%;
+  width: 90%;
 }
 
 textarea {
@@ -369,7 +374,7 @@ label {
 }
 
 #admin-word-edit-form {
-  width: 800px;
+  width: 100%;
   max-height: calc(80vh - 100px);
   padding: 5px;
 }
@@ -587,10 +592,13 @@ label {
 }
 
 .modal-content-wrapper {
-  max-height: calc(100% - 50px);
+  max-height: calc(100% - 57.5px);
   overflow-x: hidden;
-  overflow-y: scroll;
   padding: 12px 6px;
+}
+
+#admin-edit-modal {
+  width: 600px;
 }
 
 #word-details-modal {

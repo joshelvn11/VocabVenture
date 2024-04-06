@@ -1,15 +1,20 @@
 form {
   overflow-x: hidden;
   overflow-y: scroll;
+  position: relative;
 }
 
 input,
 textarea {
   display: block;
   margin: 5px 0px 24px 0px;
+  border-radius: var(--border-radius);
+  border: solid 1px var(--border-color);
+  padding: 6px 12px;
+  font-size: 1rem;
 
   &.full-width {
-    width: 100%;
+    width: 90%;
   }
 }
 
@@ -33,7 +38,7 @@ label {
 }
 
 #admin-word-edit-form {
-  width: 800px;
+  width: 100%;
   max-height: calc(80vh - 100px);
   padding: 5px;
 }

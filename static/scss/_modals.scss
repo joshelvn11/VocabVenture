@@ -43,10 +43,13 @@
 }
 
 .modal-content-wrapper {
-  max-height: calc(100% - 50px);
+  max-height: calc(100% - 57.5px);
   overflow-x: hidden;
-  overflow-y: scroll;
   padding: 12px 6px;
+}
+
+#admin-edit-modal {
+  width: 600px;
 }
 
 #word-details-modal {
