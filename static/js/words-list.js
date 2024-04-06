@@ -23,6 +23,12 @@ const practiceModeToggle = $("#practice-mode-toggle");
 const flashcardsLink = $("#flashcards-link");
 const spellingLink = $("#spelling-link");
 
+// Quiz Elements
+const quizModal = $("#quiz-modal");
+const quizModalCloseButton = $("#quiz-modal-close-button");
+const quizStartButton = $("#start-quiz-button");
+const quizTypeSelect = $("#quiz-type-select");
+
 // Other Elements
 const backgroundOverlay = $(".background-overlay");
 
@@ -44,7 +50,33 @@ wordCards.each(function () {
 });
 
 quizButton.on("click", () => {
-  quizSubmenu.toggleClass("hidden");
+  quizModal.removeClass("hidden");
+  backgroundOverlay.removeClass("hidden");
+
+  backgroundOverlay.off("click");
+
+  backgroundOverlay.on("click", () => {
+    quizModal.addClass("hidden");
+    backgroundOverlay.addClass("hidden");
+  });
+});
+
+quizModalCloseButton.on("click", () => {
+  quizModal.addClass("hidden");
+  backgroundOverlay.addClass("hidden");
+});
+
+quizStartButton.on("click", () => {
+  let href = "";
+
+  // Get the primary link value
+  href = quizTypeSelect.val();
+
+  // Get the practice param
+  const practiceParam = `&practice=${practiceModeToggle.prop("checked")}`;
+  href += practiceParam;
+
+  window.location.href = href;
 });
 
 flashcardsLink.on("click", function (event) {

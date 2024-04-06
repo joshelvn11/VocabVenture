@@ -41,17 +41,41 @@
   /* Apply the animation */
 }
 
-.border-button {
-  background-color: rgba(0, 0, 0, 0);
-  color: var(--primary-color);
-  border: solid 1px var(--primary-color);
-  border-radius: var(--border-radius);
-  font-family: "Manjari", Helvetica, sans-serif;
+.primary-button, .border-button, .solid-button {
+  font-family: var(--font-primary);
   font-weight: 900;
   padding: 9px 16px 4px 16px;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+}
+
+.solid-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: solid 1px var(--primary-color);
+  border-radius: var(--border-radius);
+}
+
+.solid-button:hover {
+  background-color: var(--primary-color-hover);
+}
+
+.solid-button.disabled {
+  color: var(--gray-light);
+  border: solid 1px var(--gray-light);
+}
+
+.solid-button.disabled:hover {
+  color: var(--gray-light);
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.border-button {
+  background-color: rgba(0, 0, 0, 0);
+  color: var(--primary-color);
+  border: solid 1px var(--primary-color);
+  border-radius: var(--border-radius);
 }
 
 .border-button:hover {
@@ -100,6 +124,21 @@
 
 .icon-button svg path {
   fill: var(--gray-dark);
+}
+
+.close-button {
+  background-color: var(--gray-opaque);
+  border: none;
+  border-radius: 100%;
+  width: 32px;
+  height: 32px;
+  font-family: var(--font-primary);
+  font-size: 22px;
+  padding-top: 4px;
+}
+
+.close-button:hover {
+  cursor: pointer;
 }
 
 .card-container {
@@ -370,6 +409,13 @@ label {
   transform: translateX(20px);
 }
 
+.form-row-inline {
+  display: flex;
+  padding: 12px 0px;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .header-button-wrapper {
   position: relative;
 }
@@ -515,12 +561,22 @@ label {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 99;
+  min-width: 200px;
   max-height: 80vh;
-  max-width: 95vw;
+  max-width: 80vw;
   background-color: var(--background-color);
-  border: solid 1px var(--border-color);
-  border-radius: var(--border-radius);
+  border-radius: 20px;
   padding: 10px 25px 25px 25px;
+}
+
+.modal .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.modal .modal-cta {
+  width: 100%;
 }
 
 .modal-header-wrapper {
@@ -534,6 +590,7 @@ label {
   max-height: calc(100% - 50px);
   overflow-x: hidden;
   overflow-y: scroll;
+  padding: 12px 6px;
 }
 
 #word-details-modal {
@@ -590,6 +647,11 @@ label {
 
 #alert-modal #alert-modal-close-button svg path {
   fill: white;
+}
+
+#quiz-modal {
+  width: 350px;
+  max-width: 80%;
 }
 
 #navbar-logo {
@@ -944,7 +1006,7 @@ th {
   min-width: calc(100% - 8px);
 }
 
-.noselect, .border-button, .transparent-button, .button-transparent, .icon-button, .interactive-word-container p, .nav-item, .nav-submenu-container {
+.noselect, .primary-button, .solid-button, .border-button, .transparent-button, .button-transparent, .icon-button, .close-button, .interactive-word-container p, .nav-item, .nav-submenu-container {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -959,8 +1021,9 @@ th {
 :root {
   --background-color: #f8f9fa;
   --border-color: rgb(204, 204, 204);
-  --border-radius: 5px;
+  --border-radius: 20px;
   --primary-color: #471cff;
+  --primary-color-hover: #452aee;
   --primary-color-opaque: #461cffbf;
   --gray-dark: rgba(89, 89, 89, 1);
   --gray-medium: rgba(127, 127, 127, 1);
@@ -974,6 +1037,7 @@ th {
   --green-opaque: rgba(138, 201, 38, 0.5);
   --font-size-small: 0.9rem;
   --font-size-regular: 1rem;
+  --font-primary: "Manjari", Helvetica, sans-serif;
   /* Color references:
   https://coolors.co/palette/ff595e-ffca3a-8ac926-1982c4-6a4c93
   https://coolors.co/palette/595959-7f7f7f-a5a5a5-cccccc-f2f2f2

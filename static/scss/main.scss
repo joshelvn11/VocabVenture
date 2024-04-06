@@ -21,8 +21,9 @@
 :root {
   --background-color: #f8f9fa;
   --border-color: rgb(204, 204, 204);
-  --border-radius: 5px;
+  --border-radius: 20px;
   --primary-color: #471cff;
+  --primary-color-hover: #452aee;
   --primary-color-opaque: #461cffbf;
   --gray-dark: rgba(89, 89, 89, 1);
   --gray-medium: rgba(127, 127, 127, 1);
@@ -36,6 +37,7 @@
   --green-opaque: rgba(138, 201, 38, 0.5);
   --font-size-small: 0.9rem;
   --font-size-regular: 1rem;
+  --font-primary: "Manjari", Helvetica, sans-serif;
   /* Color references:
   https://coolors.co/palette/ff595e-ffca3a-8ac926-1982c4-6a4c93
   https://coolors.co/palette/595959-7f7f7f-a5a5a5-cccccc-f2f2f2
