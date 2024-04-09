@@ -29,9 +29,4 @@ urlpatterns = [
     path('api/jobs/update-streaks', views.job_update_user_streaks, name="job_update_user_streaks")
     ## --------------------------------------------------------------- PWA URLS
     #path('offline/', cache_page(settings.PWA_APP_NAME)(pwa_views.OfflineView.as_view())),
-
-
-    # path('api/words/sets/add'),
-    # path('api/words/sets/update'),  
-   ## path('api/words/<int:word_id>', WordUkrEngUpdateView.as_view(), name='word_update'), 
 ]

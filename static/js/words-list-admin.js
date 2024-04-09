@@ -90,6 +90,13 @@ function showAdminEditModal(wordId) {
 
   adminEditModal.removeClass("hidden");
   backgroundOverlay.removeClass("hidden");
+
+  backgroundOverlay.off("click");
+
+  backgroundOverlay.on("click", () => {
+    adminEditModal.addClass("hidden");
+    backgroundOverlay.addClass("hidden");
+  });
 }
 
 function closeAdminEditModal() {
