@@ -26,7 +26,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www
+            cd /var/www/vocabventure
             git pull
             pip install -r requirements.txt
             ./manage.py migrate
