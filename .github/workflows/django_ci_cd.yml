@@ -26,9 +26,8 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/vocabventure
+            cd /var/www/vocabventure/VocabVenture
             git pull
-            pip install -r requirements.txt
             ./manage.py migrate
             ./manage.py collectstatic --noinput
             sudo systemctl restart gunicorn
