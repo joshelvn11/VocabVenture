@@ -19,7 +19,7 @@ jobs:
         run: |
           cd /var/www/vocabventure/VocabVenture
           source venv/bin/activate
-          pip install -r rnts.txt
+          pip install -r requirements.txt
 
       - name: Deploy to Ubuntu Server
         uses: appleboy/ssh-action@master
