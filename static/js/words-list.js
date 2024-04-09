@@ -112,7 +112,6 @@ fetch("/api/words/list")
   .then((data) => {
     wordData = data.data;
     console.log("Loaded word data from API");
-    console.log(wordData);
   });
 
 // ------------------------------------------------------------------------- User Modal Functions

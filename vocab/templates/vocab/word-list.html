@@ -32,9 +32,11 @@
             <div class="progress-bar-container">
                 <div class="progress-bar-wrapper">
                     <div class="progress-bar">
-                    <div class="progress-bar-fill orange" style="width: 50%;"></div>
+                    <div class="progress-bar-fill {{ word.word_total_score_color }}" style="width: {{ word.word_total_score }}%;"></div>
                     </div>
-                    <p class="progress-bar-percentage">50%</p>
+                    <p class="progress-bar-percentage">
+                        {{ word.word_total_score }}% 
+                    </p>
                 </div>
             </div>
             {% endif %}

@@ -145,7 +145,6 @@ def word_sets(request):
 
     return render(request, "vocab/word-sets.html", {"word_sets": word_sets})
 
-
 def set_list(request, set_slug):
     """
     Renders a table of words contained with the word set specified in the URL
@@ -160,6 +159,21 @@ def set_list(request, set_slug):
     # Extract the WORD_UKR_ENG objects from the queryset
     words = [junction.word for junction in words_in_set]
 
+    if request.user.is_authenticated:
+    # Iterate over each word and find the relevant score
+        for word in words:
+            try:
+                # Attempt to fetch the related word score
+                word_score = WORD_UKR_ENG_SCORES.objects.get(user=request.user, word=word)
+                
+                # Append the score to the word object
+                word.word_total_score = word_score.word_total_score
+                word.word_total_score_color = get_score_color(word_score.word_total_score)
+            except WORD_UKR_ENG_SCORES.DoesNotExist:
+                # Set a default of zero
+                word.word_total_score = 0
+                word.word_total_score_color = get_score_color(0)
+
     # Get all set objects
     sets = WORD_SET.objects.all()
 
@@ -170,6 +184,8 @@ def set_list(request, set_slug):
 def word_list_ukr_eng(request):
     words =  WORD_UKR_ENG.objects.all()
     sets = WORD_SET.objects.all()
+
+
 
     return render(request, "vocab/word-list.html", {"words": words, "sets": sets},)
 
