@@ -12,6 +12,10 @@ import os
 import logging
 from .models import WORD_SET, WORD_UKR_ENG, WORD_SET_JUNCTION_UKR_ENG, WORD_UKR_ENG_SCORES, SET_UKR_ENG_SCORES, USER_UKR_ENG_META, USER_UKR_ENG_TEST_LOG
 from .serializers import WordUkrEngSerializer, SetUkrEngSerializer
+from dotenv import load_dotenv
+
+# Load env variables
+load_dotenv()
 
 # Create or get a logger
 logger = logging.getLogger(__name__)  

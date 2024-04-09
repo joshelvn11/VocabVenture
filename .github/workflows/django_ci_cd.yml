@@ -28,6 +28,7 @@ jobs:
           script: |
             cd /var/www/vocabventure/VocabVenture
             git pull
+            source venv/bin/activate
             ./manage.py migrate
             ./manage.py collectstatic --noinput
             sudo systemctl restart gunicorn
