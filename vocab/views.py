@@ -332,11 +332,6 @@ def get_word_list(request):
 
         # Retrieve all WORD_UKR_ENG_SCORES objects for the current user and the words retrieved above
         word_scores = WORD_UKR_ENG_SCORES.objects.filter(user=request.user, word__in=words).select_related('word')
-    
-    else:
-        # If the user is not authenticated, you might want to handle it differently
-        # For example, you could set 'word_scores_map' to None or an empty dictionary
-        word_scores_map = None
 
     # Create a dictionary for sending
     data = []
@@ -612,16 +607,22 @@ def updateUserWordScore(request):
                             word_score.word_flashcard_eng_ukr_score += increment_value
                             if word_score.word_flashcard_eng_ukr_score > 100:
                                 word_score.word_flashcard_eng_ukr_score = 100
+                            if word_score.word_flashcard_eng_ukr_score < 0:
+                                word_score.word_flashcard_eng_ukr_score = 0
                             word_score.save()
                         case "word_flashcard_ukr_eng_score":
                             word_score.word_flashcard_ukr_eng_score += increment_value
                             if word_score.word_flashcard_ukr_eng_score > 100:
                                 word_score.word_flashcard_ukr_eng_score = 100
+                            if word_score.word_flashcard_ukr_eng_score < 0:
+                                word_score.word_flashcard_ukr_eng_score = 0
                             word_score.save()
                         case "word_spelling_eng_ukr_score":
                             word_score.word_spelling_eng_ukr_score += increment_value
                             if word_score.word_spelling_eng_ukr_score > 100:
                                 word_score.word_spelling_eng_ukr_score = 100
+                            if word_score.word_spelling_eng_ukr_score < 0:
+                                word_score.word_spelling_eng_ukr_score = 0
                             word_score.save()
                 
                 # Update the word total score
