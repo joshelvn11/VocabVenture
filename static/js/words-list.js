@@ -219,7 +219,7 @@ function loadUsageExamples(wordObject) {
   for (let [index, usageExample] of usageExamplesObject.entries()) {
     // Create the example element
     let exampleElement = $(`
-      <div class="card word-detail-card align-center justify-center usage-example">
+      <div class="grid-card sm-col-12 word-detail-card usage-example">
         <div class="card-content">
           <div class="card-title">Usage Example ${index + 1}</div>
           <div class="usage-example-container"></div>

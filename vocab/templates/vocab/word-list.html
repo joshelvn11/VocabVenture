@@ -17,8 +17,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="card-container">
-    <div class="intro-card col-lg-4 col-md-6 col-sm-12 clickable">
+<div class="card-container-grid">
+    <div class="grid-card intro-card sm-col-12 md-col-6 lg-col-4 clickable">
         <button class="close-button-white">x</button>
         <div class="card-content">
           <p>Here you can see all the words in this set followed by some basic information and your overall progress
@@ -29,7 +29,7 @@
         </div>
     </div>
     {% for word in words %}
-    <div class="card word-card col-lg-4 col-md-6 col-sm-12 clickable" word-id="{{word.word_id}}">
+    <div class="grid-card sm-col-12 md-col-6 lg-col-4 word-card clickable" word-id="{{word.word_id}}">
         <div class="card-content">
             <h3 class="set-title">{{ word.word_ukrainian }}</h3>
             <div>
@@ -68,8 +68,8 @@
         </div>
     </div>
     <div class="modal-content-wrapper">
-        <div id="details-card-container" class="card-container">
-            <div class="card word-detail-card col-lg-6 col-sm-12 align-center justify-center">  
+        <div id="details-card-container" class="card-container-grid">
+            <div class="grid-card sm-col-12 md-col-6 word-detail-card">  
                 <div class="card-content"">
                     <div class="card-title">Ukrainian</div>
                     <div class="word-detail-content">
@@ -77,7 +77,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card word-detail-card col-lg-6 col-sm-12 align-center justify-center">  
+            <div class="grid-card sm-col-12 md-col-6 word-detail-card">  
                 <div class="card-content"">
                     <div class="card-title">English</div>
                     <div class="word-detail-content">
@@ -85,7 +85,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card word-detail-card col-lg-6 col-sm-12 align-center justify-center">  
+            <div class="grid-card sm-col-12 md-col-6 word-detail-card">  
                 <div class="card-content"">
                     <div class="card-title">Pronounciation</div>
                     <div class="word-detail-content">
@@ -93,7 +93,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card word-detail-card col-lg-6 col-sm-12 align-center justify-center">  
+            <div class="grid-card sm-col-12 md-col-6 word-detail-card">  
                 <div class="card-content"">
                     <div class="card-title">Romanization</div>
                     <div class="word-detail-content">
@@ -101,7 +101,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card word-detail-card col-lg-6 col-sm-12 align-center justify-center">  
+            <div class="grid-card sm-col-12 md-col-6 word-detail-card">  
                 <div class="card-content">
                     <div class="card-title">Word Scores</div>
                     <div class="word-detail-content flex-wrap gap-12">
@@ -141,7 +141,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card word-detail-card col-lg-6 col-sm-12 align-center justify-center">  
+            <div class="grid-card sm-col-12 md-col-6 word-detail-card">  
                 <div class="card-content">
                     <div class="card-title">Definition</div>
                     <div class="word-detail-content">
@@ -149,15 +149,15 @@
                     </div>
                 </div>
             </div>
-            <div class="card word-detail-card align-center justify-center">  
-                <div class="card-content"">
+            <div class="grid-card sm-col-12 word-detail-card">  
+                <div class="card-content">
                     <div class="card-title">Explanation</div>
                     <div class="word-detail-content">
                         <p class="font-size-large" id="word-explain">Content</p>
                     </div>
                 </div>
             </div>
-            <div class="intro-card word-detail-card clickable">
+            <div class="grid-card sm-col-12 intro-card word-detail-card">
                 <button class="close-button-white">x</button>
                 <div class="card-content">
                   <p>Below you can see actual usage examples of this word in a sentence.

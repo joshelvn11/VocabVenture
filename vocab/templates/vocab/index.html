@@ -3,7 +3,7 @@
 {% block content %}
 {% if user.is_authenticated %}
 <div class="card-container-grid">
-    <div class="grid-card full-width">
+    <div class="grid-card sm-col-12 intro-card">
         <div class="row">
             <p>Welcome to VocabVenture! Here on the home screen you can see your overall progress across the app.
             </p>
@@ -17,31 +17,31 @@
             </ul>
         </div>
     </div>
-    <div class="grid-card">
+    <div class="grid-card sm-col-12 md-col-6">
         <div class="row">
             <p>Flashcard Current Streak</p>
             <p>{{ streak_flashcards_current }} Days</p>
         </div>
     </div>
-    <div class="grid-card">
+    <div class="grid-card sm-col-12 md-col-6">
         <div class="row">
             <p>Flashcard Longest Streak</p>
             <p>{{ streak_flashcards_longest }} Days</p>
         </div>
     </div>
-    <div class="grid-card">
+    <div class="grid-card sm-col-12 md-col-6">
         <div class="row">
             <p>Spelling Current Streak</p>
             <p>{{ streak_spelling_current }} Days</p>
         </div>
     </div>
-    <div class="grid-card">
+    <div class="grid-card sm-col-12 md-col-6">
         <div class="row">
             <p>Spelling Longest Streak</p>
             <p>{{ streak_spelling_longest }} Days</p>
         </div>
     </div>
-    <div class="grid-card full-width">
+    <div class="grid-card sm-col-12">
         <div class="row">
             <p>Word Progress</p>
             <p></p>
@@ -57,7 +57,7 @@
               </div>
         </div>
     </div>
-    <div class="grid-card">
+    <div class="grid-card sm-col-12 md-col-6">
         <div class="row">
             <p>New</p>
             <p>{{ new_words }} ({{ new_of_scored_percent }}%)</p>
@@ -70,7 +70,7 @@
               </div>
         </div>
     </div>
-    <div class="grid-card">
+    <div class="grid-card sm-col-12 md-col-6">
         <div class="row">
             <p>Learning</p>
             <p>{{ learning_words }} ({{ learning_of_scored_percent }}%)</p>
@@ -83,7 +83,7 @@
               </div>
         </div>
     </div>
-    <div class="grid-card">
+    <div class="grid-card sm-col-12 md-col-6">
         <div class="row">
             <p>Learnt</p>
             <p>{{ learnt_words }} ({{ learnt_of_scored_percent }}%)</p>
@@ -96,7 +96,7 @@
               </div>
         </div>
     </div>
-    <div class="grid-card">
+    <div class="grid-card sm-col-12 md-col-6">
         <div class="row">
             <p>Mastered</p>
             <p>{{ mastered_words }} ({{ mastered_of_scored_percent }}%)</p>

@@ -156,11 +156,13 @@
   padding: 0 5px;
 }
 
-.card, .intro-card {
-  position: relative;
+.card, .intro-card, .grid-card {
   display: flex;
-  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: relative;
   padding: 24px 24px;
+  gap: 12px;
   background-color: white;
   border: solid 1px var(--border-color);
   border-radius: var(--border-radius);
@@ -169,44 +171,77 @@
   transition: all 0.3s ease-in-out;
 }
 
-.card .set-title, .intro-card .set-title {
+.card .set-title, .intro-card .set-title, .grid-card .set-title {
   margin: 0;
 }
 
-.card.align-center, .align-center.intro-card {
-  align-items: center;
-}
-
-.card.justify-center, .justify-center.intro-card {
-  justify-content: center;
-}
-
-.card.clickable, .clickable.intro-card {
+.card.clickable, .clickable.intro-card, .clickable.grid-card {
   cursor: pointer;
 }
 
-.card.clickable:hover, .clickable.intro-card:hover {
+.card.clickable:hover, .clickable.intro-card:hover, .clickable.grid-card:hover {
   border: solid 1px var(--primary-color);
 }
 
-.card.col-lg-4, .col-lg-4.intro-card {
-  width: calc((100% / 3) - 70px);
+.card-container-grid {
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 12px;
 }
 
-.card.col-lg-6, .col-lg-6.intro-card {
-  width: calc((100% / 2) - 55px);
+.grid-card p {
+  margin: 0;
 }
 
-@media only screen and (max-width: 992px) {
-  .card.col-md-6, .col-md-6.intro-card {
-    width: calc((100% / 2) - 60px);
+.grid-card .row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.grid-card.sm-col-12 {
+  grid-column: span 12;
+}
+
+.grid-card.sm-col-6 {
+  grid-column: span 6;
+}
+
+@media only screen and (min-width: 768px) {
+  .grid-card.md-col-12 {
+    grid-column: span 12;
+  }
+  .grid-card.md-col-6 {
+    grid-column: span 6;
+  }
+  .grid-card.md-col-4 {
+    grid-column: span 4;
   }
 }
 
-@media only screen and (max-width: 768px) {
-  .card.col-sm-12, .col-sm-12.intro-card {
-    width: 100%;
+@media only screen and (min-width: 992px) {
+  .grid-card.lg-col-12 {
+    grid-column: span 12;
   }
+  .grid-card.lg-col-6 {
+    grid-column: span 6;
+  }
+  .grid-card.lg-col-4 {
+    grid-column: span 4;
+  }
+}
+
+.intro-card {
+  background-color: var(--primary-color);
+  color: white;
+  align-items: center;
+}
+
+.card-title-fixed {
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }
 
 .card-content {
@@ -222,114 +257,6 @@
   width: 100%;
   align-items: center;
   justify-content: center;
-}
-
-.progress-bar-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.progress-bar-wrapper {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-}
-
-.progress-bar {
-  position: relative;
-  flex-grow: 1;
-  height: 8px;
-  margin-right: 14px;
-  background-color: var(--gray-opaque);
-  border-radius: var(--border-radius);
-}
-
-.progress-bar-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  border-radius: var(--border-radius);
-}
-
-.progress-bar-fill.red {
-  background-color: red;
-}
-
-.progress-bar-fill.orange {
-  background-color: orange;
-}
-
-.progress-bar-fill.yellow {
-  background-color: gold;
-}
-
-.progress-bar-fill.green {
-  background-color: green;
-}
-
-.progress-bar-fill.purple {
-  background-color: var(--primary-color);
-}
-
-.progress-bar-title {
-  margin: -6px 12px 0 0;
-}
-
-.progress-bar-percentage {
-  margin: -3px 0 0 0;
-}
-
-.card-container-grid {
-  max-width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-@media only screen and (max-width: 768px) {
-  .card-container-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.grid-card {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  position: relative;
-  padding: 24px 24px;
-  gap: 12px;
-  background-color: white;
-  border: solid 1px var(--border-color);
-  border-radius: var(--border-radius);
-  -webkit-box-shadow: 0px 0px 5px 0.8px var(--gray-opaque);
-  box-shadow: 0px 0px 5px 0.8px var(--gray-opaque);
-  transition: all 0.3s ease-in-out;
-}
-
-@media only screen and (min-width: 768px) {
-  .grid-card.full-width {
-    grid-column: 1 / 3;
-  }
-}
-
-.grid-card p {
-  margin: 0;
-}
-
-.grid-card .row {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.intro-card {
-  background-color: var(--primary-color);
-  color: white;
-  align-items: center;
 }
 
 .font-size-regular {
@@ -857,6 +784,64 @@ label {
     top: 20px;
     right: 20px;
   }
+}
+
+.progress-bar-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.progress-bar-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.progress-bar {
+  position: relative;
+  flex-grow: 1;
+  height: 8px;
+  margin-right: 14px;
+  background-color: var(--gray-opaque);
+  border-radius: var(--border-radius);
+}
+
+.progress-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: var(--border-radius);
+}
+
+.progress-bar-fill.red {
+  background-color: red;
+}
+
+.progress-bar-fill.orange {
+  background-color: orange;
+}
+
+.progress-bar-fill.yellow {
+  background-color: gold;
+}
+
+.progress-bar-fill.green {
+  background-color: green;
+}
+
+.progress-bar-fill.purple {
+  background-color: var(--primary-color);
+}
+
+.progress-bar-title {
+  margin: -6px 12px 0 0;
+}
+
+.progress-bar-percentage {
+  margin: -3px 0 0 0;
 }
 
 #practice-page {
