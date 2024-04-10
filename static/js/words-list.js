@@ -16,6 +16,9 @@ const wordRoman = $("#word-roman");
 const wordExplain = $("#word-explain");
 const wordDefinition = $("#word-definition");
 const wordPronounceAudioButton = $("#pronounciation-audio-button");
+const flashcardProgress = $("#flashcards-progress");
+const flashcardReverseProgress = $("#flashcards-reverse-progress");
+const spellingProgress = $("#spelling-progress");
 
 // Header Button Elements
 const quizButton = $("#quiz-button");
@@ -121,6 +124,7 @@ fetch(`/api/words/list?set-id=${setId}&get-scores=true`)
 function showWordDetailsModal(wordId) {
   // Find the relevant objecty from the wordData array
   const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
+
   wordUkr.text(wordObject["word_ukrainian"]);
   wordEng.text(wordObject["word_english"]);
   wordRoman.text(wordObject["word_roman"]);
@@ -128,7 +132,41 @@ function showWordDetailsModal(wordId) {
   wordExplain.text(wordObject["word_explanation"]);
   wordDefinition.text(wordObject["word_definition"]);
 
-  console.log(wordObject["word_definition"]);
+  flashcardProgress
+    .find(".progress-bar-fill")
+    .addClass(wordObject["word_flashcard_eng_ukr_score_color"]);
+
+  flashcardProgress
+    .find(".progress-bar-fill")
+    .css("width", `${wordObject["word_flashcard_eng_ukr_score"]}%`);
+
+  flashcardProgress
+    .find(".progress-bar-percentage")
+    .text(`${wordObject["word_flashcard_eng_ukr_score"]}%`);
+
+  flashcardReverseProgress
+    .find(".progress-bar-fill")
+    .addClass(wordObject["word_flashcard_ukr_eng_score_color"]);
+
+  flashcardReverseProgress
+    .find(".progress-bar-fill")
+    .css("width", `${wordObject["word_flashcard_ukr_eng_score"]}%`);
+
+  flashcardReverseProgress
+    .find(".progress-bar-percentage")
+    .text(`${wordObject["word_flashcard_ukr_eng_score"]}%`);
+
+  spellingProgress
+    .find(".progress-bar-fill")
+    .addClass(wordObject["word_spelling_eng_ukr_score_color"]);
+
+  spellingProgress
+    .find(".progress-bar-fill")
+    .css("width", `${wordObject["word_spelling_eng_ukr_score"]}%`);
+
+  spellingProgress
+    .find(".progress-bar-percentage")
+    .text(`${wordObject["word_spelling_eng_ukr_score"]}%`);
 
   // Load usage examples
   loadUsageExamples(wordObject);
