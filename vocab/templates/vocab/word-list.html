@@ -20,19 +20,17 @@
 <div class="card-container-grid">
     <div class="grid-card intro-card sm-col-12 md-col-6 lg-col-4 clickable">
         <button class="close-button-white">x</button>
-        <div class="card-content">
           <p>Here you can see all the words in this set followed by some basic information and your overall progress
             for that word.
             <br><br>Click on any word to see more detailed information about that word or click on the quiz button above 
             to start practicing the words in this set.
           </p>
-        </div>
     </div>
     {% for word in words %}
-    <div class="grid-card sm-col-12 md-col-6 lg-col-4 word-card clickable" word-id="{{word.word_id}}">
+    <div class="word-card grid-card sm-col-12 md-col-6 lg-col-4 word-card clickable" word-id="{{word.word_id}}">
         <div class="card-content">
             <h3 class="set-title">{{ word.word_ukrainian }}</h3>
-            <div>
+            <div class="details">
                 <p><strong>English: </strong>{{ word.word_english }}</p>
                 <p><strong>Romanization: </strong>{{ word.word_roman }}</p>
                 <p><strong>Pronounciation: </strong>{{ word.word_pronounciation }}</p>
@@ -70,7 +68,7 @@
     <div class="modal-content-wrapper">
         <div id="details-card-container" class="card-container-grid">
             <div class="grid-card sm-col-12 md-col-6 word-detail-card">  
-                <div class="card-content"">
+                <div class="card-content">
                     <div class="card-title">Ukrainian</div>
                     <div class="word-detail-content">
                         <p class="font-size-xxlarge" id="word-ukr">Content</p>
@@ -78,7 +76,7 @@
                 </div>
             </div>
             <div class="grid-card sm-col-12 md-col-6 word-detail-card">  
-                <div class="card-content"">
+                <div class="card-content">
                     <div class="card-title">English</div>
                     <div class="word-detail-content">
                         <p class="font-size-xxlarge" id="word-eng">Content</p>
@@ -159,12 +157,11 @@
             </div>
             <div class="grid-card sm-col-12 intro-card word-detail-card">
                 <button class="close-button-white">x</button>
-                <div class="card-content">
-                  <p>Below you can see actual usage examples of this word in a sentence.
+                <p>
+                    Below you can see actual usage examples of this word in a sentence.
                     <br><br>Click on any word in the sentence to see contextual information about the word or click on the
                     "Show Translation" button to see the translation of the sentence.
-                  </p>
-                </div>
+                </p>
             </div>
         </div>
     </div>

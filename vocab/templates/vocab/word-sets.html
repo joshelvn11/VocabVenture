@@ -14,7 +14,7 @@
     </div>
   </div>
     {% for word_set in word_sets %}
-      <a href="/words/sets/{{ word_set.set_slug }}" class="grid-card sm-col-12 md-col-6 lg-col-4 clickable">
+      <a href="/words/sets/{{ word_set.set_slug }}" class="set-card grid-card sm-col-12 md-col-6 lg-col-4 clickable">
         <div class="card-content">
           <h3 class="set-title">{{ word_set.set_title }}</h3>
           {% if user.is_authenticated %}

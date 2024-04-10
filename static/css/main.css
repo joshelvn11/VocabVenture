@@ -232,10 +232,37 @@
   }
 }
 
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+}
+
 .intro-card {
   background-color: var(--primary-color);
   color: white;
   align-items: center;
+}
+
+.set-card .card-content {
+  gap: 12px;
+}
+
+.word-card .card-content {
+  justify-content: space-between;
+}
+
+.word-card .details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.word-detail-card {
+  min-height: 150px;
 }
 
 .card-title-fixed {
@@ -244,19 +271,12 @@
   left: 20px;
 }
 
-.card-content {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 20px;
-  width: 100%;
-}
-
 .word-detail-content {
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: center;
+  flex-grow: 1;
 }
 
 .font-size-regular {
