@@ -18,6 +18,16 @@
 
 {% block content %}
 <div class="card-container">
+    <div class="intro-card col-lg-4 col-md-6 col-sm-12 clickable">
+        <button class="close-button-white">x</button>
+        <div class="card-content">
+          <p>Here you can see all the words in this set followed by some basic information and your overall progress
+            for that word.
+            <br><br>Click on any word to see more detailed information about that word or click on the quiz button above 
+            to start practicing the words in this set.
+          </p>
+        </div>
+    </div>
     {% for word in words %}
     <div class="card word-card col-lg-4 col-md-6 col-sm-12 clickable" word-id="{{word.word_id}}">
         <div class="card-content">
@@ -145,6 +155,15 @@
                     <div class="word-detail-content">
                         <p class="font-size-large" id="word-explain">Content</p>
                     </div>
+                </div>
+            </div>
+            <div class="intro-card word-detail-card clickable">
+                <button class="close-button-white">x</button>
+                <div class="card-content">
+                  <p>Below you can see actual usage examples of this word in a sentence.
+                    <br><br>Click on any word in the sentence to see contextual information about the word or click on the
+                    "Show Translation" button to see the translation of the sentence.
+                  </p>
                 </div>
             </div>
         </div>

@@ -4,6 +4,15 @@
 {% block content %}
 
 <div class="card-container">
+  <div class="intro-card col-lg-4 col-md-6 col-sm-12 clickable">
+    <button class="close-button-white">x</button>
+    <div class="card-content">
+      <p>Here on the Word Sets page you can see colletions of words followed by your overall progress in that set
+        a breakdown of your progress by quiz type in that set.
+        <br><br>Click on any set to view the words in that set and start learning!
+      </p>
+    </div>
+  </div>
     {% for word_set in word_sets %}
       <a href="/words/sets/{{ word_set.set_slug }}" class="card col-lg-4 col-md-6 col-sm-12 clickable">
         <div class="card-content">

@@ -184,3 +184,10 @@
     justify-content: space-between;
   }
 }
+
+.intro-card {
+  @extend .card;
+  background-color: var(--primary-color);
+  color: white;
+  align-items: center;
+}

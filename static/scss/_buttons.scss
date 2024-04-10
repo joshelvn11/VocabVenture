@@ -99,8 +99,16 @@
   font-family: var(--font-primary);
   font-size: 22px;
   padding-top: 4px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
 
   &:hover {
     cursor: pointer;
   }
+}
+
+.close-button-white {
+  @extend .close-button;
+  color: white;
 }

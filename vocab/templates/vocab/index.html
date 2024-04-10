@@ -3,6 +3,20 @@
 {% block content %}
 {% if user.is_authenticated %}
 <div class="card-container-grid">
+    <div class="grid-card full-width">
+        <div class="row">
+            <p>Welcome to VocabVenture! Here on the home screen you can see your overall progress across the app.
+            </p>
+        </div>
+        <div class="row">
+            <ul>
+                <li>Below are your streaks and show how many days in a row you have taken flashcard and spelling tests.</li>
+                <li>Next is your overall progress and shows how many words are in each learning stage of all the words in the app.</li>
+                <li>Below that is breakdown of how many words are in each learning stage of the words you have started learning.</li>
+                <li>Click on the "Words" menu item in the menu to start learning!</li>
+            </ul>
+        </div>
+    </div>
     <div class="grid-card">
         <div class="row">
             <p>Flashcard Current Streak</p>
