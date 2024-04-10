@@ -91,7 +91,47 @@
                     </div>
                 </div>
             </div>
-            <div class="card word-detail-card align-center justify-center">  
+            <div class="card word-detail-card col-lg-6 col-sm-12 align-center justify-center">  
+                <div class="card-content">
+                    <div class="card-title">Word Scores</div>
+                    <div class="word-detail-content flex-wrap gap-12">
+                        <div id="flashcards-progress" class="progress-bar-container">
+                            <p class="progress-bar-title">Flash Cards</p>
+                            <div class="progress-bar-wrapper">
+                              <div class="progress-bar">
+                                <div class="progress-bar-fill" style="width: 0%;"></div>
+                              </div>
+                              <p class="progress-bar-percentage">
+                                0%
+                              </p>
+                            </div>
+                          </div>
+                          <div id="flashcards-progress" class="progress-bar-container">
+                            <p class="progress-bar-title">Flash Cards (Reverse)</p>
+                            <div class="progress-bar-wrapper">
+                              <div class="progress-bar">
+                                <div class="progress-bar-fill" style="width: 0%;"></div>
+                              </div>
+                              <p class="progress-bar-percentage">
+                                0%
+                              </p>
+                            </div>
+                          </div>
+                          <div id="flashcards-progress" class="progress-bar-container">
+                            <p class="progress-bar-title">Spelling</p>
+                            <div class="progress-bar-wrapper">
+                              <div class="progress-bar">
+                                <div class="progress-bar-fill" style="width: 0%;"></div>
+                              </div>
+                              <p class="progress-bar-percentage">
+                                0%
+                              </p>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card word-detail-card col-lg-6 col-sm-12 align-center justify-center">  
                 <div class="card-content">
                     <div class="card-title">Definition</div>
                     <div class="word-detail-content">
@@ -195,6 +235,10 @@
 
 {% endblock %}
 {% block scripts %}
+<script type="text/javascript">
+    // Pass the set id to the JavaScript
+    let setId = {{ set_id }};
+</script>
 <script type="text/javascript" src="{% static '/js/words-list.js' %}"></script>
 {% if user.is_superuser %}
 <script type="text/javascript" src="{% static '/js/words-list-admin.js' %}"></script>

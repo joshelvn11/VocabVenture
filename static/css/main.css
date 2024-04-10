@@ -1019,6 +1019,14 @@ th {
   background-color: var(--border-color);
 }
 
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.gap-12 {
+  gap: 12px;
+}
+
 :root {
   --background-color: #f8f9fa;
   --border-color: rgb(204, 204, 204);

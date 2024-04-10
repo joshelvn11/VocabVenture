@@ -304,13 +304,61 @@ def practice_spelling(request):
 ## --------------------------------------------------------------------------  GET Word List 
 
 def get_word_list(request):
+
+    # Get the set_id URL param
+    set_id = request.GET.get('set-id', None)
+
+    get_scores = request.GET.get('get-scores', 'false')
+    
+    # Convert to boolean
+    get_scores = get_scores.lower() in ['true', '1', 't', 'y', 'yes']
+
+    # Initialise variable to hold word objects
+    words = None
+
     # Retrieve the query set
-    words = WORD_UKR_ENG.objects.all()
+    if set_id is None:
+        words = WORD_UKR_ENG.objects.all()
+    else:
+        word_set = get_object_or_404(WORD_SET, set_id=set_id)
+
+        # Query the junction table for words in the set and retrieve the word objects
+        words_in_set = WORD_SET_JUNCTION_UKR_ENG.objects.filter(word_set=word_set).select_related('word')
+
+        # Extract the WORD_UKR_ENG objects from the queryset
+        words = [junction.word for junction in words_in_set]
+
+    if request.user.is_authenticated:
+
+        # Retrieve all WORD_UKR_ENG_SCORES objects for the current user and the words retrieved above
+        word_scores = WORD_UKR_ENG_SCORES.objects.filter(user=request.user, word__in=words).select_related('word')
+    
+    else:
+        # If the user is not authenticated, you might want to handle it differently
+        # For example, you could set 'word_scores_map' to None or an empty dictionary
+        word_scores_map = None
 
     # Create a dictionary for sending
     data = []
 
     for word in words:
+
+        # Get the user's scores for the current word if the get-scores URL param is true
+        if get_scores:
+            try:
+                word_flashcard_ukr_eng_score = word_scores.get(word=word).word_flashcard_ukr_eng_score
+                word_flashcard_eng_ukr_score = word_scores.get(word=word).word_flashcard_eng_ukr_score
+                word_spelling_eng_ukr_score = word_scores.get(word=word).word_spelling_eng_ukr_score
+            except WORD_UKR_ENG_SCORES.DoesNotExist:
+                word_flashcard_ukr_eng_score = 0
+                word_flashcard_eng_ukr_score = 0
+                word_spelling_eng_ukr_score = 0
+            
+            # Get the score colors
+            word_flashcard_ukr_eng_score_color = get_score_color(word_flashcard_ukr_eng_score)
+            word_flashcard_eng_ukr_score_color = get_score_color(word_flashcard_eng_ukr_score)
+            word_spelling_eng_ukr_score_color = get_score_color(word_spelling_eng_ukr_score)
+
         word_data = {
             "word_id": word.word_id,
             "word_ukrainian": word.word_ukrainian,
@@ -326,6 +374,12 @@ def get_word_list(request):
             "word_aspect_examples": word.word_aspect_examples,
             "word_declension": word.word_declension,
             "word_conjugation": word.word_conjugation,
+            "word_flashcard_ukr_eng_score": word_flashcard_ukr_eng_score,
+            "word_flashcard_ukr_eng_score_color": word_flashcard_ukr_eng_score_color,
+            "word_flashcard_eng_ukr_score": word_flashcard_eng_ukr_score,
+            "word_flashcard_eng_ukr_score_color": word_flashcard_eng_ukr_score_color,
+            "word_spelling_eng_ukr_score": word_spelling_eng_ukr_score,
+            "word_spelling_eng_ukr_score_color": word_spelling_eng_ukr_score_color,
         }
 
         data.append(word_data)

@@ -103,7 +103,7 @@ spellingLink.on("click", function (event) {
 // ------------------------------------------------------------------------- FETCH Word Data
 
 // Fetch the word data from the api
-fetch("/api/words/list")
+fetch(`/api/words/list?set-id=${setId}&get-scores=true`)
   .then((response) => {
     if (!response.ok) {
       console.log("Error in response");
@@ -112,6 +112,7 @@ fetch("/api/words/list")
   })
   .then((data) => {
     wordData = data.data;
+    console.log(wordData);
     console.log("Loaded word data from API");
   });
 
