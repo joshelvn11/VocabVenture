@@ -14,6 +14,7 @@ const wordEng = $("#word-eng");
 const wordPronounce = $("#word-pronounce");
 const wordRoman = $("#word-roman");
 const wordExplain = $("#word-explain");
+const wordDefinition = $("#word-definition");
 const wordPronounceAudioButton = $("#pronounciation-audio-button");
 
 // Header Button Elements
@@ -124,6 +125,9 @@ function showWordDetailsModal(wordId) {
   wordRoman.text(wordObject["word_roman"]);
   wordPronounce.text(wordObject["word_pronounciation"]);
   wordExplain.text(wordObject["word_explanation"]);
+  wordDefinition.text(wordObject["word_definition"]);
+
+  console.log(wordObject["word_definition"]);
 
   // Load usage examples
   loadUsageExamples(wordObject);
