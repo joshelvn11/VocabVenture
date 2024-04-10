@@ -559,6 +559,8 @@ def deleteWordSetJunction(request, set_id, word_id):
 @api_view(["PUT"])
 def updateUserWordScore(request):
 
+    print("Updating word scores")
+
     # Check if the user is authenticated
     if request.user.is_authenticated:
         # Get the user making the request
@@ -771,8 +773,13 @@ def update_test_log(user, quiz_type):
 
     # If the entry does not exist, create a new one
     if not test_log_exists:
+
+        # Find the related USER_META object
+        user_meta = USER_UKR_ENG_META.objects.get(user=user)
+
         test_log = USER_UKR_ENG_TEST_LOG.objects.create(
             user=user,
+            user_meta=user_meta,
             quiz_type=quiz_type
         )
         test_log.save()
