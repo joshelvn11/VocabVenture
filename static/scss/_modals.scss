@@ -104,4 +104,10 @@
 #quiz-modal {
   width: 350px;
   max-width: 80%;
+
+  #wrapper {
+    max-height: calc(100vh - 300px);
+    overflow-y: scroll;
+    margin-bottom: 12px;
+  }
 }

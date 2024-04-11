@@ -245,6 +245,8 @@
   background-color: var(--primary-color);
   color: white;
   align-items: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 .set-card .card-content {
@@ -613,6 +615,12 @@ label {
 #quiz-modal {
   width: 350px;
   max-width: 80%;
+}
+
+#quiz-modal #wrapper {
+  max-height: calc(100vh - 300px);
+  overflow-y: scroll;
+  margin-bottom: 12px;
 }
 
 #navbar-logo {
