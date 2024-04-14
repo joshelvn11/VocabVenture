@@ -26,7 +26,8 @@ urlpatterns = [
     path('api/words/sets/<int:set_id>/add/<int:word_id>', views.postWordSetJunction, name="postWordSetJunction"),
     path('api/words/sets/<int:set_id>/delete/<int:word_id>', views.deleteWordSetJunction, name="deleteWordSetJunction"),
     path('api/scores/update', views.updateUserWordScore, name="updateUserWordScore"),
-    path('api/jobs/update-streaks', views.job_update_user_streaks, name="job_update_user_streaks")
+    path('api/jobs/update-streaks', views.job_update_user_streaks, name="job_update_user_streaks"),
+    path('api/user-meta/update-hint', views.update_user_meta_hint, name="update_user_meta_hint"),
     ## --------------------------------------------------------------- PWA URLS
     #path('offline/', cache_page(settings.PWA_APP_NAME)(pwa_views.OfflineView.as_view())),
 ]

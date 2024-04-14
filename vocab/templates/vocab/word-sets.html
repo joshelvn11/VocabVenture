@@ -4,15 +4,17 @@
 {% block content %}
 
 <div class="card-container-grid">
-  <div class="grid-card sm-col-12 md-col-6 lg-col-4 intro-card">
-    <button class="close-button-white">x</button>
-    <div class="card-content">
-      <p>Here on the Word Sets page you can see colletions of words followed by your overall progress in that set
-        a breakdown of your progress by quiz type in that set.
-        <br><br>Click on any set to view the words in that set and start learning!
-      </p>
+    {% if user_meta.tour_message_word_sets_one %}
+    <div class="grid-card sm-col-12 md-col-6 lg-col-4 intro-card">
+      <button class="close-button-white tour-hint-close-button" hint-id="tour_message_word_sets_one">x</button>
+      <div class="card-content">
+        <p>Here on the Word Sets page you can see colletions of words followed by your overall progress in that set
+          a breakdown of your progress by quiz type in that set.
+          <br><br>Click on any set to view the words in that set and start learning!
+        </p>
+      </div>
     </div>
-  </div>
+    {% endif %}
     {% for word_set in word_sets %}
       <a href="/words/sets/{{ word_set.set_slug }}" class="set-card grid-card sm-col-12 md-col-6 lg-col-4 clickable">
         <div class="card-content">

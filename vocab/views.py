@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.db.models import Prefetch
 from rest_framework.response import Response
@@ -35,24 +35,38 @@ logger.addHandler(file_handler)
 
 def home(request):
 
+    # Redirect the user to the login page if they are not authenticated
+    if not request.user.is_authenticated:
+        return redirect('/accounts/login/')
+
     context = {}
 
     if request.user.is_authenticated:
 
         try:
-            # Get the user's streak data if it exists
-            streak_data = USER_UKR_ENG_META.objects.get(user=request.user)
-            streak_flashcards_longest = streak_data.streak_flashcards_longest
-            streak_flashcards_current = streak_data.streak_flashcards_current
-            streak_spelling_longest = streak_data.streak_spelling_longest
-            streak_spelling_current = streak_data.streak_spelling_current
+            # Get the user meta object
+            user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
         except USER_UKR_ENG_META.DoesNotExist:
-            # Get the user's streak data does not exist create default values
-            streak_flashcards_longest = 0
-            streak_flashcards_current = 0
-            streak_spelling_longest = 0
-            streak_spelling_current = 0
-        
+            # Create a user meta object of the user if one does not exist
+            user_meta = USER_UKR_ENG_META.objects.create(
+                user=request.user,
+                streak_flashcards_longest=0,
+                streak_flashcards_current=0,
+                streak_spelling_longest=0,
+                streak_spelling_current=0,
+                tour_message_home_one=True,
+                tour_message_word_sets_one=True,
+                tour_message_word_list_one=True,
+                tour_message_word_details_one=True
+            )
+
+            user_meta.save()
+
+        # Get the streak data
+        streak_flashcards_longest = user_meta.streak_flashcards_longest
+        streak_flashcards_current = user_meta.streak_flashcards_current
+        streak_spelling_longest = user_meta.streak_spelling_longest
+        streak_spelling_current = user_meta.streak_spelling_current
 
         # Get the total number of words
         words_count = WORD_UKR_ENG.objects.count()
@@ -105,7 +119,8 @@ def home(request):
             "mastered_words": mastered_words,
             "mastered_of_total_percent": mastered_of_total_percent,
             "mastered_of_total_bar_length": mastered_of_total_bar_length,
-            "mastered_of_scored_percent": mastered_of_scored_percent
+            "mastered_of_scored_percent": mastered_of_scored_percent,
+            "user_meta": user_meta,
         }
 
     return render(request, "vocab/index.html", context)
@@ -114,41 +129,53 @@ def word_sets(request):
     """
     Renders a page of avaialble word sets ordered by the specified set_order field.
     """
+
+    # Redirect the user to the login page if they are not authenticated
+    if not request.user.is_authenticated:
+        return redirect('/accounts/login/')
+
     # Retrieve WORD_SET objects, ordered by 'set_order'
     word_sets = WORD_SET.objects.order_by("set_order")
 
-    if request.user.is_authenticated:
-        # Iterate over each word_set to find and append the related SET_UKR_ENG_SCORES fields
-        for word_set in word_sets:
-            try:
-                # Attempt to find the related SET_UKR_ENG_SCORES object for the current user
-                set_score = SET_UKR_ENG_SCORES.objects.get(user=request.user, word_set=word_set)
-                # Manually append fields from set_score to word_set
-                word_set.set_total_score = set_score.set_total_score
-                word_set.set_total_score_color = get_score_color(set_score.set_total_score)
-                word_set.set_flashcard_eng_ukr_score = set_score.set_flashcard_eng_ukr_score
-                word_set.set_flashcard_eng_ukr_score_color = get_score_color(set_score.set_flashcard_eng_ukr_score)
-                word_set.set_flashcard_ukr_eng_score = set_score.set_flashcard_ukr_eng_score
-                word_set.set_flashcard_ukr_eng_score_color = get_score_color(set_score.set_flashcard_ukr_eng_score)
-                word_set.set_spelling_eng_ukr_score = set_score.set_spelling_eng_ukr_score
-                word_set.set_spelling_eng_ukr_score_color = get_score_color(set_score.set_spelling_eng_ukr_score)
-            except SET_UKR_ENG_SCORES.DoesNotExist:
-                # If no related set_score is found, you can set default values or skip
-                word_set.set_total_score = 0
-                word_set.set_total_score_color = get_score_color(0)
-                word_set.set_flashcard_eng_ukr_score = 0
-                word_set.set_flashcard_eng_ukr_score_color = get_score_color(0)
-                word_set.set_flashcard_ukr_eng_score = 0
-                word_set.set_flashcard_ukr_eng_score_color = get_score_color(0)
-                word_set.set_spelling_eng_ukr_score = 0
-                word_set.set_spelling_eng_ukr_score_color = get_score_color(0)
 
-    return render(request, "vocab/word-sets.html", {"word_sets": word_sets})
+    # Get the user meta
+    user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
+
+    # Iterate over each word_set to find and append the related SET_UKR_ENG_SCORES fields
+    for word_set in word_sets:
+        try:
+            # Attempt to find the related SET_UKR_ENG_SCORES object for the current user
+            set_score = SET_UKR_ENG_SCORES.objects.get(user=request.user, word_set=word_set)
+            # Manually append fields from set_score to word_set
+            word_set.set_total_score = set_score.set_total_score
+            word_set.set_total_score_color = get_score_color(set_score.set_total_score)
+            word_set.set_flashcard_eng_ukr_score = set_score.set_flashcard_eng_ukr_score
+            word_set.set_flashcard_eng_ukr_score_color = get_score_color(set_score.set_flashcard_eng_ukr_score)
+            word_set.set_flashcard_ukr_eng_score = set_score.set_flashcard_ukr_eng_score
+            word_set.set_flashcard_ukr_eng_score_color = get_score_color(set_score.set_flashcard_ukr_eng_score)
+            word_set.set_spelling_eng_ukr_score = set_score.set_spelling_eng_ukr_score
+            word_set.set_spelling_eng_ukr_score_color = get_score_color(set_score.set_spelling_eng_ukr_score)
+        except SET_UKR_ENG_SCORES.DoesNotExist:
+            # If no related set_score is found, you can set default values or skip
+            word_set.set_total_score = 0
+            word_set.set_total_score_color = get_score_color(0)
+            word_set.set_flashcard_eng_ukr_score = 0
+            word_set.set_flashcard_eng_ukr_score_color = get_score_color(0)
+            word_set.set_flashcard_ukr_eng_score = 0
+            word_set.set_flashcard_ukr_eng_score_color = get_score_color(0)
+            word_set.set_spelling_eng_ukr_score = 0
+            word_set.set_spelling_eng_ukr_score_color = get_score_color(0)
+
+    return render(request, "vocab/word-sets.html", {"word_sets": word_sets, "user_meta": user_meta})
 
 def set_list(request, set_slug):
     """
     Renders a table of words contained with the word set specified in the URL
     """
+
+    # Redirect the user to the login page if they are not authenticated
+    if not request.user.is_authenticated:
+        return redirect('/accounts/login/')
 
     # Retrieve the word set using the slug
     word_set = get_object_or_404(WORD_SET, set_slug=set_slug)
@@ -173,23 +200,36 @@ def set_list(request, set_slug):
                 # Set a default of zero
                 word.word_total_score = 0
                 word.word_total_score_color = get_score_color(0)
+    
+    # Get the user Meta
+    try:
+        user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
+    except USER_UKR_ENG_META.DoesNotExist:
+        pass
 
     # Get all set objects
     sets = WORD_SET.objects.all()
 
-    context = {'words': words, 'set_title': word_set.set_title, 'set_id': word_set.set_id, "sets": sets}
+    context = {'words': words, 'set_title': word_set.set_title, 'set_id': word_set.set_id, "sets": sets, "user_meta": user_meta}
 
     return render(request, "vocab/word-list.html", context,)
 
 def word_list_ukr_eng(request):
+
+    # Redirect the user to the login page if they are not authenticated
+    if not request.user.is_authenticated:
+        return redirect('/accounts/login/')
+
     words =  WORD_UKR_ENG.objects.all()
     sets = WORD_SET.objects.all()
-
-
 
     return render(request, "vocab/word-list.html", {"words": words, "sets": sets},)
 
 def practice_flashcards(request):
+
+    # Redirect the user to the login page if they are not authenticated
+    if not request.user.is_authenticated:
+        return redirect('/accounts/login/')
     
     # Get the set pass a URL paramater
     set_param = request.GET.get('set', '1')
@@ -251,6 +291,10 @@ def practice_flashcards(request):
     return render(request, "vocab/flashcards.html", context)
 
 def practice_spelling(request):
+
+    # Redirect the user to the login page if they are not authenticated
+    if not request.user.is_authenticated:
+        return redirect('/accounts/login/')
 
     # Get the set pass a URL paramater
     set_param = request.GET.get('set', '1')
@@ -704,6 +748,40 @@ def job_update_user_streaks(request):
     except Exception as e:
         logger.error(f"An error occurred while updating user streaks: {str(e)}")
         return Response({"status": "ERROR", "message": "An error occurred while processing the request"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+## --------------------------------------------------------------------------  PATCH Update User Meta Hints
+
+@api_view(["GET"])
+def update_user_meta_hint(request):
+
+    if request.user.is_authenticated:
+        # Get the set_id URL param
+        hint_id = request.GET.get('hint-id', None)
+
+        # Get the user meta object for the current user
+        user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
+
+        # Return an error if the url is missing the hint id parameter
+        if hint_id is None:
+            return Response({"status": "ERROR", "message": "Missing hint-id paramter"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Update the relevant user hint status
+        if hint_id == "tour_message_home_one":
+            user_meta.tour_message_home_one = False
+        elif hint_id == "tour_message_word_sets_one":
+            user_meta.tour_message_word_sets_one = False
+        elif hint_id == "tour_message_word_list_one":
+            user_meta.tour_message_word_list_one = False
+        elif hint_id == "tour_message_word_details_one":
+            user_meta.tour_message_word_details_one = False
+        else:
+            # Return an error if the id is not recognized
+            return Response({"status": "ERROR", "message": "Hint id not recognized"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user_meta.save()
+        return Response({"status": "SUCCESS", "message": "Updated hint status successfully"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"status": "ERROR", "message": "User must be logged in to update hint status"}, status=status.HTTP_401_UNAUTHORIZED)
 
 def update_set_scores(word_sets, user):
 

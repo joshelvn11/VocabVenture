@@ -11,21 +11,21 @@
 <button id="add-word-button" class="border-button">Add Word</button>
 <button id="test-alert" class="border-button">Test Alert</button>
 {% endif %}
-{% if user.is_authenticated %}
 <div id="quiz-button" class="solid-button">Quiz</div>
-{% endif %}
 {% endblock %}
 
 {% block content %}
 <div class="card-container-grid">
-    <div class="grid-card intro-card sm-col-12 md-col-6 lg-col-4 clickable">
-        <button class="close-button-white">x</button>
+    {% if user_meta.tour_message_word_list_one %}
+    <div class="grid-card intro-card sm-col-12 md-col-6 lg-col-4">
+        <button class="close-button-white tour-hint-close-button" hint-id="tour_message_word_list_one">x</button>
           <p>Here you can see all the words in this set followed by some basic information and your overall progress
             for that word.
             <br><br>Click on any word to see more detailed information about that word or click on the quiz button above 
             to start practicing the words in this set.
           </p>
     </div>
+    {% endif %}
     {% for word in words %}
     <div class="word-card grid-card sm-col-12 md-col-6 lg-col-4 word-card clickable" word-id="{{word.word_id}}">
         <div class="card-content">
@@ -155,14 +155,16 @@
                     </div>
                 </div>
             </div>
+            {% if user_meta.tour_message_word_details_one %}
             <div class="grid-card sm-col-12 intro-card word-detail-card">
-                <button class="close-button-white">x</button>
+                <button class="close-button-white tour-hint-close-button" hint-id="tour_message_word_details_one">x</button>
                 <p>
                     Below you can see actual usage examples of this word in a sentence.
                     <br><br>Click on any word in the sentence to see contextual information about the word or click on the
                     "Show Translation" button to see the translation of the sentence.
                 </p>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>

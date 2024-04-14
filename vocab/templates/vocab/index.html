@@ -1,9 +1,12 @@
 {% extends 'base.html' %} 
+{% load static %} 
 {% block page_title %}Home{% endblock %}
 {% block content %}
 {% if user.is_authenticated %}
 <div class="card-container-grid">
+    {% if user_meta.tour_message_home_one %}
     <div class="grid-card sm-col-12 intro-card">
+        <button class="close-button-white tour-hint-close-button" hint-id="tour_message_home_one">x</button>
         <div class="row">
             <p>Welcome to VocabVenture! Here on the home screen you can see your overall progress across the app.
             </p>
@@ -17,6 +20,7 @@
             </ul>
         </div>
     </div>
+    {% endif %}
     <div class="grid-card sm-col-12 md-col-6">
         <div class="row">
             <p>Flashcard Current Streak</p>
@@ -113,4 +117,6 @@
 {% else %}
 <p>Please login or create an account to see your stats and access aditional features</p>
 {% endif %}
+{% endblock %}
+{% block scripts %}
 {% endblock %}

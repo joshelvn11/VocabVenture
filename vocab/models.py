@@ -130,10 +130,10 @@ class USER_UKR_ENG_META(models.Model):
     streak_flashcards_current = models.IntegerField(default=0)
     streak_spelling_longest = models.IntegerField(default=0)
     streak_spelling_current = models.IntegerField(default=0)
-    tour_message_home_one= models.BooleanField(default=True)
-    tour_message_word_sets_one= models.BooleanField(default=True)
-    tour_message_word_list_one= models.BooleanField(default=True)
-    tour_message_word_details_one= models.BooleanField(default=True)
+    tour_message_home_one = models.BooleanField(default=True)
+    tour_message_word_sets_one = models.BooleanField(default=True)
+    tour_message_word_list_one = models.BooleanField(default=True)
+    tour_message_word_details_one = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "User Meta"
