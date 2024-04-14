@@ -774,6 +774,8 @@ def update_user_meta_hint(request):
             user_meta.tour_message_word_list_one = False
         elif hint_id == "tour_message_word_details_one":
             user_meta.tour_message_word_details_one = False
+        elif hint_id == "tour_message_quiz_one":
+            user_meta.tour_message_quiz_one = False
         else:
             # Return an error if the id is not recognized
             return Response({"status": "ERROR", "message": "Hint id not recognized"}, status=status.HTTP_400_BAD_REQUEST)
