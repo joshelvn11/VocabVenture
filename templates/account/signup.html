@@ -1,34 +1,47 @@
-{% extends "base.html" %}  {# Changed to match login.html's base template #}
-
 {% load i18n %}
-{% load account socialaccount %}  {# Assuming allauth is equivalent to account and socialaccount #}
+{% load account socialaccount %}
+{% load static %}
+{% load pwa %}
+{% url 'account_login' as login_url %}
 
-{% block page_title %}Sign Up{% endblock %}
-
-{% block page_buttons %} 
-<a href="{% url 'account_login' %}"><button>Sign In</button></a>  {# Changed to offer a link to the login page #}
-{% endblock %}
-
-{% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 mt-3 offset-md-2">
-            <p>Join VocabVenture today, you can sign up for an account here,
-                if you already have an account you can 
-                <a href="{% url 'account_login' %}">login here</a>.</p>  {# Adjusted text to match the context of signing up #}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>VocabVenture</title>
+        <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+        {% progressive_web_app_meta %}
+    </head>
+    <body>
+        <div class="root-container">
+            <div id="fullscreen-card-container">
+                <div id="login-signup-card" class="card">
+                    <div class="row">
+                        <h1>Sign Up</h1>
+                    </div>
+                    <div class="row">
+                        <div>
+                            <p>New to VocabVenture? Sign up for an account now and get learning!</a></p>
+                        </div>
+                    </div>
+                    <div class="row width-100">
+                        <form class="login" method="POST" action="{% url 'account_signup' %}">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            {% if redirect_field_value %}
+                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                            {% endif %}
+                            <button class="solid-button" type="submit">{% trans "Sign Up" %}</button>
+                        </form>
+                    </div>
+                    <div class="row width-100">
+                        <a id="signup-link" href="{{ login_url }}">Have an account? Login here</a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8 mt-3 offset-md-2">
-            <form class="signup" method="POST" action="{% url 'account_signup' %}">  {# Changed form class to "signup" for clarity #}
-                {% csrf_token %}
-                {{ form.as_p }}
-                {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-                {% endif %}
-                <button class="btn btn-signup right" type="submit">{% trans "Sign Up" %}</button>  {# Changed button text to "Sign Up" #}
-            </form>
-        </div>
-    </div>
-</div>
-{% endblock %}
+    </body>
+</html>
+

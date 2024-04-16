@@ -509,6 +509,48 @@ label {
   padding: 0;
 }
 
+#login-signup-card {
+  width: 350px;
+  max-width: 70vw;
+}
+
+#login-signup-card p {
+  margin: 6px 0;
+}
+
+.login {
+  width: 100%;
+  padding: 0 2px;
+}
+
+.login #id_login #id_password {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.login button {
+  width: 100%;
+}
+
+.login .errorlist {
+  list-style: none;
+  padding: 0 24px 0 0;
+}
+
+.login .errorlist li {
+  color: red;
+}
+
+#signup-link {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+#signup-link:hover {
+  color: var(--primary-color);
+}
+
 .background-overlay {
   position: fixed;
   left: 0;
@@ -1053,6 +1095,14 @@ th {
   gap: 12px;
 }
 
+.width-100 {
+  width: 100%;
+}
+
+.display-block {
+  display: block;
+}
+
 :root {
   --background-color: #f8f9fa;
   --border-color: rgb(204, 204, 204);
@@ -1155,6 +1205,15 @@ a {
   padding: 25px 25px;
   overflow-y: scroll;
   background-color: var(--gray-opaque);
+}
+
+#fullscreen-card-container {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: scroll;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .loader {

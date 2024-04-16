@@ -6,6 +6,7 @@
 @import "forms";
 @import "header";
 @import "interactive-words";
+@import "login";
 @import "modals";
 @import "navbar";
 @import "progress-bar";
@@ -118,6 +119,15 @@ a {
   padding: 25px 25px;
   overflow-y: scroll;
   background-color: var(--gray-opaque);
+}
+
+#fullscreen-card-container {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: scroll;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .loader {
