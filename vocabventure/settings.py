@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import dj_database_url
 from dotenv import load_dotenv
+import sys
 
 if os.path.isfile('env.py'):
     import env
@@ -120,6 +121,9 @@ DATABASES = {
     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
 
+if 'test' in sys.argv:
+    # Override the DATABASE_URL for an alternative database connection
+    DATABASES['default'] = dj_database_url.parse("postgresql://vocabventure_owner:thOEjUYH42lW@ep-withered-glade-a2q3oqi5.eu-central-1.aws.neon.tech/vocabventure_test?sslmode=require")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
