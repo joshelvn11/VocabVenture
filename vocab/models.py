@@ -11,6 +11,20 @@ QUIZ_TYPE = ((0, "SPELLING"), (1, "FLASHCARD"))
 def default_english_words():
     return {"No Translation"}
 
+class ALPHABET_UKR_ENG(models.Model):
+    letter_id = models.IntegerField(unique=True)
+    letter_ukrainian = models.CharField(max_length=100)
+    letter_explanation = models.CharField(max_length=100)
+    letter_pronounciation_audio = models.URLField(null=True)
+    letter_examples = models.JSONField(null=True, editable=True)
+
+    class Meta:
+        verbose_name = "Letter (UKR/ENG)"
+        verbose_name_plural = "Alphabet (UKR/ENG)"
+
+    def __str__(self):
+        return f"[ID] {self.letter_id} [UKR] {self.letter_ukrainian}"
+
 # Model to define full list of word
 class WORD_UKR_ENG(models.Model):
     word_id = models.IntegerField(unique=True)
