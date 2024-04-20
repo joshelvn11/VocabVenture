@@ -12,7 +12,7 @@
 {% block content %}
 <div class="card-container-grid">
     {% if user_meta.tour_message_alphabet_one %}
-    <div class="grid-card intro-card sm-col-12 md-col-6 lg-col-3">
+    <div class="grid-card intro-card sm-col-6 md-col-4 lg-col-3">
         <button class="close-button-white tour-hint-close-button" hint-id="tour_message_alphabet_one">x</button>
           <p>Here you can see all the letters in the Cyrillic alphabet with an approxiamte pronouncation explantion.
             <br><br>Click on any letter to see more detailed information that letter including a pronouncation audio and practical examples.
@@ -20,7 +20,7 @@
     </div>
     {% endif %}
     {% for letter in letters %}
-    <div class="letter-card grid-card sm-col-12 md-col-6 lg-col-3 clickable" letter-id="{{letter.letter_id}}">
+    <div class="letter-card grid-card sm-col-6 md-col-4 lg-col-3 clickable" letter-id="{{letter.letter_id}}">
         <div class="card-content">
             <h3 class="set-title">{{ letter.letter_ukrainian }}</h3>
             <div class="details">
