@@ -10,6 +10,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('', include('pwa.urls')),
     ## --------------------------------------------------------------- Words URLS
+    path('alphabet', views.alphabet_list, name='alphabet_list'), 
     path('words/sets', views.word_sets, name='sets_list'), 
     path('words/sets/<slug:set_slug>', views.set_list, name='set_detail'),
     path('words/list', word_list_ukr_eng, name='word_list'),

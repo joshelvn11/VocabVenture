@@ -10,7 +10,7 @@ import json
 import random
 import os
 import logging
-from .models import WORD_SET, WORD_UKR_ENG, WORD_SET_JUNCTION_UKR_ENG, WORD_UKR_ENG_SCORES, SET_UKR_ENG_SCORES, USER_UKR_ENG_META, USER_UKR_ENG_TEST_LOG
+from .models import WORD_SET, WORD_UKR_ENG, WORD_SET_JUNCTION_UKR_ENG, WORD_UKR_ENG_SCORES, SET_UKR_ENG_SCORES, USER_UKR_ENG_META, USER_UKR_ENG_TEST_LOG, ALPHABET_UKR_ENG
 from .serializers import WordUkrEngSerializer, SetUkrEngSerializer
 from dotenv import load_dotenv
 
@@ -124,6 +124,16 @@ def home(request):
         }
 
     return render(request, "vocab/index.html", context)
+
+def alphabet_list(request):
+
+    # Redirect the user to the login page if they are not authenticated
+    if not request.user.is_authenticated:
+        return redirect('/accounts/login/')
+    
+    alphabet = ALPHABET_UKR_ENG.objects.all()
+
+    return render(request, "vocab/alphabet.html", alphabet)
 
 def word_sets(request):
     """

@@ -1,8 +1,9 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from vocab.models import USER_UKR_ENG_META, WORD_UKR_ENG, WORD_UKR_ENG_SCORES
+from vocab.models import USER_UKR_ENG_META, WORD_UKR_ENG, WORD_UKR_ENG_SCORES, ALPHABET_UKR_ENG
 from django.test.client import Client
+import json
 
 class HomeViewTests(TestCase):
     def setUp(self):
@@ -55,3 +56,24 @@ class HomeViewTests(TestCase):
     def tearDown(self):
         # Clean up after each test
         self.user.delete()
+
+class AlphabetListViewTests(TestCase):
+
+    def setUp(self):
+        # Create a user for the tests
+        self.user = User.objects.create_user(username="testuser", password="12345")
+        self.client = Client()
+
+        # Create sample alphabet data
+        sample_object = ALPHABET_UKR_ENG.objects.create(letter_id=1, 
+                                        letter_ukrainian="А", 
+                                        letter_explanation="sample explanation", 
+                                        letter_pronounciation_audio="https://s3.eu-west-1.wasabisys.com/vocabventure/text-to-speech-letters/%D0%90.m4a",
+                                        letter_examples=json.loads('{"value": null}'))
+        
+        sample_object.save()
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse('alphabet_list'))
+        self.assertRedirects(response, '/accounts/login/')
+        
