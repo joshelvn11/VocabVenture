@@ -89,6 +89,10 @@
     &.lg-col-4 {
       grid-column: span 4;
     }
+
+    &.lg-col-3 {
+      grid-column: span 3;
+    }
   }
 }
 
@@ -125,6 +129,14 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+  }
+}
+
+.letter-card {
+  min-height: 120px;
+
+  .card-content {
+    justify-content: start;
   }
 }
 

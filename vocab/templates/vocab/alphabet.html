@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %} 
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block page_title %}Alphabet{% endblock %}
+
+{% block page_buttons %}
+{% endblock %}
+
+{% block content %}
+<div class="card-container-grid">
+    {% if user_meta.tour_message_alphabet_one %}
+    <div class="grid-card intro-card sm-col-12 md-col-6 lg-col-3">
+        <button class="close-button-white tour-hint-close-button" hint-id="tour_message_alphabet_one">x</button>
+          <p>Here you can see all the letters in the Cyrillic alphabet with an approxiamte pronouncation explantion.
+            <br><br>Click on any letter to see more detailed information that letter including a pronouncation audio and practical examples.
+          </p>
+    </div>
+    {% endif %}
+    {% for letter in letters %}
+    <div class="letter-card grid-card sm-col-12 md-col-6 lg-col-3 clickable" letter-id="{{letter.letter_id}}">
+        <div class="card-content">
+            <h3 class="set-title">{{ letter.letter_ukrainian }}</h3>
+            <div class="details">
+                <p>{{ letter.letter_explanation }}</p>
+            </div>
+        </div>
+    </div> 
+    {% endfor%}
+</div>
+
+<div id="quiz-modal" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-conent-container">
+            <button id="quiz-modal-close-button" class="close-button">x</button>
+                <div class="modal-top-content-wrapper">
+                <div class="modal-title-wrapper">
+                    <h2 class="modal-title">Quiz</h2>
+                    <div class="divider"></div>
+                </div>
+                <div id="wrapper">
+                    {% if user_meta.tour_message_quiz_one %}
+                    <div class="grid-card intro-card sm-col-12 md-col-6 lg-col-4">
+                        <button class="close-button-white tour-hint-close-button" hint-id="tour_message_quiz_one">x</button>
+                        <p>Here you can practice word using on of the available quiz formats and put your knowledge to the test.
+                            <br><br>Use the quiz type drop down to select the type of quiz you would like to use.
+                            <br><br> The practice mode toggle allows you to toggle between practice and test mode.
+                            <br><br> When practice mode is deactivated the quiz will start in test mode, which allows to you only have one 
+                            try at each questions and will gain word score points for correct answers and lose points for incorrect answers.
+                            <br><br> When practive mode is activated you can have unlimited attempts at every question until you answer correctly
+                            and you do not gain or lose any points in this mode.
+                        </p>
+                    </div>
+                    {% endif %}
+                    <div class="modal-content-wrapper">
+                        <div class="form-row-inline">
+                            <label for="quiz-type-select"">Quiz Type</label>
+                            <select id="quiz-type-select" name="quiz_type">
+                                <option value="/practice/flashcards?set={{ set_id }}">Flashcards</option>
+                                <option value="/practice/spelling?set={{ set_id }}">Spelling</option>
+                            </select>
+                        </div>
+                        <div class="form-row-inline">
+                            <label for="practice-mode-select"">Practice Mode</label>
+                            <div>
+                                <input type="checkbox" id="practice-mode-toggle" class="toggle" />
+                                <label for="practice-mode-toggle" class="toggle-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-bottom-content-wrapper">
+                <button id="start-quiz-button" class="solid-button modal-cta">Start Quiz</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+{% endblock %}

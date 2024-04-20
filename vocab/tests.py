@@ -74,6 +74,17 @@ class AlphabetListViewTests(TestCase):
         sample_object.save()
 
     def test_redirect_if_not_logged_in(self):
-        response = self.client.get(reverse('alphabet_list'))
+        response = self.client.get(reverse('alphabet'))
         self.assertRedirects(response, '/accounts/login/')
-        
+
+    def test_logged_in_uses_correct_template(self):
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get(reverse('alphabet'))
+
+        # Check the user is logged in
+        self.assertEqual(str(response.context['user']), 'testuser')
+        # Check a "success" response is returned
+        self.assertEqual(response.status_code, 200)
+        # Check the correct template is being used
+        self.assertTemplateUsed(response, 'vocab/alphabet.html')
+

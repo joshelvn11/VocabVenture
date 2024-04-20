@@ -131,9 +131,15 @@ def alphabet_list(request):
     if not request.user.is_authenticated:
         return redirect('/accounts/login/')
     
-    alphabet = ALPHABET_UKR_ENG.objects.all()
+    # Get the user meta
+    user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
+    
+    # Get the alphabet objects
+    letters = ALPHABET_UKR_ENG.objects.all()
 
-    return render(request, "vocab/alphabet.html", alphabet)
+    context = {"letters": letters}
+
+    return render(request, "vocab/alphabet.html", context)
 
 def word_sets(request):
     """

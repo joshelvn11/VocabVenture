@@ -230,6 +230,9 @@
   .grid-card.lg-col-4 {
     grid-column: span 4;
   }
+  .grid-card.lg-col-3 {
+    grid-column: span 3;
+  }
 }
 
 .card-content {
@@ -261,6 +264,14 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.letter-card {
+  min-height: 120px;
+}
+
+.letter-card .card-content {
+  justify-content: start;
 }
 
 .word-detail-card {
