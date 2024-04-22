@@ -41,87 +41,73 @@ def home(request):
 
     context = {}
 
-    if request.user.is_authenticated:
+    try:
+        # Get the user meta object
+        user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
+    except USER_UKR_ENG_META.DoesNotExist:
+        # Create a a user meta object if one does not exist
+        create_user_meta(request.user)
 
-        try:
-            # Get the user meta object
-            user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
-        except USER_UKR_ENG_META.DoesNotExist:
-            # Create a user meta object of the user if one does not exist
-            user_meta = USER_UKR_ENG_META.objects.create(
-                user=request.user,
-                streak_flashcards_longest=0,
-                streak_flashcards_current=0,
-                streak_spelling_longest=0,
-                streak_spelling_current=0,
-                tour_message_home_one=True,
-                tour_message_word_sets_one=True,
-                tour_message_word_list_one=True,
-                tour_message_word_details_one=True
-            )
+    # Get the streak data
+    streak_flashcards_longest = user_meta.streak_flashcards_longest
+    streak_flashcards_current = user_meta.streak_flashcards_current
+    streak_spelling_longest = user_meta.streak_spelling_longest
+    streak_spelling_current = user_meta.streak_spelling_current
 
-            user_meta.save()
+    # Get the total number of words
+    words_count = WORD_UKR_ENG.objects.count()
 
-        # Get the streak data
-        streak_flashcards_longest = user_meta.streak_flashcards_longest
-        streak_flashcards_current = user_meta.streak_flashcards_current
-        streak_spelling_longest = user_meta.streak_spelling_longest
-        streak_spelling_current = user_meta.streak_spelling_current
+    # Retrieve all word scores for the current user
+    word_scores = WORD_UKR_ENG_SCORES.objects.filter(user=request.user)
+    word_scores_length = len(word_scores)
 
-        # Get the total number of words
-        words_count = WORD_UKR_ENG.objects.count()
+    if (word_scores_length == 0):
+        word_scores_length = 1
 
-        # Retrieve all word scores for the current user
-        word_scores = WORD_UKR_ENG_SCORES.objects.filter(user=request.user)
-        word_scores_length = len(word_scores)
+    # Create stats for each learning stage
+    new_words = len([score for score in word_scores if 0 <= score.word_total_score < 20])
+    new_of_total_percent = round(((new_words / words_count) * 100), 2)
+    new_of_total_bar_length = new_of_total_percent
+    new_of_scored_percent = round(((new_words / word_scores_length) * 100), 2)
 
-        if (word_scores_length == 0):
-            word_scores_length = 1
+    learning_words = len([score for score in word_scores if 20 <= score.word_total_score < 60])
+    learning_of_total_percent = round(((learning_words / words_count) * 100), 2)
+    learning_of_total_bar_length = learning_of_total_percent + new_of_total_bar_length
+    learning_of_scored_percent = round(((learning_words / word_scores_length) * 100), 2)
 
-        # Create stats for each learning stage
-        new_words = len([score for score in word_scores if 0 <= score.word_total_score < 20])
-        new_of_total_percent = round(((new_words / words_count) * 100), 2)
-        new_of_total_bar_length = new_of_total_percent
-        new_of_scored_percent = round(((new_words / word_scores_length) * 100), 2)
+    learnt_words = len([score for score in word_scores if 60 <= score.word_total_score < 100])
+    learnt_of_total_percent = round(((learnt_words / words_count) * 100), 2)
+    learnt_of_total_bar_length = learnt_of_total_percent + learning_of_total_bar_length
+    learnt_of_scored_percent = round(((learnt_words / word_scores_length) * 100), 2)
 
-        learning_words = len([score for score in word_scores if 20 <= score.word_total_score < 60])
-        learning_of_total_percent = round(((learning_words / words_count) * 100), 2)
-        learning_of_total_bar_length = learning_of_total_percent + new_of_total_bar_length
-        learning_of_scored_percent = round(((learning_words / word_scores_length) * 100), 2)
+    mastered_words = len([score for score in word_scores if score.word_total_score == 100])
+    mastered_of_total_percent = round(((mastered_words / words_count) * 100), 2)
+    mastered_of_total_bar_length = mastered_of_total_percent + learnt_of_total_bar_length
+    mastered_of_scored_percent = round(((mastered_words / word_scores_length) * 100), 2)
 
-        learnt_words = len([score for score in word_scores if 60 <= score.word_total_score < 100])
-        learnt_of_total_percent = round(((learnt_words / words_count) * 100), 2)
-        learnt_of_total_bar_length = learnt_of_total_percent + learning_of_total_bar_length
-        learnt_of_scored_percent = round(((learnt_words / word_scores_length) * 100), 2)
-
-        mastered_words = len([score for score in word_scores if score.word_total_score == 100])
-        mastered_of_total_percent = round(((mastered_words / words_count) * 100), 2)
-        mastered_of_total_bar_length = mastered_of_total_percent + learnt_of_total_bar_length
-        mastered_of_scored_percent = round(((mastered_words / word_scores_length) * 100), 2)
-
-        context = {
-            "streak_flashcards_longest": streak_flashcards_longest,
-            "streak_flashcards_current": streak_flashcards_current,
-            "streak_spelling_longest": streak_spelling_longest,
-            "streak_spelling_current": streak_spelling_current,
-            "new_words": new_words,
-            "new_of_total_percent": new_of_total_percent,
-            "new_of_scored_percent": new_of_scored_percent,
-            "new_of_total_bar_length": new_of_total_bar_length,
-            "learning_words": learning_words,
-            "learning_of_total_percent": learning_of_total_percent,
-            "learning_of_total_bar_length": learning_of_total_bar_length,
-            "learning_of_scored_percent": learning_of_scored_percent,
-            "learnt_words": learnt_words,
-            "learnt_of_total_percent": learnt_of_total_percent,
-            "learnt_of_total_bar_length": learnt_of_total_bar_length,
-            "learnt_of_scored_percent": learnt_of_scored_percent,
-            "mastered_words": mastered_words,
-            "mastered_of_total_percent": mastered_of_total_percent,
-            "mastered_of_total_bar_length": mastered_of_total_bar_length,
-            "mastered_of_scored_percent": mastered_of_scored_percent,
-            "user_meta": user_meta,
-        }
+    context = {
+        "streak_flashcards_longest": streak_flashcards_longest,
+        "streak_flashcards_current": streak_flashcards_current,
+        "streak_spelling_longest": streak_spelling_longest,
+        "streak_spelling_current": streak_spelling_current,
+        "new_words": new_words,
+        "new_of_total_percent": new_of_total_percent,
+        "new_of_scored_percent": new_of_scored_percent,
+        "new_of_total_bar_length": new_of_total_bar_length,
+        "learning_words": learning_words,
+        "learning_of_total_percent": learning_of_total_percent,
+        "learning_of_total_bar_length": learning_of_total_bar_length,
+        "learning_of_scored_percent": learning_of_scored_percent,
+        "learnt_words": learnt_words,
+        "learnt_of_total_percent": learnt_of_total_percent,
+        "learnt_of_total_bar_length": learnt_of_total_bar_length,
+        "learnt_of_scored_percent": learnt_of_scored_percent,
+        "mastered_words": mastered_words,
+        "mastered_of_total_percent": mastered_of_total_percent,
+        "mastered_of_total_bar_length": mastered_of_total_bar_length,
+        "mastered_of_scored_percent": mastered_of_scored_percent,
+        "user_meta": user_meta,
+    }
 
     return render(request, "vocab/index.html", context)
 
@@ -196,7 +182,12 @@ def word_sets(request):
 
 def set_list(request, set_slug):
     """
-    Renders a table of words contained with the word set specified in the URL
+    Renders a page that displays a table of words belonging to a specific word set. 
+    The word set is determined by the 'set_slug' parameter in the URL. 
+    This view checks if the user is authenticated; if not, it redirects them to the login page. 
+    Once authenticated, it retrieves the specified word set and the words associated with it, 
+    along with any scores the user has for those words. 
+    It then passes this data to the template for rendering.
     """
 
     # Redirect the user to the login page if they are not authenticated
@@ -212,26 +203,26 @@ def set_list(request, set_slug):
     # Extract the WORD_UKR_ENG objects from the queryset
     words = [junction.word for junction in words_in_set]
 
-    if request.user.is_authenticated:
     # Iterate over each word and find the relevant score
-        for word in words:
-            try:
-                # Attempt to fetch the related word score
-                word_score = WORD_UKR_ENG_SCORES.objects.get(user=request.user, word=word)
-                
-                # Append the score to the word object
-                word.word_total_score = word_score.word_total_score
-                word.word_total_score_color = get_score_color(word_score.word_total_score)
-            except WORD_UKR_ENG_SCORES.DoesNotExist:
-                # Set a default of zero
-                word.word_total_score = 0
-                word.word_total_score_color = get_score_color(0)
+    for word in words:
+        try:
+            # Attempt to fetch the related word score
+            word_score = WORD_UKR_ENG_SCORES.objects.get(user=request.user, word=word)
+      
+            # Append the score to the word object
+            word.word_total_score = word_score.word_total_score
+            word.word_total_score_color = get_score_color(word_score.word_total_score)
+        except WORD_UKR_ENG_SCORES.DoesNotExist:
+            # Set a default of zero
+            word.word_total_score = 0
+            word.word_total_score_color = get_score_color(0)
     
-    # Get the user Meta
     try:
+        # Get the user Meta
         user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
     except USER_UKR_ENG_META.DoesNotExist:
-        pass
+        # Create a user meta object if one does not exist
+        create_user_meta(request.user)
 
     # Get all set objects
     sets = WORD_SET.objects.all()
@@ -952,3 +943,18 @@ def get_score_color(score):
     elif score == 100:
         return "purple"
     
+def create_user_meta(user):
+# Create a user meta object of the user if one does not exist
+    user_meta = USER_UKR_ENG_META.objects.create(
+        user=user,
+        streak_flashcards_longest=0,
+        streak_flashcards_current=0,
+        streak_spelling_longest=0,
+        streak_spelling_current=0,
+        tour_message_home_one=True,
+        tour_message_word_sets_one=True,
+        tour_message_word_list_one=True,
+        tour_message_word_details_one=True
+    )
+
+    user_meta.save()
