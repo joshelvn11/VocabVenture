@@ -132,7 +132,7 @@ def alphabet_list(request):
         return redirect('/accounts/login/')
     
     # Get the user meta
-    user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
+    #user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
     
     # Get the alphabet objects
     letters = ALPHABET_UKR_ENG.objects.all()

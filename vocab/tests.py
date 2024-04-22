@@ -74,12 +74,12 @@ class AlphabetListViewTests(TestCase):
         sample_object.save()
 
     def test_redirect_if_not_logged_in(self):
-        response = self.client.get(reverse('alphabet'))
+        response = self.client.get(reverse('alphabet_list'))
         self.assertRedirects(response, '/accounts/login/')
 
     def test_logged_in_uses_correct_template(self):
         self.client.login(username='testuser', password='12345')
-        response = self.client.get(reverse('alphabet'))
+        response = self.client.get(reverse('alphabet_list'))
 
         # Check the user is logged in
         self.assertEqual(str(response.context['user']), 'testuser')
@@ -87,4 +87,16 @@ class AlphabetListViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         # Check the correct template is being used
         self.assertTemplateUsed(response, 'vocab/alphabet.html')
+
+    def test_context_data(self):
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get(reverse('alphabet_list'))
+
+        # Check if the context data contains alphabet data
+        self.assertTrue('letters' in response.context)
+        # Check if the alphabet data is not empty
+        self.assertTrue(response.context['letters'].exists())
+
+    def tearDown(self):
+        self.user.delete()
 

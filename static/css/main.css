@@ -1215,7 +1215,7 @@ a {
   height: 100%;
   padding: 25px 25px;
   overflow-y: scroll;
-  background-color: var(--gray-opaque);
+  background-color: rgba(236, 236, 236, 0.5);
 }
 
 #fullscreen-card-container {
