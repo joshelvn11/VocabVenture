@@ -24,8 +24,8 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 # Define file handler and set formatter
-file_handler = logging.FileHandler('logfile.log')
-formatter    = logging.Formatter('%(asctime)s : %(levelname)s : %(name)s : %(message)s')
+file_handler = logging.FileHandler("logfile.log")
+formatter = logging.Formatter("%(asctime)s : %(levelname)s : %(name)s : %(message)s")
 file_handler.setFormatter(formatter)
 
 # Add file handler to logger
@@ -37,7 +37,7 @@ def home(request):
 
     # Redirect the user to the login page if they are not authenticated
     if not request.user.is_authenticated:
-        return redirect('/accounts/login/')
+        return redirect("/accounts/login/")
 
     context = {}
 
@@ -193,6 +193,13 @@ def set_list(request, set_slug):
     # Redirect the user to the login page if they are not authenticated
     if not request.user.is_authenticated:
         return redirect('/accounts/login/')
+    
+    try:
+        # Get the user Meta
+        user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
+    except USER_UKR_ENG_META.DoesNotExist:
+        # Create a user meta object if one does not exist
+        create_user_meta(request.user)
 
     # Retrieve the word set using the slug
     word_set = get_object_or_404(WORD_SET, set_slug=set_slug)
@@ -216,26 +223,32 @@ def set_list(request, set_slug):
             # Set a default of zero
             word.word_total_score = 0
             word.word_total_score_color = get_score_color(0)
-    
-    try:
-        # Get the user Meta
-        user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
-    except USER_UKR_ENG_META.DoesNotExist:
-        # Create a user meta object if one does not exist
-        create_user_meta(request.user)
 
     # Get all set objects
     sets = WORD_SET.objects.all()
 
-    context = {'words': words, 'set_title': word_set.set_title, 'set_id': word_set.set_id, "sets": sets, "user_meta": user_meta}
+    context = {
+        "words": words, 
+        "set_title": word_set.set_title, 
+        "set_id": word_set.set_id, 
+        "sets": sets, 
+        "user_meta": user_meta
+    }
 
-    return render(request, "vocab/word-list.html", context,)
+    return render(request, "vocab/word-list.html", context)
 
 def word_list_ukr_eng(request):
+    """
+    Renders a page that lists all words and word sets available in the application.
+
+    This view first checks if the user is authenticated. If not, it redirects them to the login page.
+    Once authenticated, it retrieves all words and word sets from the database and passes 
+    them to the template for rendering.
+    """
 
     # Redirect the user to the login page if they are not authenticated
     if not request.user.is_authenticated:
-        return redirect('/accounts/login/')
+        return redirect("/accounts/login/")
 
     words =  WORD_UKR_ENG.objects.all()
     sets = WORD_SET.objects.all()
@@ -243,12 +256,22 @@ def word_list_ukr_eng(request):
     return render(request, "vocab/word-list.html", {"words": words, "sets": sets},)
 
 def practice_flashcards(request):
+    """
+    Renders the flashcards practice page for the user.
+
+    This view function checks if the user is authenticated and redirects them to the login page if not.
+    It then retrieves the word set specified by the 'set' URL parameter, defaulting to '1' if not provided.
+    For each word in the set, it generates two flashcards: one for translating from Ukrainian to English,
+    and another for translating from English to Ukrainian. Each flashcard contains the word's ID, a title
+    indicating the direction of translation, the question (word in the source language), the answer (word in
+    the target language), and additional information such as pronunciation, audio, and romanization where applicable.
+    """
 
     # Redirect the user to the login page if they are not authenticated
     if not request.user.is_authenticated:
-        return redirect('/accounts/login/')
+        return redirect("/accounts/login/")
     
-    # Get the set pass a URL paramater
+    # Get the set id from the URL paramater
     set_param = request.GET.get('set', '1')
 
     # Retrieve the word set using the slug
@@ -275,7 +298,10 @@ def practice_flashcards(request):
             "question-pronounciation-audio": word.word_pronounciation_audio,
             "question-roman": word.word_roman,
             "answer": word.word_english,
-            "score": "word_flashcard_ukr_eng_score",
+            "score": "word_flashcard_ukr_eng_score", 
+            # The score value is used by the JS on the client side so 
+            # it knows what score value should be updated when 
+            # making a POST score update request
         }
 
         flashcard_list.append(flashcard_ukr_to_eng)
