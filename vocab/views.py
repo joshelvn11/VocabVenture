@@ -126,6 +126,12 @@ def home(request):
     return render(request, "vocab/index.html", context)
 
 def alphabet_list(request):
+    """
+    Renders a page displaying the Ukrainian-English alphabet to the user. This view requires the user to be authenticated to access the page. 
+    If the user is not authenticated, they are redirected to the login page. 
+    
+    The view retrieves all alphabet objects from the ALPHABET_UKR_ENG model and passes them to the template for rendering.
+    """
 
     # Redirect the user to the login page if they are not authenticated
     if not request.user.is_authenticated:
@@ -143,7 +149,12 @@ def alphabet_list(request):
 
 def word_sets(request):
     """
-    Renders a page of avaialble word sets ordered by the specified set_order field.
+    Renders a page displaying available word sets to the user, with the word sets being ordered by their 'set_order' attribute. 
+    This view requires the user to be authenticated to access the page. If the user is not authenticated, 
+    they are redirected to the login page. 
+    
+    For each word set, it attempts to retrieve and append the user's scores related to that set, if available. 
+    If no scores are found for a particular set, default values are assigned.
     """
 
     # Redirect the user to the login page if they are not authenticated
@@ -153,11 +164,10 @@ def word_sets(request):
     # Retrieve WORD_SET objects, ordered by 'set_order'
     word_sets = WORD_SET.objects.order_by("set_order")
 
-
     # Get the user meta
     user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
 
-    # Iterate over each word_set to find and append the related SET_UKR_ENG_SCORES fields
+    # Iterate over each word_set to find and append the related SET_UKR_ENG_SCORES fields to the word_set object
     for word_set in word_sets:
         try:
             # Attempt to find the related SET_UKR_ENG_SCORES object for the current user

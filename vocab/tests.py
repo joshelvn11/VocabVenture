@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from vocab.models import USER_UKR_ENG_META, WORD_UKR_ENG, WORD_UKR_ENG_SCORES, ALPHABET_UKR_ENG
+from vocab.models import USER_UKR_ENG_META, WORD_UKR_ENG, WORD_UKR_ENG_SCORES, ALPHABET_UKR_ENG, WORD_SET, SET_UKR_ENG_SCORES
 from django.test.client import Client
 import json
 
@@ -77,7 +77,7 @@ class AlphabetListViewTests(TestCase):
         response = self.client.get(reverse('alphabet_list'))
         self.assertRedirects(response, '/accounts/login/')
 
-    def test_logged_in_uses_correct_template(self):
+    def test_view_with_authenticated_user(self):
         self.client.login(username='testuser', password='12345')
         response = self.client.get(reverse('alphabet_list'))
 
@@ -100,3 +100,45 @@ class AlphabetListViewTests(TestCase):
     def tearDown(self):
         self.user.delete()
 
+class WordSetsViewTests(TestCase):
+
+    def setUp(self):
+        # Create a test user
+        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.client = Client()
+        self.user_meta = USER_UKR_ENG_META.objects.create(user=self.user)
+        # Create sample WORD_SET and SET_UKR_ENG_SCORES objects
+        self.word_set = WORD_SET.objects.create(set_id=1, set_order=1, set_title="Sample Set", set_slug="sample_set")
+        self.set_score = SET_UKR_ENG_SCORES.objects.create(user=self.user, word_set=self.word_set, set_total_score=0, set_flashcard_eng_ukr_score=0, set_flashcard_ukr_eng_score=0, set_spelling_eng_ukr_score=0)
+
+    def test_redirect_if_not_logged_in(self):
+        # Check if the user is redirected when not logged in
+        response = self.client.get(reverse('sets_list'))
+        self.assertRedirects(response, '/accounts/login/')
+
+    def test_view_with_authenticated_user(self):
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get(reverse('sets_list'))
+
+         # Check the user is logged in
+        self.assertEqual(str(response.context['user']), 'testuser')
+
+        # Check a success status is returned
+        self.assertEqual(response.status_code, 200)
+
+        # Check the correct template is used
+        self.assertTemplateUsed(response, 'vocab/word-sets.html')
+
+    def test_context_data(self):
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get(reverse('sets_list'))
+        word_sets = response.context['word_sets']
+
+        # Check the word_sets context data exists
+        self.assertTrue(word_sets.exists())
+        for word_set in word_sets:
+            self.assertTrue(hasattr(word_set, 'set_total_score'))
+            self.assertTrue(hasattr(word_set, 'set_total_score_color'))
+
+    def tearDown(self):
+        self.user.delete()
