@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from vocab.models import USER_UKR_ENG_META, WORD_UKR_ENG, WORD_UKR_ENG_SCORES, ALPHABET_UKR_ENG, WORD_SET, SET_UKR_ENG_SCORES
+from vocab.models import USER_UKR_ENG_META, WORD_UKR_ENG, WORD_UKR_ENG_SCORES, ALPHABET_UKR_ENG, WORD_SET, SET_UKR_ENG_SCORES, WORD_SET_JUNCTION_UKR_ENG
 from django.test.client import Client
 import json
 
@@ -143,8 +143,53 @@ class WordSetsViewTests(TestCase):
     def tearDown(self):
         self.user.delete()
 
+class PracticeFlashcardsViewTests(TestCase):
+    def setUp(self):
+        # Create a user for the tests
+        self.user = User.objects.create_user(username="testuser", password="12345")
+        self.client = Client()
+        self.client.login(username="testuser", password="12345")
+
+        # Create sample word set and words
+        self.word_set = WORD_SET.objects.create(set_id=1, 
+                                                set_order=1, 
+                                                set_title="Sample Set", 
+                                                set_slug="sample_set"
+                                                )
+        self.word = WORD_UKR_ENG.objects.create(word_id=1, 
+                                                word_ukrainian="слово", 
+                                                word_english="word", 
+                                                word_roman="slovo", 
+                                                word_gender=0, 
+                                                word_pronounciation="slo-vo", 
+                                                word_pronounciation_audio='https://google.com', 
+                                                word_definition="test", 
+                                                word_explanation="test", 
+                                                word_part_of_speech=1,
+                                                word_aspect_examples = json.dumps("'value': null"),
+                                                word_declension = json.dumps("'value': null"),
+                                                word_conjugation = json.dumps("'value': null"),
+                                                word_examples = json.dumps("'value': null")
+                                                )
+        WORD_SET_JUNCTION_UKR_ENG.objects.create(word_set=self.word_set, word=self.word)
+
+    def test_redirect_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(reverse("practice_flashcards") + "?set=1")
+        self.assertRedirects(response, '/accounts/login/')
+
+    def test_flashcards_view_with_authenticated_user(self):
+        response = self.client.get(reverse("practice_flashcards") + "?set=1")
+        self.assertEqual(response.status_code, 200)
+        flashcard_data = json.loads(response.context["flashcard_data"])
+        self.assertTrue(isinstance(flashcard_data, list))
+        self.assertEqual(len(flashcard_data), 2)  # Expecting 2 flashcards for 1 word
+        self.assertIn("word_id", flashcard_data[0])
+        self.assertIn("question", flashcard_data[0])
+        self.assertIn("answer", flashcard_data[0])
+
+    def tearDown(self):
+        self.user.delete()
 
 
 
-
-        
