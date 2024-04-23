@@ -111,6 +111,7 @@ def home(request):
 
     return render(request, "vocab/index.html", context)
 
+## -------------------------------------------------------------------------- Alphabet Page
 def alphabet_list(request):
     """
     Renders a page displaying the Ukrainian-English alphabet to the user. This view requires the user to be authenticated to access the page. 
@@ -133,6 +134,7 @@ def alphabet_list(request):
 
     return render(request, "vocab/alphabet.html", context)
 
+## -------------------------------------------------------------------------- Word Sets Page
 def word_sets(request):
     """
     Renders a page displaying available word sets to the user, with the word sets being ordered by their 'set_order' attribute. 
@@ -180,6 +182,7 @@ def word_sets(request):
 
     return render(request, "vocab/word-sets.html", {"word_sets": word_sets, "user_meta": user_meta})
 
+## -------------------------------------------------------------------------- Words In Set Page
 def set_list(request, set_slug):
     """
     Renders a page that displays a table of words belonging to a specific word set. 
@@ -237,6 +240,7 @@ def set_list(request, set_slug):
 
     return render(request, "vocab/word-list.html", context)
 
+## -------------------------------------------------------------------------- All Words Page (Deprecated)
 def word_list_ukr_eng(request):
     """
     Renders a page that lists all words and word sets available in the application.
@@ -255,6 +259,7 @@ def word_list_ukr_eng(request):
 
     return render(request, "vocab/word-list.html", {"words": words, "sets": sets},)
 
+## -------------------------------------------------------------------------- Flashcard Quiz Page
 def practice_flashcards(request):
     """
     Renders the flashcards practice page for the user.
@@ -333,6 +338,7 @@ def practice_flashcards(request):
     # Render template using context
     return render(request, "vocab/flashcards.html", context)
 
+## -------------------------------------------------------------------------- Spelling Quiz Page
 def practice_spelling(request):
 
     # Redirect the user to the login page if they are not authenticated
@@ -389,7 +395,6 @@ def practice_spelling(request):
 ## ------------------------------------------------------------------------------------------------------------------------ API Views
 
 ## --------------------------------------------------------------------------  GET Word List 
-
 def get_word_list(request):
 
     # Get the set_id URL param
@@ -474,7 +479,6 @@ def get_word_list(request):
     return JsonResponse(data_response)
 
 ## --------------------------------------------------------------------------  GET Word List
-
 @api_view(["GET"])
 def getWordList(request):
     # Retrieve the query set
@@ -487,7 +491,6 @@ def getWordList(request):
     return Response(serializer.data)
 
 ## --------------------------------------------------------------------------  POST Word Item
-
 @api_view(["POST"])
 def postWordItem(request):
 
@@ -513,7 +516,6 @@ def postWordItem(request):
                         status=status.HTTP_403_FORBIDDEN)
     
 ## --------------------------------------------------------------------------  PUT Word Item
-
 @api_view(["PUT"])
 def updateWordItem(request, word_id):
     # Check if the user is authenticated and is a superuser
@@ -549,7 +551,6 @@ def updateWordItem(request, word_id):
 
 
 ## --------------------------------------------------------------------------  DELETE Word Item
-
 @api_view(["DELETE"])
 def deleteWordItem(request, word_id):
      # Check if the user is authenticated and is a superuser
@@ -574,7 +575,6 @@ def deleteWordItem(request, word_id):
 
 
 ## --------------------------------------------------------------------------  GET Word Sets
-
 @api_view(["GET"])
 def getWordSets(request, word_id):
     # Get the specified word object
@@ -590,7 +590,6 @@ def getWordSets(request, word_id):
     return Response(serializer.data)
 
 ## --------------------------------------------------------------------------  POST Word Set Junction
-
 @api_view(["POST"])
 def postWordSetJunction(request, set_id, word_id):
 
@@ -616,7 +615,6 @@ def postWordSetJunction(request, set_id, word_id):
         return Response({"status": "ERROR", "message": "Unauthorized: Only superusers can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 
 ## --------------------------------------------------------------------------  DELETE Word Set Junction
-
 @api_view(["DELETE"])
 def deleteWordSetJunction(request, set_id, word_id):
 
@@ -733,7 +731,6 @@ def updateUserWordScore(request):
         return Response({"status": "ERROR", "message": "Unauthorized: Only logged in can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 
 ## --------------------------------------------------------------------------  GET Update User Streaks [JOB]
-
 @api_view(["GET"])
 def job_update_user_streaks(request):
 
@@ -793,7 +790,6 @@ def job_update_user_streaks(request):
         return Response({"status": "ERROR", "message": "An error occurred while processing the request"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 ## --------------------------------------------------------------------------  PATCH Update User Meta Hints
-
 @api_view(["GET"])
 def update_user_meta_hint(request):
 
@@ -827,6 +823,9 @@ def update_user_meta_hint(request):
         return Response({"status": "SUCCESS", "message": "Updated hint status successfully"}, status=status.HTTP_200_OK)
     else:
         return Response({"status": "ERROR", "message": "User must be logged in to update hint status"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+## ------------------------------------------------------------------------------------------------------------------------ Utility Functions
 
 def update_set_scores(word_sets, user):
 

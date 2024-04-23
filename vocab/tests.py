@@ -142,3 +142,9 @@ class WordSetsViewTests(TestCase):
 
     def tearDown(self):
         self.user.delete()
+
+
+
+
+
+        
