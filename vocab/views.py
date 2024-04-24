@@ -40,6 +40,7 @@ def home(request):
         return redirect("/accounts/login/")
 
     context = {}
+    user_meta = None
 
     try:
         # Get the user meta object
@@ -47,6 +48,7 @@ def home(request):
     except USER_UKR_ENG_META.DoesNotExist:
         # Create a a user meta object if one does not exist
         create_user_meta(request.user)
+        user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
 
     # Get the streak data
     streak_flashcards_longest = user_meta.streak_flashcards_longest
@@ -365,7 +367,6 @@ def practice_spelling(request):
 
         # Get a random usage example as a dictionary
         usage_example = word.word_examples[random.randint(0, (len(word.word_examples) - 1))]
-
 
         spellingcard = {
             "word_id": word.word_id,
