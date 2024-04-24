@@ -53,6 +53,11 @@ class HomeViewTests(TestCase):
         self.assertEqual(context['learnt_words'], 0)
         self.assertEqual(context['mastered_words'], 0)
 
+    def test_html_elements_in_response(self):
+        self.client.login(username="testuser", password="12345")
+        response = self.client.get(reverse("home") + "?set=1")
+        self.assertContains(response, '<p>Flashcard Current Streak</p>', html=False)
+
     def tearDown(self):
         # Clean up after each test
         self.user.delete()
@@ -97,6 +102,11 @@ class AlphabetListViewTests(TestCase):
         # Check if the alphabet data is not empty
         self.assertTrue(response.context['letters'].exists())
 
+    def test_html_elements_in_response(self):
+        self.client.login(username="testuser", password="12345")
+        response = self.client.get(reverse("alphabet_list") + "?set=1")
+        self.assertContains(response, '<h3 class="set-title">А</h3>', html=False)
+
     def tearDown(self):
         self.user.delete()
 
@@ -140,6 +150,12 @@ class WordSetsViewTests(TestCase):
             self.assertTrue(hasattr(word_set, 'set_total_score'))
             self.assertTrue(hasattr(word_set, 'set_total_score_color'))
 
+    def test_html_elements_in_response(self):
+        self.client.login(username="testuser", password="12345")
+        response = self.client.get(reverse("sets_list") + "?set=1")
+        self.assertContains(response, '<h3 class="set-title">Sample Set</h3>', html=False)
+        self.assertContains(response, '<p class="progress-bar-percentage">', html=False)
+
     def tearDown(self):
         self.user.delete()
 
@@ -166,12 +182,15 @@ class PracticeFlashcardsViewTests(TestCase):
                                                 word_definition="test", 
                                                 word_explanation="test", 
                                                 word_part_of_speech=1,
-                                                word_aspect_examples = json.dumps("'value': null"),
-                                                word_declension = json.dumps("'value': null"),
-                                                word_conjugation = json.dumps("'value': null"),
-                                                word_examples = json.dumps("'value': null")
+                                                word_aspect_examples = json.loads('[{"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Vona", "chytaty", "zhurnal"], "tense": "Present", "english": ["She", "reads", "magazine"], "cultural": "", "ukrainian": ["Вона", "читати", "журнал"], "definition": "Engaging with printed literature.", "difficulty": "Beginner", "explanation": "Used to describe the action of reading a magazine for information or entertainment.", "translation": "She is reading a magazine"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Dity", "chytaty", "kazku"], "tense": "Present", "english": ["Children", "read", "fairy tale"], "cultural": "", "ukrainian": ["Діти", "читати", "казку"], "definition": "The act of reading a story with fantastical elements.", "difficulty": "Beginner", "explanation": "Indicates the activity of children engaging with a fairy tale, possibly as a bedtime story or for leisure.", "translation": "The children are reading a fairy tale"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 2, "roman": ["Ya", "lyublyu", "chytaty", "poeziyu"], "tense": "Present", "english": ["I", "love", "to read", "poetry"], "cultural": "", "ukrainian": ["Я", "люблю", "читати", "поезію"], "definition": "Expressing a preference for reading poetic works.", "difficulty": "Intermediate", "explanation": "Used to convey a personal enjoyment or preference for reading poetry, highlighting the emotional or aesthetic appreciation.", "translation": "I love to read poetry"}]'),
+                                                word_declension = json.loads('{"value": null}'),
+                                                word_conjugation = json.loads('{"value": null}'),
+                                                word_examples = json.loads('{"value": null}'),
                                                 )
-        WORD_SET_JUNCTION_UKR_ENG.objects.create(word_set=self.word_set, word=self.word)
+        self.junction = WORD_SET_JUNCTION_UKR_ENG.objects.create(word_set=self.word_set, word=self.word)
+        self.word.save()
+        self.word_set.save()
+        self.junction.save()
 
     def test_redirect_if_not_logged_in(self):
         self.client.logout()
@@ -187,6 +206,13 @@ class PracticeFlashcardsViewTests(TestCase):
         self.assertIn("word_id", flashcard_data[0])
         self.assertIn("question", flashcard_data[0])
         self.assertIn("answer", flashcard_data[0])
+
+    def test_html_elements_in_response(self):
+        self.client.login(username="testuser", password="12345")
+        response = self.client.get(reverse("practice_flashcards") + "?set=1" + "&practice=True")
+        self.assertContains(response, '<div id="practice-page">', html=False)
+        self.assertContains(response, '<span id="cards-remaining">', html=False)
+        self.assertContains(response, '<button id="flip-card-button" class="border-button">Flip</button>', html=False)
 
     def tearDown(self):
         self.user.delete()

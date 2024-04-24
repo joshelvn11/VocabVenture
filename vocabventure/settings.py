@@ -187,14 +187,19 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'console': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'class': 'logging.StreamHandler',
         },
     },
     'loggers': {
-        'celery': {
+        'django': {
             'handlers': ['console'],
-            'level': 'INFO',
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'vocab.views': {
+            'handlers': ['console'],
+            'level': 'ERROR',
             'propagate': True,
         },
     },
