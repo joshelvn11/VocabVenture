@@ -164,7 +164,6 @@ class PracticeFlashcardsViewTests(TestCase):
         # Create a user for the tests
         self.user = User.objects.create_user(username="testuser", password="12345")
         self.client = Client()
-        self.client.login(username="testuser", password="12345")
 
         # Create sample word set and words
         self.word_set = WORD_SET.objects.create(set_id=1, 
@@ -193,11 +192,11 @@ class PracticeFlashcardsViewTests(TestCase):
         self.junction.save()
 
     def test_redirect_if_not_logged_in(self):
-        self.client.logout()
         response = self.client.get(reverse("practice_flashcards") + "?set=1")
         self.assertRedirects(response, '/accounts/login/')
 
     def test_flashcards_view_with_authenticated_user(self):
+        self.client.login(username="testuser", password="12345")
         response = self.client.get(reverse("practice_flashcards") + "?set=1")
         self.assertEqual(response.status_code, 200)
         flashcard_data = json.loads(response.context["flashcard_data"])
@@ -213,6 +212,67 @@ class PracticeFlashcardsViewTests(TestCase):
         self.assertContains(response, '<div id="practice-page">', html=False)
         self.assertContains(response, '<span id="cards-remaining">', html=False)
         self.assertContains(response, '<button id="flip-card-button" class="border-button">Flip</button>', html=False)
+
+    def tearDown(self):
+        self.user.delete()
+
+class PracticeSpellingViewTests(TestCase):
+    def setUp(self):
+        # Create a user for the tests
+        self.user = User.objects.create_user(username="testuser", password="12345")
+        self.client = Client()        
+
+        # Create sample word set and words
+        self.word_set = WORD_SET.objects.create(set_id=1, 
+                                                set_order=1, 
+                                                set_title="Sample Set", 
+                                                set_slug="sample_set"
+                                                )
+        self.word = WORD_UKR_ENG.objects.create(word_id=1, 
+                                                word_ukrainian="слово", 
+                                                word_english="word", 
+                                                word_roman="slovo", 
+                                                word_gender=0, 
+                                                word_pronounciation="slo-vo", 
+                                                word_pronounciation_audio='https://google.com', 
+                                                word_definition="test", 
+                                                word_explanation="test", 
+                                                word_part_of_speech=1,
+                                                word_examples = json.loads('[{"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Vona", "chytaty", "zhurnal"], "tense": "Present", "english": ["She", "reads", "magazine"], "cultural": "", "ukrainian": ["Вона", "читати", "журнал"], "definition": "Engaging with printed literature.", "difficulty": "Beginner", "explanation": "Used to describe the action of reading a magazine for information or entertainment.", "translation": "She is reading a magazine"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Dity", "chytaty", "kazku"], "tense": "Present", "english": ["Children", "read", "fairy tale"], "cultural": "", "ukrainian": ["Діти", "читати", "казку"], "definition": "The act of reading a story with fantastical elements.", "difficulty": "Beginner", "explanation": "Indicates the activity of children engaging with a fairy tale, possibly as a bedtime story or for leisure.", "translation": "The children are reading a fairy tale"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 2, "roman": ["Ya", "lyublyu", "chytaty", "poeziyu"], "tense": "Present", "english": ["I", "love", "to read", "poetry"], "cultural": "", "ukrainian": ["Я", "люблю", "читати", "поезію"], "definition": "Expressing a preference for reading poetic works.", "difficulty": "Intermediate", "explanation": "Used to convey a personal enjoyment or preference for reading poetry, highlighting the emotional or aesthetic appreciation.", "translation": "I love to read poetry"}]'),
+                                                word_declension = json.loads('{"value": null}'),
+                                                word_conjugation = json.loads('{"value": null}'),
+                                                word_aspect_examples = json.loads('{"value": null}'),
+                                                )
+        self.junction = WORD_SET_JUNCTION_UKR_ENG.objects.create(word_set=self.word_set, word=self.word)
+        self.word.save()
+        self.word_set.save()
+        self.junction.save()
+
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse("practice_spelling") + "?set=1")
+        self.assertRedirects(response, "/accounts/login/")
+
+    def test_response_with_authenticated_user(self):
+        self.client.login(username="testuser", password="12345")
+        response = self.client.get(reverse("practice_spelling") + "?set=1")
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "vocab/spelling.html")
+
+    def test_context_data(self):
+        self.client.login(username="testuser", password="12345")
+        response = self.client.get(reverse("practice_spelling") + "?set=1")
+        context = response.context
+        self.assertIn("spelling_data", context)
+        spelling_data = json.loads(context["spelling_data"])
+        self.assertTrue(isinstance(spelling_data, list))
+        self.assertGreater(len(spelling_data), 0)  # Ensure there is at least one spelling card
+
+    def test_html_elements_in_response(self):
+        self.client.login(username="testuser", password="12345")
+        response = self.client.get(reverse("practice_spelling") + "?set=1" + "&practice=True")
+        self.assertContains(response, '<p>Words Remaining: <span id="words-remaining">null</span></p>', html=False)
+        self.assertContains(response, '<button id="check-button" class="border-button">Check</button>', html=False)
 
     def tearDown(self):
         self.user.delete()

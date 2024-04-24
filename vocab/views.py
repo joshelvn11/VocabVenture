@@ -362,7 +362,7 @@ def practice_spelling(request):
     # Create list to hold spelling cards
     spellingcards_list = []
 
-    # Iterate through the words an create a spellingcard dict. for each
+    # Iterate through the words and create a spellingcard dict. for each
     for word in words:
 
         # Get a random usage example as a dictionary
