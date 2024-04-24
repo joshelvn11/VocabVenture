@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from vocab.models import USER_UKR_ENG_META, WORD_UKR_ENG, WORD_UKR_ENG_SCORES, ALPHABET_UKR_ENG, WORD_SET, SET_UKR_ENG_SCORES, WORD_SET_JUNCTION_UKR_ENG
 from django.test.client import Client
+from rest_framework.test import APIClient
+from vocab.serializers import WordUkrEngSerializer
 import json
 
 class HomeViewTests(TestCase):
@@ -277,5 +279,70 @@ class PracticeSpellingViewTests(TestCase):
     def tearDown(self):
         self.user.delete()
 
+class PostWordItemTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.url = reverse('postWordItem') 
+        self.superuser = User.objects.create_superuser('admin', 'admin@test.com', 'adminpass')
+        self.user = User.objects.create_user('user', 'user@test.com', 'userpass')
 
+    def test_access_denied_to_unauthenticated_users(self):
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 403)
 
+    def test_access_denied_to_non_superuser(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_reject_invalid_data(self):
+        self.client.force_authenticate(user=self.superuser)
+        data = {"word_ukrainian": "", "word_english": "word"}  # Incomplete data
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_accept_valid_data(self):
+        self.client.force_authenticate(user=self.superuser)
+        data = {
+            "word_id":1, 
+            "word_ukrainian":"слово", 
+            "word_english":"word", 
+            "word_roman":"slovo", 
+            "word_gender":0, 
+            "word_pronounciation":"slo-vo",
+            "word_pronounciation_audio":'https://google.com', 
+            "word_definition":"test", 
+            "word_explanation":"test", 
+            "word_part_of_speech":1,
+            "word_examples":json.loads('[{"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Vona", "chytaty", "zhurnal"], "tense": "Present", "english": ["She", "reads", "magazine"], "cultural": "", "ukrainian": ["Вона", "читати", "журнал"], "definition": "Engaging with printed literature.", "difficulty": "Beginner", "explanation": "Used to describe the action of reading a magazine for information or entertainment.", "translation": "She is reading a magazine"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Dity", "chytaty", "kazku"], "tense": "Present", "english": ["Children", "read", "fairy tale"], "cultural": "", "ukrainian": ["Діти", "читати", "казку"], "definition": "The act of reading a story with fantastical elements.", "difficulty": "Beginner", "explanation": "Indicates the activity of children engaging with a fairy tale, possibly as a bedtime story or for leisure.", "translation": "The children are reading a fairy tale"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 2, "roman": ["Ya", "lyublyu", "chytaty", "poeziyu"], "tense": "Present", "english": ["I", "love", "to read", "poetry"], "cultural": "", "ukrainian": ["Я", "люблю", "читати", "поезію"], "definition": "Expressing a preference for reading poetic works.", "difficulty": "Intermediate", "explanation": "Used to convey a personal enjoyment or preference for reading poetry, highlighting the emotional or aesthetic appreciation.", "translation": "I love to read poetry"}]'),
+            "word_declension": json.loads('{"value": null}'),
+            "word_conjugation": json.loads('{"value": null}'),
+            "word_aspect_examples":json.loads('{"value": null}'), 
+            }
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(WORD_UKR_ENG.objects.count(), 1)
+    
+    def test_data_saved_correctly(self):
+        self.client.force_authenticate(user=self.superuser)
+        data = {
+            "word_id":1, 
+            "word_ukrainian":"слово", 
+            "word_english":"word", 
+            "word_roman":"slovo", 
+            "word_gender":0, 
+            "word_pronounciation":"slo-vo",
+            "word_pronounciation_audio":'https://google.com', 
+            "word_definition":"test", 
+            "word_explanation":"test", 
+            "word_part_of_speech":1,
+            "word_examples":json.loads('[{"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Vona", "chytaty", "zhurnal"], "tense": "Present", "english": ["She", "reads", "magazine"], "cultural": "", "ukrainian": ["Вона", "читати", "журнал"], "definition": "Engaging with printed literature.", "difficulty": "Beginner", "explanation": "Used to describe the action of reading a magazine for information or entertainment.", "translation": "She is reading a magazine"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Dity", "chytaty", "kazku"], "tense": "Present", "english": ["Children", "read", "fairy tale"], "cultural": "", "ukrainian": ["Діти", "читати", "казку"], "definition": "The act of reading a story with fantastical elements.", "difficulty": "Beginner", "explanation": "Indicates the activity of children engaging with a fairy tale, possibly as a bedtime story or for leisure.", "translation": "The children are reading a fairy tale"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 2, "roman": ["Ya", "lyublyu", "chytaty", "poeziyu"], "tense": "Present", "english": ["I", "love", "to read", "poetry"], "cultural": "", "ukrainian": ["Я", "люблю", "читати", "поезію"], "definition": "Expressing a preference for reading poetic works.", "difficulty": "Intermediate", "explanation": "Used to convey a personal enjoyment or preference for reading poetry, highlighting the emotional or aesthetic appreciation.", "translation": "I love to read poetry"}]'),
+            "word_declension": json.loads('{"value": null}'),
+            "word_conjugation": json.loads('{"value": null}'),
+            "word_aspect_examples":json.loads('{"value": null}'), 
+            }
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, 200)
+        word = WORD_UKR_ENG.objects.first()
+        self.assertIsNotNone(word)
+        self.assertEqual(word.word_ukrainian, "слово")

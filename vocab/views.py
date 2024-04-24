@@ -506,10 +506,12 @@ def postWordItem(request):
         if serializer.is_valid():
             serializer.save()
             return Response({"status": "SUCCESS",
-                            "message": "Word added successfully"})
+                            "message": "Word added successfully"},
+                            status=status.HTTP_200_OK)
         else:
             return Response({"status": "ERROR",
-                            "message": json.dumps(serializer.errors)})
+                            "message": json.dumps(serializer.errors)},
+                            status=status.HTTP_400_BAD_REQUEST)
     else:
         # If the user is not a superuser, return an unauthorized error response
         return Response({"status": "ERROR",
