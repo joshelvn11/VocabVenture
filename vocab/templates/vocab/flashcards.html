@@ -4,44 +4,44 @@
 {% block stylesheets %}
 {% endblock %}
 
-{% block page_title %}{{ page_title }} Flashcards{% endblock %}
+{% block page_title %}<title>{{ page_title }} Flashcards</title>{% endblock %}
 
 {% block page_buttons %} 
-<button id="exit-button" class="border-button">Exit</button>
+<button id="exit-button" class="border-button" aria-label="Exit flashcard practice">Exit</button>
 {% endblock %}
 
 {% block content %}
-<div id="practice-page">
-    <div class="practice-controls-container">
+<div id="practice-page" role="main">
+    <div class="practice-controls-container" aria-live="polite">
         <p>Cards Remaining: <span id="cards-remaining">14</span></p>
     </div>
-    <div id="practice-card-container" class="clickable">
-        <div id="question-flashcard" class="flashcard">
+    <div id="practice-card-container" class="clickable" aria-label="Interactive flashcard">
+        <div id="question-flashcard" class="flashcard" role="region" aria-labelledby="practice-card-instruction">
             <p id="practice-card-instruction">Translate the following word to Ukrainian</p>
-            <p id="practice-card-question" class="font-size-xxlarge">Hello</p>
+            <p id="practice-card-question" class="font-size-xxlarge" aria-live="assertive">Hello</p>
             <div class="practice-card-button-container">
-                <button id="question-show-romananisation-button" class="practice-card-button border-button">Show Romanisation</button>
-                <button id="question-show-pronounciation-button" class="practice-card-button border-button">Show Pronounciation</button>
-                <button id="question-play-audio-button" class="practice-card-button border-button">Play Audio</button>
+                <button id="question-show-romananisation-button" class="practice-card-button border-button" aria-label="Show Romanisation for this word">Show Romanisation</button>
+                <button id="question-show-pronounciation-button" class="practice-card-button border-button" aria-label="Show Pronunciation for this word">Show Pronunciation</button>
+                <button id="question-play-audio-button" class="practice-card-button border-button" aria-label="Play audio for this word">Play Audio</button>
             </div>
         </div>
-        <div id="answer-flashcard" class="flashcard">
+        <div id="answer-flashcard" class="flashcard" role="region" aria-labelledby="flashcard-answer">
             <p id=""></p>
-            <p id="flashcard-answer" class="font-size-xxlarge">Hello</p>
+            <p id="flashcard-answer" class="font-size-xxlarge" aria-live="assertive">Привіт</p>
             <div class="practice-card-button-container">
-                <button id="answer-show-romananisation-button" class="border-button">Show Romanisation</button>
-                <button id="answer-show-pronounciation-button" class="border-button">Show Pronounciation</button>
-                <button id="answer-play-audio-button" class="border-button">Play Audio</button>
+                <button id="answer-show-romananisation-button" class="border-button" aria-label="Show Romanisation for this word">Show Romanisation</button>
+                <button id="answer-show-pronounciation-button" class="border-button" aria-label="Show Pronunciation for this word">Show Pronunciation</button>
+                <button id="answer-play-audio-button" class="border-button" aria-label="Play audio for this word">Play Audio</button>
             </div>
         </div>
     </div>
     <div class="practice-controls-container">
-        <button id="incorrect-button" class="border-button">Incorrect</button>
-        <button id="flip-card-button" class="border-button">Flip</button>
-        <button id="correct-button" class="border-button">Correct</button>
-        <button id="restart-button" class="border-button hidden">Restart</button>
-        <button id="return-button" class="border-button hidden">Return</button>
-        <button id="test-button" class="border-button hidden">Test Me</button>
+        <button id="incorrect-button" class="border-button" aria-label="Mark response as incorrect">Incorrect</button>
+        <button id="flip-card-button" class="border-button" aria-label="Flip the flashcard">Flip</button>
+        <button id="correct-button" class="border-button" aria-label="Mark response as correct">Correct</button>
+        <button id="restart-button" class="border-button hidden" aria-label="Restart the flashcard session">Restart</button>
+        <button id="return-button" class="border-button hidden" aria-label="Return to previous page">Return</button>
+        <button id="test-button" class="border-button hidden" aria-label="Test your knowledge by running the flashcards in test mode">Test Me</button>
     </div>
 </div>
 {% endblock %}
