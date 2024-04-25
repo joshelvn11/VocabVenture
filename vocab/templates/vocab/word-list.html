@@ -4,21 +4,21 @@
 {% block stylesheets %}
 {% endblock %}
 
-{% block page_title %}{{ set_title }}{% endblock %}
+{% block page_title %}<title>{{ set_title }}</title>{% endblock %}
 
 {% block page_buttons %} 
 {% if user.is_superuser %}
-<button id="add-word-button" class="border-button">Add Word</button>
-<button id="test-alert" class="border-button">Test Alert</button>
+<button id="add-word-button" class="border-button" aria-label="Add new word">Add Word</button>
+<button id="test-alert" class="border-button" aria-label="Test alert functionality">Test Alert</button>
 {% endif %}
-<div id="quiz-button" class="solid-button">Quiz</div>
+<div id="quiz-button" class="solid-button" role="button" tabindex="0" aria-label="Start quiz">Quiz</div>
 {% endblock %}
 
 {% block content %}
 <div class="card-container-grid">
     {% if user_meta.tour_message_word_list_one %}
-    <div class="grid-card intro-card sm-col-12 md-col-6 lg-col-4">
-        <button class="close-button-white tour-hint-close-button" hint-id="tour_message_word_list_one">x</button>
+    <div class="grid-card intro-card sm-col-12 md-col-6 lg-col-4" role="complementary" aria-label="Introduction message">
+        <button class="close-button-white tour-hint-close-button" hint-id="tour_message_word_list_one" aria-label="Close introduction message">x</button>
           <p>Here you can see all the words in this set followed by some basic information and your overall progress
             for that word.
             <br><br>Click on any word to see more detailed information about that word or click on the quiz button above 
@@ -27,7 +27,7 @@
     </div>
     {% endif %}
     {% for word in words %}
-    <div class="word-card grid-card sm-col-12 md-col-6 lg-col-4 word-card clickable" word-id="{{word.word_id}}">
+    <div class="word-card grid-card sm-col-12 md-col-6 lg-col-4 word-card clickable" word-id="{{word.word_id}}" tabindex="{{ forloop.counter }}" aria-label="Word details for {{ word.word_ukrainian }}">
         <div class="card-content">
             <h3 class="set-title">{{ word.word_ukrainian }}</h3>
             <div class="details">
@@ -37,9 +37,9 @@
             </div>
             {% if user.is_authenticated %}
             <!-- Progress Bar -->
-            <div class="progress-bar-container">
+            <div class="progress-bar-container" aria-label="Progress for {{ word.word_ukrainian }}">
                 <div class="progress-bar-wrapper">
-                    <div class="progress-bar">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ word.word_total_score }}" aria-valuemin="0" aria-valuemax="100">
                     <div class="progress-bar-fill {{ word.word_total_score_color }}" style="width: {{ word.word_total_score }}%;"></div>
                     </div>
                     <p class="progress-bar-percentage">
@@ -53,16 +53,16 @@
     {% endfor%}
 </div>
 <div class="background-overlay hidden"></div>
-<div id="word-details-modal" class="modal hidden">
+<div id="word-details-modal" class="modal hidden" role="dialog" aria-labelledby="word-details-modal-title" aria-hidden="true">
     <div class="modal-header-wrapper">
         <div class="modal-left-conatainer">
             {% if user.is_superuser %}
-            <button id="admin-edit-details-button" class="border-button">Edit Word</button>
+            <button id="admin-edit-details-button" class="border-button" aria-label="Edit word details">Edit Word</button>
             {% endif %}
-            <button id="pronounciation-audio-button" class="border-button">Audio</button>
+            <button id="pronounciation-audio-button" class="border-button" aria-label="Play pronunciation audio">Audio</button>
         </div>
         <div class="modal-right-conatainer">
-            <button id="close-word-details-modal-button" class="border-button">Close</button>
+            <button id="close-word-details-modal-button" class="border-button" aria-label="Close word details">Close</button>
         </div>
     </div>
     <div class="modal-content-wrapper">
@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="grid-card sm-col-12 md-col-6 word-detail-card">  
-                <div class="card-content"">
+                <div class="card-content">
                     <div class="card-title">Pronounciation</div>
                     <div class="word-detail-content">
                         <p class="font-size-xxlarge" id="word-pronounce">Content</p>
@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div class="grid-card sm-col-12 md-col-6 word-detail-card">  
-                <div class="card-content"">
+                <div class="card-content">
                     <div class="card-title">Romanization</div>
                     <div class="word-detail-content">
                         <p class="font-size-xxlarge" id="word-roman">Content</p>
@@ -103,10 +103,10 @@
                 <div class="card-content">
                     <div class="card-title">Word Scores</div>
                     <div class="word-detail-content flex-wrap gap-12">
-                        <div id="flashcards-progress" class="progress-bar-container">
+                        <div id="flashcards-progress" class="progress-bar-container" aria-label="Flashcards progress">
                             <p class="progress-bar-title">Flash Cards</p>
                             <div class="progress-bar-wrapper">
-                              <div class="progress-bar">
+                              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                                 <div class="progress-bar-fill" style="width: 0%;"></div>
                               </div>
                               <p class="progress-bar-percentage">
@@ -114,10 +114,10 @@
                               </p>
                             </div>
                           </div>
-                          <div id="flashcards-reverse-progress" class="progress-bar-container">
+                          <div id="flashcards-reverse-progress" class="progress-bar-container" aria-label="Flashcards reverse progress">
                             <p class="progress-bar-title">Flash Cards (Reverse)</p>
                             <div class="progress-bar-wrapper">
-                              <div class="progress-bar">
+                              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                                 <div class="progress-bar-fill" style="width: 0%;"></div>
                               </div>
                               <p class="progress-bar-percentage">
@@ -125,10 +125,10 @@
                               </p>
                             </div>
                           </div>
-                          <div id="spelling-progress" class="progress-bar-container">
+                          <div id="spelling-progress" class="progress-bar-container" aria-label="Spelling progress">
                             <p class="progress-bar-title">Spelling</p>
                             <div class="progress-bar-wrapper">
-                              <div class="progress-bar">
+                              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                                 <div class="progress-bar-fill" style="width: 0%;"></div>
                               </div>
                               <p class="progress-bar-percentage">
@@ -156,8 +156,8 @@
                 </div>
             </div>
             {% if user_meta.tour_message_word_details_one %}
-            <div class="grid-card sm-col-12 intro-card word-detail-card">
-                <button class="close-button-white tour-hint-close-button" hint-id="tour_message_word_details_one">x</button>
+            <div class="grid-card sm-col-12 intro-card word-detail-card" role="complementary" aria-label="Introduction message for usage examples">
+                <button class="close-button-white tour-hint-close-button" hint-id="tour_message_word_details_one" aria-label="Close introduction message for usage examples">x</button>
                 <p>
                     Below you can see actual usage examples of this word in a sentence.
                     <br><br>Click on any word in the sentence to see contextual information about the word or click on the
@@ -169,50 +169,50 @@
     </div>
 </div>
 {% if user.is_superuser %}
-<div id="admin-edit-modal" class="modal hidden">
+<div id="admin-edit-modal" class="modal hidden" role="dialog" aria-labelledby="admin-edit-modal-title" aria-hidden="true">
     <div class="modal-header-wrapper">
         <div class="modal-left-conatainer">
-            <button id="admin-word-edit-save-button" class="border-button">Save</button>
-            <button id="admin-word-edit-delete-button" class="border-button">Delete</button>
+            <button id="admin-word-edit-save-button" class="border-button" aria-label="Save edited word details">Save</button>
+            <button id="admin-word-edit-delete-button" the="border-button" aria-label="Delete word">Delete</button>
         </div>
         <div class="modal-right-conatainer">
-            <button id="close-admin-edit-modal-button" class="border-button">Close</button>
+            <button id="close-admin-edit-modal-button" class="border-button" aria-label="Close edit word modal">Close</button>
         </div>
             
     </div>
     <div class="modal-content-wrapper">
-       <form id="admin-word-edit-form">
+       <form id="admin-word-edit-form" aria-label="Edit word form">
             <label for="word_id">Word ID</label>
-            <input id="word-id-input" type="number" name="word_id" class="full-width">
+            <input id="word-id-input" type="number" name="word_id" class="full-width" aria-label="Word ID input">
             <label for="word_id">Ukrainian</label>
-            <input id="word-ukr-input" type="text" name="word_ukrainian" class="full-width">
+            <input id="word-ukr-input" type="text" name="word_ukrainian" class="full-width" aria-label="Ukrainian word input">
             <label for="word_id">English</label>
-            <input id="word-eng-input" type="text" name="word_english" class="full-width">
+            <input id="word-eng-input" type="text" name="word_english" class="full-width" aria-label="English word input">
             <label for="word_id">Romanization</label>
-            <input id="word-roman-input" type="text" name="word_roman" class="full-width">
+            <input id="word-roman-input" type="text" name="word_roman" class="full-width" aria-label="Romanization input">
             <label for="word_id">Pronounciation</label>
-            <input id="word-pronounce-input" type="text" name="word_pronounciation" class="full-width">
+            <input id="word-pronounce-input" type="text" name="word_pronounciation" class="full-width" aria-label="Pronunciation input">
             <label for="word_id">Gender</label>
-            <input id="word-gender-input" type="text" name="word_gender" class="full-width">
+            <input id="word-gender-input" type="text" name="word_gender" class="full-width" aria-label="Gender input">
             <label for="word_id">Part of Speech</label>
-            <input id="word-pos-input" type="text" name="word_part_of_speech" class="full-width">
+            <input id="word-pos-input" type="text" name="word_part_of_speech" class="full-width" aria-label="Part of speech input">
             <label for="word_id">Pronounciation Audio Link</label>
-            <input id="word-pronounce-audio-input" type="url" value="https://example.com" name="word_pronounciation_audio" class="full-width">
+            <input id="word-pronounce-audio-input" type="url" value="https://example.com" name="word_pronounciation_audio" class="full-width" aria-label="Pronunciation audio link input">
             <label for="word_id">Definition</label>
-            <input id="word-definition-input" type="text" name="word_definition" class="full-width">
+            <input id="word-definition-input" type="text" name="word_definition" class="full-width" aria-label="Definition input">
             <label for="word_id">Explanation</label>
-            <input id="word-explain-input" type="text" name="word_explanation" class="full-width">
+            <input id="word-explain-input" type="text" name="word_explanation" class="full-width" aria-label="Explanation input">
             <label for="word_id">Usage Examples</label>
-            <textarea id="word-examples-input" name="word_examples" class="full-width"></textarea>
+            <textarea id="word-examples-input" name="word_examples" class="full-width" aria-label="Usage examples input"></textarea>
             <label for="word_id">Aspects</label>
-            <textarea id="word-aspect-input" name="word_aspect_examples" class="full-width"></textarea>
+            <textarea id="word-aspect-input" name="word_aspect_examples" class="full-width" aria-label="Aspects input"></textarea>
             <label for="word_id">Conjugation</label>
-            <textarea id="word-conjugation-input" name="word_conjugation" class="full-width"></textarea>
+            <textarea id="word-conjugation-input" name="word_conjugation" class="full-width" aria-label="Conjugation input"></textarea>
             <label for="word_id">Declension</label>
-            <textarea id="word-declension-input" name="word_declension" class="full-width"></textarea>
+            <textarea id="word-declension-input" name="word_declension" class="full-width" aria-label="Declension input"></textarea>
             {% for set in sets %}
             <div class="checkbox-wrapper">
-                <input type="checkbox" set-id="{{set.set_id}}" id="{{set.set_slug}}" class="set-checkbox inline">
+                <input type="checkbox" set-id="{{set.set_id}}" id="{{set.set_slug}}" class="set-checkbox inline" aria-label="Set selection for {{ set.set_title }}">
                 <label for="{{set.set_slug}}" class="inline">{{set.set_title}}</label>
             </div>
             {% endfor %}
@@ -220,10 +220,10 @@
     </div>
 </div>
 {% endif %}
-<div id="quiz-modal" class="modal hidden">
+<div id="quiz-modal" class="modal hidden" role="dialog" aria-labelledby="quiz-modal-title" aria-hidden="true">
     <div class="modal-content">
         <div class="modal-conent-container">
-            <button id="quiz-modal-close-button" class="close-button">x</button>
+            <button id="quiz-modal-close-button" class="close-button" aria-label="Close quiz modal">x</button>
                 <div class="modal-top-content-wrapper">
                 <div class="modal-title-wrapper">
                     <h2 class="modal-title">Quiz</h2>
@@ -231,8 +231,8 @@
                 </div>
                 <div id="wrapper">
                     {% if user_meta.tour_message_quiz_one %}
-                    <div class="grid-card intro-card sm-col-12 md-col-6 lg-col-4">
-                        <button class="close-button-white tour-hint-close-button" hint-id="tour_message_quiz_one">x</button>
+                    <div class="grid-card intro-card sm-col-12 md-col-6 lg-col-4" role="complementary" aria-label="Introduction message for quiz">
+                        <button class="close-button-white tour-hint-close-button" hint-id="tour_message_quiz_one" aria-label="Close introduction message for quiz">x</button>
                         <p>Here you can practice word using on of the available quiz formats and put your knowledge to the test.
                             <br><br>Use the quiz type drop down to select the type of quiz you would like to use.
                             <br><br> The practice mode toggle allows you to toggle between practice and test mode.
@@ -246,7 +246,7 @@
                     <div class="modal-content-wrapper">
                         <div class="form-row-inline">
                             <label for="quiz-type-select"">Quiz Type</label>
-                            <select id="quiz-type-select" name="quiz_type">
+                            <select id="quiz-type-select" name="quiz_type" aria-label="Select quiz type">
                                 <option value="/practice/flashcards?set={{ set_id }}">Flashcards</option>
                                 <option value="/practice/spelling?set={{ set_id }}">Spelling</option>
                             </select>
@@ -254,7 +254,7 @@
                         <div class="form-row-inline">
                             <label for="practice-mode-select"">Practice Mode</label>
                             <div>
-                                <input type="checkbox" id="practice-mode-toggle" class="toggle" />
+                                <input type="checkbox" id="practice-mode-toggle" class="toggle" aria-label="Toggle practice mode" />
                                 <label for="practice-mode-toggle" class="toggle-label"></label>
                             </div>
                         </div>
@@ -262,7 +262,7 @@
                 </div>
             </div>
             <div class="modal-bottom-content-wrapper">
-                <button id="start-quiz-button" class="solid-button modal-cta">Start Quiz</button>
+                <button id="start-quiz-button" class="solid-button modal-cta" aria-label="Start quiz">Start Quiz</button>
             </div>
         </div>
     </div>
