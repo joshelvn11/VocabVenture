@@ -6,9 +6,9 @@
 <div class="card-container-grid">
     {% if user_meta.tour_message_word_sets_one %}
     <div class="grid-card sm-col-12 md-col-6 lg-col-4 intro-card">
-      <button class="close-button-white tour-hint-close-button" hint-id="tour_message_word_sets_one">x</button>
+      <button class="close-button-white tour-hint-close-button" hint-id="tour_message_word_sets_one" aria-label="Close tour message">x</button>
       <div class="card-content">
-        <p>Here on the Word Sets page you can see colletions of words followed by your overall progress in that set
+        <p>Here on the Word Sets page you can see collections of words followed by your overall progress in that set,
           a breakdown of your progress by quiz type in that set.
           <br><br>Click on any set to view the words in that set and start learning!
         </p>
@@ -16,14 +16,14 @@
     </div>
     {% endif %}
     {% for word_set in word_sets %}
-      <a href="/words/sets/{{ word_set.set_slug }}" class="set-card grid-card sm-col-12 md-col-6 lg-col-4 clickable">
+      <a href="/words/sets/{{ word_set.set_slug }}" class="set-card grid-card sm-col-12 md-col-6 lg-col-4 clickable" tabindex="{{ forloop.counter0 }}" aria-label="View word set {{ word_set.set_title }}">
         <div class="card-content">
           <h3 class="set-title">{{ word_set.set_title }}</h3>
           {% if user.is_authenticated %}
           <!-- Overall Progress -->
-          <div class="progress-bar-container">
+          <div class="progress-bar-container" aria-label="Overall progress">
             <div class="progress-bar-wrapper">
-              <div class="progress-bar">
+              <div class="progress-bar" role="progressbar" aria-valuenow="{{ word_set.set_total_score }}" aria-valuemin="0" aria-valuemax="100">
                 <div class="progress-bar-fill {{ word_set.set_total_score_color }}" style="width: {{ word_set.set_total_score }}%;"></div>
               </div>
               <p class="progress-bar-percentage">
@@ -32,10 +32,10 @@
             </div>
           </div>
           <!-- UKR to ENG Progress -->
-          <div class="progress-bar-container">
+          <div class="progress-bar-container" aria-label="Flash Cards progress">
             <p class="progress-bar-title">Flash Cards</p>
             <div class="progress-bar-wrapper">
-              <div class="progress-bar">
+              <div class="progress-bar" role="progressbar" aria-valuenow="{{ word_set.set_flashcard_eng_ukr_score }}" aria-valuemin="0" aria-valuemax="100">
                 <div class="progress-bar-fill {{ word_set.set_flashcard_eng_ukr_score_color }}" style="width: {{ word_set.set_flashcard_eng_ukr_score }}%;"></div>
               </div>
               <p class="progress-bar-percentage">
@@ -44,20 +44,20 @@
             </div>
           </div>
           <!-- ENG to UKR Progress -->
-          <div class="progress-bar-container">
+          <div class="progress-bar-container" aria-label="Flash Cards reverse progress">
             <p class="progress-bar-title">Flash Cards (Reverse)</p>
             <div class="progress-bar-wrapper">
-              <div class="progress-bar">
+              <div class="progress-bar" role="progressbar" aria-valuenow="{{ word_set.set_flashcard_ukr_eng_score }}" aria-valuemin="0" aria-valuemax="100">
                 <div class="progress-bar-fill {{ word_set.set_flashcard_ukr_eng_score_color }}" style="width: {{ word_set.set_flashcard_ukr_eng_score }}%;"></div>
               </div>
               <p class="progress-bar-percentage">{{ word_set.set_flashcard_ukr_eng_score }}%</p>
             </div>
           </div>
           <!-- UKR to ENG Progress -->
-          <div class="progress-bar-container">
+          <div class="progress-bar-container" aria-label="Spelling progress">
             <p class="progress-bar-title">Spelling</p>
             <div class="progress-bar-wrapper">
-              <div class="progress-bar">
+              <div class="progress-bar" role="progressbar" aria-valuenow="{{ word_set.set_spelling_eng_ukr_score }}" aria-valuemin="0" aria-valuemax="100">
                 <div class="progress-bar-fill {{ word_set.set_spelling_eng_ukr_score_color }}" style="width: {{ word_set.set_spelling_eng_ukr_score }}%;"></div>
               </div>
               <p class="progress-bar-percentage">
