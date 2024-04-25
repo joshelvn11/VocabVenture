@@ -4,32 +4,32 @@
 {% block stylesheets %}
 {% endblock %}
 
-{% block page_title %}{{ page_title }} Spelling{% endblock %}
+{% block page_title %}<title>{{ page_title }} Spelling</title>{% endblock %}
 
 {% block page_buttons %} 
-<button id="exit-button" class="border-button">Exit</button>
+<button id="exit-button" class="border-button" aria-label="Exit spelling practice">Exit</button>
 {% endblock %}
 
 {% block content %}
-<div id="practice-page">
-    <div class="practice-controls-container">
+<div id="practice-page" role="main">
+    <div class="practice-controls-container" aria-live="polite">
         <p>Words Remaining: <span id="words-remaining">null</span></p>
     </div>
-    <div id="practice-card-container" class="clickable">
-        <div id="spelling-card" class="flashcard">
+    <div id="practice-card-container" class="clickable" aria-label="Interactive spelling card">
+        <div id="spelling-card" class="flashcard" role="region" aria-labelledby="practice-card-instruction">
             <p id="practice-card-instruction">Fill in the Ukrainian word for <span id="word-translation">Hello</span></p>
             <div id="practice-card-question-container">
-                <div id="practice-card-question" class="interactive-sentence-container"></div>
+                <div id="practice-card-question" class="interactive-sentence-container" aria-live="assertive"></div>
             </div>
             <div class="practice-card-button-container">
             </div>
         </div>
     </div>
     <div class="practice-controls-container">
-        <button id="check-button" class="border-button">Check</button>
-        <button id="restart-button" class="border-button hidden">Restart</button>
-        <button id="return-button" class="border-button hidden">Return</button>
-        <button id="test-button" class="border-button hidden">Test Me</button>
+        <button id="check-button" class="border-button" aria-label="Check your spelling">Check</button>
+        <button id="restart-button" class="border-button hidden" aria-label="Restart the spelling practice">Restart</button>
+        <button id="return-button" class="border-button hidden" aria-label="Return to previous page">Return</button>
+        <button id="test-button" class="border-button hidden" aria-label="Test your spelling skills">Test Me</button>
     </div>
 </div>
 {% endblock %}
