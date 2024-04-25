@@ -3,7 +3,8 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from vocab.models import USER_UKR_ENG_META, WORD_UKR_ENG, WORD_UKR_ENG_SCORES, ALPHABET_UKR_ENG, WORD_SET, SET_UKR_ENG_SCORES, WORD_SET_JUNCTION_UKR_ENG
 from django.test.client import Client
-from rest_framework.test import APIClient
+from rest_framework.test import APIClient, APITestCase
+from rest_framework import status
 from vocab.serializers import WordUkrEngSerializer
 import json
 
@@ -250,7 +251,6 @@ class PracticeSpellingViewTests(TestCase):
         self.word_set.save()
         self.junction.save()
 
-
     def test_redirect_if_not_logged_in(self):
         response = self.client.get(reverse("practice_spelling") + "?set=1")
         self.assertRedirects(response, "/accounts/login/")
@@ -279,26 +279,84 @@ class PracticeSpellingViewTests(TestCase):
     def tearDown(self):
         self.user.delete()
 
-class GetWordListTests(TestCase):
+class GetWordListTests(APITestCase):
     def setUp(self):
-        self.client = APIClient()
-        self.url = reverse('get_word_list')  # Ensure you have the correct URL name configured in your urls.py
-        # Create sample data
-        WORD_UKR_ENG.objects.create(word_ukrainian='слово', word_english='word', ...)
+        # Create a user
+        self.user = User.objects.create_user(username='testuser', password='12345')
+        # Create words and word sets
+        self.word1 = WORD_UKR_ENG.objects.create(word_id=1, 
+                                                word_ukrainian="UKR word 1", 
+                                                word_english="ENG word 1", 
+                                                word_roman="ROMAN word 1", 
+                                                word_gender=0, 
+                                                word_pronounciation="PRONOUNCIATION word 1", 
+                                                word_pronounciation_audio='https://google.com', 
+                                                word_definition="DEF 1", 
+                                                word_explanation="EXP 1", 
+                                                word_part_of_speech=1,
+                                                word_examples = json.loads('[{"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Vona", "chytaty", "zhurnal"], "tense": "Present", "english": ["She", "reads", "magazine"], "cultural": "", "ukrainian": ["Вона", "читати", "журнал"], "definition": "Engaging with printed literature.", "difficulty": "Beginner", "explanation": "Used to describe the action of reading a magazine for information or entertainment.", "translation": "She is reading a magazine"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Dity", "chytaty", "kazku"], "tense": "Present", "english": ["Children", "read", "fairy tale"], "cultural": "", "ukrainian": ["Діти", "читати", "казку"], "definition": "The act of reading a story with fantastical elements.", "difficulty": "Beginner", "explanation": "Indicates the activity of children engaging with a fairy tale, possibly as a bedtime story or for leisure.", "translation": "The children are reading a fairy tale"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 2, "roman": ["Ya", "lyublyu", "chytaty", "poeziyu"], "tense": "Present", "english": ["I", "love", "to read", "poetry"], "cultural": "", "ukrainian": ["Я", "люблю", "читати", "поезію"], "definition": "Expressing a preference for reading poetic works.", "difficulty": "Intermediate", "explanation": "Used to convey a personal enjoyment or preference for reading poetry, highlighting the emotional or aesthetic appreciation.", "translation": "I love to read poetry"}]'),
+                                                word_declension = json.loads('{"value": null}'),
+                                                word_conjugation = json.loads('{"value": null}'),
+                                                word_aspect_examples = json.loads('{"value": null}'),
+                                                )
+        self.word2 = WORD_UKR_ENG.objects.create(word_id=2, 
+                                                word_ukrainian="UKR word 1", 
+                                                word_english="ENG word 1", 
+                                                word_roman="ROMAN word 1", 
+                                                word_gender=0, 
+                                                word_pronounciation="PRONOUNCIATION word 1", 
+                                                word_pronounciation_audio='https://google.com', 
+                                                word_definition="DEF 1", 
+                                                word_explanation="EXP 1", 
+                                                word_part_of_speech=1,
+                                                word_examples = json.loads('[{"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Vona", "chytaty", "zhurnal"], "tense": "Present", "english": ["She", "reads", "magazine"], "cultural": "", "ukrainian": ["Вона", "читати", "журнал"], "definition": "Engaging with printed literature.", "difficulty": "Beginner", "explanation": "Used to describe the action of reading a magazine for information or entertainment.", "translation": "She is reading a magazine"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Dity", "chytaty", "kazku"], "tense": "Present", "english": ["Children", "read", "fairy tale"], "cultural": "", "ukrainian": ["Діти", "читати", "казку"], "definition": "The act of reading a story with fantastical elements.", "difficulty": "Beginner", "explanation": "Indicates the activity of children engaging with a fairy tale, possibly as a bedtime story or for leisure.", "translation": "The children are reading a fairy tale"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 2, "roman": ["Ya", "lyublyu", "chytaty", "poeziyu"], "tense": "Present", "english": ["I", "love", "to read", "poetry"], "cultural": "", "ukrainian": ["Я", "люблю", "читати", "поезію"], "definition": "Expressing a preference for reading poetic works.", "difficulty": "Intermediate", "explanation": "Used to convey a personal enjoyment or preference for reading poetry, highlighting the emotional or aesthetic appreciation.", "translation": "I love to read poetry"}]'),
+                                                word_declension = json.loads('{"value": null}'),
+                                                word_conjugation = json.loads('{"value": null}'),
+                                                word_aspect_examples = json.loads('{"value": null}'),
+                                                )
+        self.word_set = WORD_SET.objects.create(set_id=1, 
+                                                set_order=1, 
+                                                set_title="Sample Set", 
+                                                set_slug="sample_set"
+                                                )
+        self.junction = WORD_SET_JUNCTION_UKR_ENG.objects.create(word_set=self.word_set, word=self.word1)
+        self.word1.save()
+        self.word2.save()
+        self.word_set.save()
+        self.junction.save()
+        # URL for get_word_list
+        self.url = reverse('get_word_list')
 
-    def test_get_word_list(self):
+    def test_request_without_set_id(self):
+        self.client.force_authenticate(user=self.user)
         response = self.client.get(self.url)
         words = WORD_UKR_ENG.objects.all()
         serializer = WordUkrEngSerializer(words, many=True)
+        self.assertEqual(response.data["data"], [dict(item) for item in serializer.data])
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # Check that the status code is 200
-        self.assertEqual(response.status_code, 200)
-        # Check that the data returned is as expected
-        self.assertEqual(response.data, serializer.data)
+    def test_request_with_valid_set_id(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(self.url, {'set-id': 1})
+        words = [self.word1]
+        serializer = WordUkrEngSerializer(words, many=True)
+        self.assertEqual(response.data["data"], [dict(item) for item in serializer.data])
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_request_with_invalid_set_id(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(self.url, {'set-id': 999})
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_request_with_get_scores_true_and_authenticated_user(self):
+        self.client.force_authenticate(user=self.user)
+        WORD_UKR_ENG_SCORES.objects.create(user=self.user, word=self.word1, word_total_score=50)
+        response = self.client.get(self.url, {'get-scores': 'true'})
+        self.assertIn('word_flashcard_ukr_eng_score', response.data['data'][0])
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def tearDown(self):
-        # Clean up any objects created
-        WORD_UKR_ENG.objects.all().delete()
+        self.user.delete()
 
 class PostWordItemTests(TestCase):
     def setUp(self):
