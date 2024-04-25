@@ -396,6 +396,7 @@ def practice_spelling(request):
 ## ------------------------------------------------------------------------------------------------------------------------ API Views
 
 ## --------------------------------------------------------------------------  GET Word List 
+@api_view(["GET"])
 def get_word_list(request):
     """
     Retrieve a list of words based on the provided set ID, optionally including user-specific scores.
@@ -433,7 +434,11 @@ def get_word_list(request):
         try:
             word_set = WORD_SET.objects.get(set_id=set_id)
         except WORD_SET.DoesNotExist:
-            return JsonResponse({"message": "Error. Word set not found"}, status=404) # Return not found response
+            data_response = {
+                    "status": "ERROR",
+                    "message": "Word set not found",
+                }
+            return Response(data_response, status=404) # Return not found response
 
         # Query the junction table for words in the set and retrieve the word objects
         words_in_set = WORD_SET_JUNCTION_UKR_ENG.objects.filter(word_set=word_set).select_related('word')
@@ -451,6 +456,7 @@ def get_word_list(request):
     for word in words:
 
         word_data = {
+            "id": word.id,
             "word_id": word.word_id,
             "word_ukrainian": word.word_ukrainian,
             "word_english": word.word_english,
@@ -472,9 +478,10 @@ def get_word_list(request):
             # Return an error if the user is not authenticated
             if not request.user.is_authenticated:
                 data_response = {
-                    "message": "Error. Requesting user needs to be authenticated when retrieving scores",
+                    "status": "ERROR",
+                    "message": "Requesting user needs to be authenticated when retrieving scores",
                 }
-                return JsonResponse(data_response, status=401) # Return unauthorized response
+                return Response(data_response, status=401) # Return unauthorized response
             
             try:
                 word_flashcard_ukr_eng_score = word_scores.get(word=word).word_flashcard_ukr_eng_score
@@ -505,11 +512,13 @@ def get_word_list(request):
         data.append(word_data)
 
     data_response = {
-        "message": "Success. Retrieved word data successfully",
+        "status": "SUCCESS",
+        "message": "Retrieved word data successfully",
         "data": data,
     }
 
-    return JsonResponse(data_response, status=200)
+
+    return Response(data_response, status=200)
 
 ## --------------------------------------------------------------------------  GET Word List
 @api_view(["GET"])
