@@ -279,6 +279,27 @@ class PracticeSpellingViewTests(TestCase):
     def tearDown(self):
         self.user.delete()
 
+class GetWordListTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.url = reverse('get_word_list')  # Ensure you have the correct URL name configured in your urls.py
+        # Create sample data
+        WORD_UKR_ENG.objects.create(word_ukrainian='слово', word_english='word', ...)
+
+    def test_get_word_list(self):
+        response = self.client.get(self.url)
+        words = WORD_UKR_ENG.objects.all()
+        serializer = WordUkrEngSerializer(words, many=True)
+
+        # Check that the status code is 200
+        self.assertEqual(response.status_code, 200)
+        # Check that the data returned is as expected
+        self.assertEqual(response.data, serializer.data)
+
+    def tearDown(self):
+        # Clean up any objects created
+        WORD_UKR_ENG.objects.all().delete()
+
 class PostWordItemTests(TestCase):
     def setUp(self):
         self.client = APIClient()

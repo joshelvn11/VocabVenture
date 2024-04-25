@@ -430,7 +430,10 @@ def get_word_list(request):
     if set_id is None:
         words = WORD_UKR_ENG.objects.all()
     else:
-        word_set = get_object_or_404(WORD_SET, set_id=set_id)
+        try:
+            word_set = WORD_SET.objects.get(set_id=set_id)
+        except WORD_SET.DoesNotExist:
+            return JsonResponse({"message": "Error. Word set not found"}, status=404) # Return not found response
 
         # Query the junction table for words in the set and retrieve the word objects
         words_in_set = WORD_SET_JUNCTION_UKR_ENG.objects.filter(word_set=word_set).select_related('word')
@@ -439,7 +442,6 @@ def get_word_list(request):
         words = [junction.word for junction in words_in_set]
 
     if request.user.is_authenticated and get_scores:
-
         # Retrieve all WORD_UKR_ENG_SCORES objects for the current user and the words retrieved above
         word_scores = WORD_UKR_ENG_SCORES.objects.filter(user=request.user, word__in=words).select_related('word')
 
@@ -472,7 +474,7 @@ def get_word_list(request):
                 data_response = {
                     "message": "Error. Requesting user needs to be authenticated when retrieving scores",
                 }
-                return JsonResponse(data_response, status=status.HTTP_401_UNAUTHORIZED)
+                return JsonResponse(data_response, status=401) # Return unauthorized response
             
             try:
                 word_flashcard_ukr_eng_score = word_scores.get(word=word).word_flashcard_ukr_eng_score
@@ -507,7 +509,7 @@ def get_word_list(request):
         "data": data,
     }
 
-    return JsonResponse(data_response, status=status.HTTP_200_OK)
+    return JsonResponse(data_response, status=200)
 
 ## --------------------------------------------------------------------------  GET Word List
 @api_view(["GET"])
