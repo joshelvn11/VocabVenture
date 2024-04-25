@@ -17,19 +17,19 @@
   </head>
   <body>
     <div id="root-container">
-      <div class="background-overlay hidden" id="menu-background-overlay"></div>
-      <nav id="sidebar-nav" class="">
+      <div class="background-overlay hidden" id="menu-background-overlay" aria-hidden="true"></div>
+      <nav id="sidebar-nav" aria-label="Main Navigation">
         <!-- Mobile Nav Close Button -->
-        <button id="mobile-nav-close" class="icon-button">
-          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button id="mobile-nav-close" class="icon-button" aria-label="Close Navigation Menu">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M61.7932 56.5976L37.6569 32L61.7178 7.40241L61.7932 7.3253C63.1509 5.78313 63.1509 3.39277 61.7178 2.00482C60.9635 1.23374 59.983 0.848193 58.927 0.848193C57.9465 0.848193 57.0414 1.31084 56.3625 2.00482L32.3017 26.6024L7.48662 1.15663C6.73236 0.385542 5.75182 0 4.69586 0C3.71533 0 2.81022 0.462651 2.13139 1.15663C1.45255 1.92771 1 2.93012 1.07543 3.93253C1.07543 4.93494 1.52798 5.86024 2.20681 6.55422L27.0219 32L2.13139 57.4458C1.37713 58.2169 1 59.2193 1 60.2988C1 61.3012 1.45255 62.2265 2.13139 62.9205C2.65937 63.3831 3.48905 64 4.77129 64C6.12895 64 6.95864 63.3831 7.48662 62.9205L32.3771 37.4747L56.438 62.0723C56.9659 62.612 57.7956 63.1518 59.1533 63.1518C60.5109 63.1518 61.3406 62.5349 61.8686 62.0723C62.6229 61.3012 63 60.2988 63 59.2193C62.9246 58.2169 62.5474 57.2916 61.7932 56.5976Z" fill="black"/>
             </svg>            
         </button>
         <div id="nav-top-wrapper">
           <h1 id="navbar-logo">VocabVenture</h1>
           <!-- Home -->
-          <div class="nav-item {% if request.path == '/' %}active{% endif %}">
-            <a class="nav-item-link-wrapper" href="/">
+          <div class="nav-item {% if request.path == '/' %}active{% endif %}" role="navigation" aria-label="Home">
+            <a class="nav-item-link-wrapper" href="/" aria-label="Navigate to Home">
               <div class="nav-item-content">
                 <svg
                 width="64"
@@ -38,6 +38,7 @@
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 class="nav-icon"
+                aria-hidden="true"
               >
                 <rect width="64" height="64" fill="none" />
                 <path
@@ -52,11 +53,11 @@
             </a>
           </div>
           <!-- Alphabet -->
-          <div class="nav-item {% if request.path == '/alphabet' %}active{% endif %}">
-            <a class="nav-item-link-wrapper" href="/alphabet">
+          <div class="nav-item {% if request.path == '/alphabet' %}active{% endif %}" role="navigation" aria-label="Alphabet">
+            <a class="nav-item-link-wrapper" href="/alphabet" aria-label="Navigate to Alphabet">
               <div class="nav-item-content">
                 <svg 
-                class="nav-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                class="nav-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path 
                   d="M35.8643 61C34.7172 61 33.8815 60.6199 33.3579 59.8588C32.8343 59.0982 32.7718 58.16 33.1708 57.044L44.1692 27.3731C44.4684 26.5616 45.0171 25.8769 45.8151 25.3189C46.6135 24.7609 47.4362 24.4819 48.2842 24.4819C49.1321 24.4819 49.9678 24.7609 50.7909 25.3189C51.6137 25.8769 52.175 26.5616 52.4741 27.3731L63.697 56.7398C64.1459 57.9062 64.096 58.9079 63.5472 59.7449C62.9989 60.5819 62.0759 61 60.7791 61C60.2303 61 59.7067 60.8225 59.2079 60.4676C58.709 60.1126 58.3599 59.6562 58.1603 59.0982L55.6912 51.414H41.326L38.4831 59.1741C38.2834 59.6814 37.9343 60.1126 37.4355 60.4676C36.9367 60.8225 36.4131 61 35.8643 61ZM42.9722 46.0886H53.5964L48.3592 31.3291H48.2095L42.9722 46.0886Z" fill="black"
                   />
@@ -69,8 +70,8 @@
             </a>
           </div>
           <!-- Words -->
-          <div class="nav-item {% if '/words/' in request.path %}active{% endif %}"">
-            <a class="nav-item-link-wrapper" href="/words/sets">
+          <div class="nav-item {% if '/words/' in request.path %}active{% endif %}" role="navigation" aria-label="Words">
+            <a class="nav-item-link-wrapper" href="/words/sets" aria-label="Navigate to Words">
               <div class="nav-item-content">
                 <svg
                 width="64"
@@ -79,6 +80,7 @@
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 class="nav-icon"
+                aria-hidden="true"
               >
                 <g clip-path="url(#clip0_13_8)">
                   <path
@@ -102,66 +104,27 @@
               </div>
             </a>
           </div>
-          <!-- Phrases 
-          <div class="nav-item">
-            <a class="nav-item-link-wrapper" href="/words/list">
-              <div class="nav-item-content">
-                <svg
-                width="64"
-                height="64"
-                viewBox="0 0 64 64"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                class="nav-icon"
-              >
-                <g clip-path="url(#clip0_13_16)">
-                  <path
-                    d="M47 19.5C47 20.8807 45.6973 22 44.0909 22H17.9091C16.3025 22 15 20.8807 15 19.5C15 18.1193 16.3025 17 17.9091 17H44.0909C45.6973 17 47 18.1193 47 19.5Z"
-                    fill="black"
-                  />
-                  <path
-                    d="M33 35C34.6568 35 36 33.6568 36 32C36 30.3432 34.6568 29 33 29H18C16.3432 29 15 30.3432 15 32C15 33.6568 16.3432 35 18 35H33Z"
-                    fill="black"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M15.5287 63.6716C13.197 62.8542 11.6364 60.6526 11.6364 58.1816V49.402C5.11244 48.8144 0 43.3313 0 36.6544V11.6363C0 5.20976 5.20977 0 11.6364 0H52.3636C58.7904 0 64 5.20976 64 11.6363V36.6544C64 43.7235 58.2691 49.4544 51.2 49.4544H31.8872L21.9978 61.8162C20.4542 63.7455 17.8603 64.4897 15.5287 63.6716ZM17.4545 47.1271C17.4545 45.199 15.8916 43.6362 13.9636 43.6362H12.8C8.94406 43.6362 5.81818 40.5103 5.81818 36.6544V11.6363C5.81818 8.42307 8.4231 5.81816 11.6364 5.81816H52.3636C55.577 5.81816 58.1818 8.42307 58.1818 11.6363V36.6544C58.1818 40.5103 55.0557 43.6362 51.2 43.6362H31.8872C30.1198 43.6362 28.4482 44.4397 27.3441 45.8198L17.4545 58.1816V47.1271Z"
-                    fill="black"
-                  />
-                </g>
-                <defs>
-                  <clipPath id="clip0_13_16">
-                    <rect width="64" height="64" fill="white" />
-                  </clipPath>
-                </defs>
-                </svg>
-                <p class="nav-item-text">Phrases</p>
-              </div>
-            </a>
-          </div>
-        -->
         </div>
         <div id="nav-bottom-wrapper">
           {% if user.is_authenticated %}
           <!-- Profile Item -->
-          <div class="nav-item">
+          <div class="nav-item" role="navigation" aria-label="Profile">
             <!-- Profile Sub-Menu -->
-            <div id="nav-profile-submenu" class="nav-submenu-container hidden">
+            <div id="nav-profile-submenu" class="nav-submenu-container hidden" aria-label="Profile Options">
               <div id="profile-details" class="nav-submenu-item">
                 <p id="profile">{{ user.username }}</p>
                 <p id="email">{{ user.email }}</p>
               </div>
               <div class="nav-submenu-item">
-                <a class="nav-submenu-item-link-wrappaer" href="{% url 'account_logout' %}">
+                <a class="nav-submenu-item-link-wrappaer" href="{% url 'account_logout' %}" aria-label="Log out">
                   <p class="nav-submenu-item-text">Log out</p>
                 </a>
               </div>
             </div>
             <!-- Profile Item Content -->
-            <a id="nav-profile-button" class="nav-item-link-wrapper" href="#">
+            <a id="nav-profile-button" class="nav-item-link-wrapper" href="#" aria-label="Open Profile Menu">
               <div class="nav-item-content">
-                <svg class="nav-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="nav-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <g clip-path="url(#clip0_46_2)">
                   <path d="M61.4217 52.1945V52.1943C61.4176 41.6095 52.8158 33.0072 42.2308 33.0072H20.7872C10.2021 33.0072 1.6 41.6216 1.6 52.1945V54.064C1.6 59.6516 6.13761 64.1892 11.7252 64.1892H51.2965C56.8841 64.1892 61.4217 59.6516 61.4217 54.064V52.1945ZM56.5527 52.1987V52.1989L56.5533 54.0683C56.5533 54.0683 56.5533 54.0684 56.5533 54.0684C56.5532 56.9675 54.1919 59.3288 51.2928 59.3288H11.7246C8.82551 59.3288 6.46413 56.9674 6.46413 54.0683V52.1987C6.46413 44.3021 12.8902 37.8762 20.7866 37.8762H42.2302C50.1268 37.8762 56.5527 44.3023 56.5527 52.1987Z" fill="black" stroke="black" stroke-width="0.8"/>
                   <path d="M46.1234 16.2428C46.1234 7.61852 39.1049 0.6 30.4806 0.6C21.8564 0.6 14.8378 7.61852 14.8378 16.2428C14.8378 24.867 21.8564 31.8856 30.4806 31.8856C39.1087 31.8856 46.1234 24.8791 46.1234 16.2428ZM19.7026 16.2428C19.7026 10.2951 24.533 5.46474 30.4806 5.46474C36.4283 5.46474 41.2587 10.2951 41.2587 16.2428C41.2587 22.1904 36.4283 27.0208 30.4806 27.0208C24.5446 27.0208 19.7026 22.1901 19.7026 16.2428Z" fill="black" stroke="black" stroke-width="0.8"/>
@@ -177,10 +140,10 @@
             </a>
           </div>
           {% else %}
-          <div class="nav-item">
-            <a class="nav-item-link-wrapper" href="{{ login_url }}">
+          <div class="nav-item" role="navigation" aria-label="Login">
+            <a class="nav-item-link-wrapper" href="{{ login_url }}" aria-label="Navigate to Login">
               <div class="nav-item-content">
-                <svg class="nav-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="nav-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <g clip-path="url(#clip0_46_2)">
                   <path d="M61.4217 52.1945V52.1943C61.4176 41.6095 52.8158 33.0072 42.2308 33.0072H20.7872C10.2021 33.0072 1.6 41.6216 1.6 52.1945V54.064C1.6 59.6516 6.13761 64.1892 11.7252 64.1892H51.2965C56.8841 64.1892 61.4217 59.6516 61.4217 54.064V52.1945ZM56.5527 52.1987V52.1989L56.5533 54.0683C56.5533 54.0683 56.5533 54.0684 56.5533 54.0684C56.5532 56.9675 54.1919 59.3288 51.2928 59.3288H11.7246C8.82551 59.3288 6.46413 56.9674 6.46413 54.0683V52.1987C6.46413 44.3021 12.8902 37.8762 20.7866 37.8762H42.2302C50.1268 37.8762 56.5527 44.3023 56.5527 52.1987Z" fill="black" stroke="black" stroke-width="0.8"/>
                   <path d="M46.1234 16.2428C46.1234 7.61852 39.1049 0.6 30.4806 0.6C21.8564 0.6 14.8378 7.61852 14.8378 16.2428C14.8378 24.867 21.8564 31.8856 30.4806 31.8856C39.1087 31.8856 46.1234 24.8791 46.1234 16.2428ZM19.7026 16.2428C19.7026 10.2951 24.533 5.46474 30.4806 5.46474C36.4283 5.46474 41.2587 10.2951 41.2587 16.2428C41.2587 22.1904 36.4283 27.0208 30.4806 27.0208C24.5446 27.0208 19.7026 22.1901 19.7026 16.2428Z" fill="black" stroke="black" stroke-width="0.8"/>
@@ -201,8 +164,8 @@
       <div id="content-container">
         <div id="page-header">
           <div id="page-header-left-container">
-            <button id="mobile-nav-open" class="icon-button">
-              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <button id="mobile-nav-open" class="icon-button" aria-label="Open Navigation Menu">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <g clip-path="url(#clip0_42_20)">
                 <path d="M62.3301 16.3163C62.0637 15.2508 59.7994 5.86056 50.8087 2.3975C45.3477 0.266389 35.8243 0 31.9617 0C28.099 0 18.5756 0.332987 13.1147 2.3975C3.79103 5.99376 1.65992 15.9168 1.52672 16.3163C0.394567 21.0447 -0.204809 26.3059 -0.138211 31.9667C-0.138211 37.6275 0.394567 42.8887 1.52672 47.6171C1.59332 48.0166 3.79103 58.0062 13.1147 61.6025C18.5756 63.7336 28.099 64 31.9617 64C35.8243 64 45.3477 63.667 50.8087 61.6025C60.1323 58.0062 62.2635 48.0832 62.3301 47.6837C63.4622 42.9553 64.0616 37.6941 63.995 32.0333C63.995 26.3059 63.4622 21.0447 62.3301 16.3163ZM59.7994 32.0333C59.866 37.3611 59.3332 42.3559 58.2676 46.7513C58.2676 46.8179 56.4029 54.9428 49.277 57.6733C45.9471 58.9386 39.4206 59.7378 31.9617 59.8044C24.4362 59.7378 17.9763 58.9386 14.5798 57.6733C7.45388 54.9428 5.58916 46.7513 5.58916 46.6847C4.5236 42.2893 3.99082 37.3611 4.05742 31.9667C3.99082 26.6389 4.5236 21.6441 5.58916 17.2487C5.58916 17.1821 7.45388 9.05723 14.5798 6.32674C17.9097 5.06139 24.4362 4.26223 31.8951 4.19563C39.4206 4.26223 45.8805 5.06139 49.277 6.32674C56.4029 9.05723 58.2676 17.1821 58.2676 17.3153C59.3332 21.7107 59.866 26.6389 59.7994 32.0333Z" fill="black"/>
                 <path d="M19.1084 22.4432H44.6818C45.9471 22.4432 46.9461 21.4442 46.9461 20.1789C46.9461 18.9135 45.9471 17.9146 44.6818 17.9146H19.1084C17.8431 17.9146 16.8441 18.9135 16.8441 20.1789C16.8441 21.4442 17.9097 22.4432 19.1084 22.4432Z" fill="black"/>
@@ -223,7 +186,7 @@
           </div>
         </div>
         <div id="page-content">
-          <div id="alert-modal-container"></div>
+          <div id="alert-modal-container" aria-live="polite"></div>
           {% block content %}{% endblock %}
         </div>
       </div>
