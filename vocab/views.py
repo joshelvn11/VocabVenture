@@ -397,6 +397,23 @@ def practice_spelling(request):
 
 ## --------------------------------------------------------------------------  GET Word List 
 def get_word_list(request):
+    """
+    Retrieve a list of words based on the provided set ID, optionally including user-specific scores.
+
+    This view function fetches words either from a specific set or all words if no set ID is provided.
+    If the 'get-scores' parameter is set to true, it also fetches the scores for each word for the
+    authenticated user. The scores include performance metrics across different types of exercises
+    (e.g., flashcards, spelling) and are returned with a color coding based on the score value.
+
+    Parameters:
+        request (HttpRequest): The request object used to fetch the words.
+            - set-id (str, optional): The ID of the word set to filter words. Defaults to None.
+            - get-scores (str, optional): A flag to determine if scores should be fetched. Accepts
+              'true' or 'false'. Defaults to 'false'.
+
+    Returns:
+        HttpResponse: A JSON response containing the list of words, optionally including scores.
+    """
 
     # Get the set_id URL param
     set_id = request.GET.get('set-id', None)
@@ -421,7 +438,7 @@ def get_word_list(request):
         # Extract the WORD_UKR_ENG objects from the queryset
         words = [junction.word for junction in words_in_set]
 
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and get_scores:
 
         # Retrieve all WORD_UKR_ENG_SCORES objects for the current user and the words retrieved above
         word_scores = WORD_UKR_ENG_SCORES.objects.filter(user=request.user, word__in=words).select_related('word')
@@ -430,22 +447,6 @@ def get_word_list(request):
     data = []
 
     for word in words:
-
-        # Get the user's scores for the current word if the get-scores URL param is true
-        if get_scores:
-            try:
-                word_flashcard_ukr_eng_score = word_scores.get(word=word).word_flashcard_ukr_eng_score
-                word_flashcard_eng_ukr_score = word_scores.get(word=word).word_flashcard_eng_ukr_score
-                word_spelling_eng_ukr_score = word_scores.get(word=word).word_spelling_eng_ukr_score
-            except WORD_UKR_ENG_SCORES.DoesNotExist:
-                word_flashcard_ukr_eng_score = 0
-                word_flashcard_eng_ukr_score = 0
-                word_spelling_eng_ukr_score = 0
-            
-            # Get the score colors
-            word_flashcard_ukr_eng_score_color = get_score_color(word_flashcard_ukr_eng_score)
-            word_flashcard_eng_ukr_score_color = get_score_color(word_flashcard_eng_ukr_score)
-            word_spelling_eng_ukr_score_color = get_score_color(word_spelling_eng_ukr_score)
 
         word_data = {
             "word_id": word.word_id,
@@ -462,22 +463,51 @@ def get_word_list(request):
             "word_aspect_examples": word.word_aspect_examples,
             "word_declension": word.word_declension,
             "word_conjugation": word.word_conjugation,
-            "word_flashcard_ukr_eng_score": word_flashcard_ukr_eng_score,
-            "word_flashcard_ukr_eng_score_color": word_flashcard_ukr_eng_score_color,
-            "word_flashcard_eng_ukr_score": word_flashcard_eng_ukr_score,
-            "word_flashcard_eng_ukr_score_color": word_flashcard_eng_ukr_score_color,
-            "word_spelling_eng_ukr_score": word_spelling_eng_ukr_score,
-            "word_spelling_eng_ukr_score_color": word_spelling_eng_ukr_score_color,
         }
+
+        # Get the user's scores for the current word if the get-scores URL param is true
+        if get_scores:
+            # Return an error if the user is not authenticated
+            if not request.user.is_authenticated:
+                data_response = {
+                    "message": "Error. Requesting user needs to be authenticated when retrieving scores",
+                }
+                return JsonResponse(data_response, status=status.HTTP_401_UNAUTHORIZED)
+            
+            try:
+                word_flashcard_ukr_eng_score = word_scores.get(word=word).word_flashcard_ukr_eng_score
+                word_flashcard_eng_ukr_score = word_scores.get(word=word).word_flashcard_eng_ukr_score
+                word_spelling_eng_ukr_score = word_scores.get(word=word).word_spelling_eng_ukr_score
+            except WORD_UKR_ENG_SCORES.DoesNotExist:
+                word_flashcard_ukr_eng_score = 0
+                word_flashcard_eng_ukr_score = 0
+                word_spelling_eng_ukr_score = 0
+            
+            # Get the score colors
+            word_flashcard_ukr_eng_score_color = get_score_color(word_flashcard_ukr_eng_score)
+            word_flashcard_eng_ukr_score_color = get_score_color(word_flashcard_eng_ukr_score)
+            word_spelling_eng_ukr_score_color = get_score_color(word_spelling_eng_ukr_score)
+
+            score_data = {
+                "word_flashcard_ukr_eng_score": word_flashcard_ukr_eng_score,
+                "word_flashcard_ukr_eng_score_color": word_flashcard_ukr_eng_score_color,
+                "word_flashcard_eng_ukr_score": word_flashcard_eng_ukr_score,
+                "word_flashcard_eng_ukr_score_color": word_flashcard_eng_ukr_score_color,
+                "word_spelling_eng_ukr_score": word_spelling_eng_ukr_score,
+                "word_spelling_eng_ukr_score_color": word_spelling_eng_ukr_score_color,
+            }
+
+            # Add the score data to the word data
+            word_data.update(score_data)
 
         data.append(word_data)
 
     data_response = {
-        "message": "Success!",
+        "message": "Success. Retrieved word data successfully",
         "data": data,
     }
 
-    return JsonResponse(data_response)
+    return JsonResponse(data_response, status=status.HTTP_200_OK)
 
 ## --------------------------------------------------------------------------  GET Word List
 @api_view(["GET"])
