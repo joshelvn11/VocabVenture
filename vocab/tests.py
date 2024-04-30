@@ -548,3 +548,56 @@ class DeleteWordItemTests(APITestCase):
         self.superuser.delete()
         if WORD_UKR_ENG.objects.filter(word_id=self.word.word_id).exists():
             self.word.delete()
+
+class GetWordSetsTests(APITestCase):
+    def setUp(self):
+        # Create a user for the tests
+        self.user = User.objects.create_user(username="testuser", password="12345")
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+        # Create sample word and word set data
+        self.word = WORD_UKR_ENG.objects.create(
+            word_id=1, 
+            word_ukrainian="слово", 
+            word_english="word", 
+            word_roman="slovo", 
+            word_gender=0, 
+            word_pronounciation="slo-vo",
+            word_pronounciation_audio='https://google.com'
+        )
+        self.word_set = WORD_SET.objects.create(
+            set_id = 1, 
+            set_order = 1,
+            set_title = "Sample Set", 
+            set_slug = "sample_set"
+        )
+        self.junction = WORD_SET_JUNCTION_UKR_ENG.objects.create(
+            word_set=self.word_set, 
+            word=self.word
+        )
+
+        # URL for getWordSets
+        self.url = reverse('get_word_sets', kwargs={'word_id': self.word.word_id})
+
+    def test_get_word_sets_with_valid_word_id(self):
+        response = self.client.get(self.url)
+        print(response)
+        print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue('data' in response.data)
+        self.assertEqual(len(response.data['data']), 1)
+        self.assertEqual(response.data['data'][0]['set_title'], 'Sample Set')
+
+    def test_get_word_sets_with_invalid_word_id(self):
+        # Test with a non-existent word_id
+        invalid_url = reverse('get_word_sets', kwargs={'word_id': 999})
+        response = self.client.get(invalid_url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def tearDown(self):
+        # Clean up code
+        self.user.delete()
+        self.word.delete()
+        self.word_set.delete()
+        self.junction.delete()

@@ -28,6 +28,41 @@ Clicking on any word will bring up a modal displaying further detailed informati
 
 ### Intro Tour Messages
 
+To increase UX and usability every page and feature has a message displayed explaining the page/feature including what it is and how to use it. Once the message has been closed by the user it will not be displayed again by persisting the state of the message for that specific user to the database.
+
+### Home Screen & Stats
+
+The main entry point of the app is the home screen where can see various stats related to their account including:
+
+1. Quiz Current Streak - how many days in a row have they have taken a test quiz for each respective quiz type.
+2. Quiz Longest Streak - what their longest recorded streak was for each respective quiz type.
+3. Word Progress - their overall word progress for all the words in the app. This shows the progress of how many words they have a score for out of all the overall words in the app broken down and color coded by amount of words in each learning stage (New, Learning, Learnt, Mastered)
+4. Learning Stage Breakdown - these are seperate cards show the percentage of words the user has scores for in each learning stage.
+
+![Home Screen Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/home-screen.png)
+
+### Alphabet
+
+This is a full list of letters in the Cyrillic alphabet showing approximate pronounciations for each letter.
+
+![Alphabet Screen Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/alphabet.png)
+
+### Word Sets
+
+In the app all words are divided up into sets for easier and more structured learning, words can be in multiple sets. The sets page displays these sets and allow users to navigate to the page containing all words in that set by clicking on the set item. The sets also show stats for the user scores in each specific set. It shows the average score of all the words broken down by quiz type and the overall word score.
+
+![Word Sets Screen Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/word-sets.png)
+
+### Word Lists
+
+The word list page displays a list of the words in the respective set that was accessed. Earch word is displayed as a card with the word in Ukrainian as the main card element and the most basic and essential info about the word including the English translation, romanization and pronounciation. It also display a progress bar show the overall word score progress for the word which is an average of the three quiz scoring metrics. By clicking on a word a modal is displayed showing further details about the word.
+
+When the word list is accessed this page is always dynamically generated however the extended word details are also loaded in behind the seens via and API call to the server on page load. This reduces database requests and speeds up performance when the word details modal is shown.
+
+![Word List Screen Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/word-list.png)
+
+### Word Details
+
 ### Quiz
 
 #### Flashcard Quiz
@@ -37,6 +72,10 @@ Clicking on any word will bring up a modal displaying further detailed informati
 ### Scoring
 
 ### Admin Editing
+
+### Progressive Web App
+
+VocabVenture is also a progresive web app which improves performance and allows users to install it like a native app on mobile devices for a greatly enhaces user exeperience.
 
 ## API
 
@@ -56,6 +95,8 @@ Clicking on any word will bring up a modal displaying further detailed informati
 
 ## Deployment
 
+### Web App
+
 The application itself is currently deployed to a Render Web Server instance and the database to a Render database instance.
 
 The deployment process follows these steps:
@@ -66,6 +107,12 @@ The deployment process follows these steps:
 4. Add necessary evironment variables for the database URL, disable collectstatic value and the job secret key (use for running remote cron jobs).
 5. Finalise the creation.
 6. The web service will now deploy from the Github repo and on every subsequent push to the repo.
+
+### Database
+
+### Object Storage
+
+The app uses Wasabi's S3 compatable storage platform for all object based storage.
 
 ## Future Ideas / Roadmap
 
@@ -80,6 +127,18 @@ This entails rewriting some of the application logic to dynamically generate UI 
 ## Testing
 
 ### Validator Testing
+
+### Unit Testing
+
+All Django views are tested extensively using Django's in built unit testing framework. Multiple test cases are carried out for every view function testing for factors such as authorisation, correct responses, data validity and correct template rendering.
+
+During unit tests a seperate Postgres test database is created on Neon and used for testing purposes where it is then destroyed at the end of every test run.
+
+### User Testing
+
+Exstensive user testing was carried out by letting multiple alpha-testers use the app for a number of weeks while development was taking place. They all used numerous different devices spanning mobility, browsers used and device age. The users where all selected for being diverse in their own personal traits to ensure a wide spectrum of people could use the app effectively and bug free.
+
+### Lighthouse Testing
 
 ### Known Bugs
 

@@ -621,8 +621,13 @@ def deleteWordItem(request, word_id):
 ## --------------------------------------------------------------------------  GET Word Sets
 @api_view(["GET"])
 def getWordSets(request, word_id):
-    # Get the specified word object
-    word = WORD_UKR_ENG.objects.get(word_id=word_id)
+
+    try:
+        # Get the specified word object
+        word = WORD_UKR_ENG.objects.get(word_id=word_id)
+    except WORD_UKR_ENG.DoesNotExist:
+        # If the word item does not exist, return a 404 Not Found response
+        return Response({"status": "ERROR", "message": "Word not found"}, status=status.HTTP_404_NOT_FOUND)
     
     # Use the junction table to find the corresponding sets for the word
     word_sets = WORD_SET.objects.filter(word_set_junction_ukr_eng__word=word)
