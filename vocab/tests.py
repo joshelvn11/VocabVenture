@@ -425,3 +425,4 @@ class PostWordItemTests(TestCase):
         word = WORD_UKR_ENG.objects.first()
         self.assertIsNotNone(word)
         self.assertEqual(word.word_ukrainian, "слово")
+

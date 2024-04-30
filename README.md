@@ -42,8 +42,56 @@ Clicking on any word will bring up a modal displaying further detailed informati
 
 ## Database
 
+### Schema
+
+![VocabVenture Database ERM](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/vocab-venture-erm.png)
+
+[View the ERM on Figma here](https://www.figma.com/file/Zhc99JR3FgcUm0Vguyzy6w/Vocab-Venture-ERM?type=whiteboard&node-id=0%3A1&t=aZP744msjxiJwk40-1)
+
+## Design
+
+### UI Design Mockup
+
+[View the Mockup on Figma here](https://www.figma.com/file/P8PLJER8rZtrxbMYkEH8Wz/Vocab-Venture-Design?type=design&mode=design&t=cU2YagP9xr99O5fx-1)
+
+## Deployment
+
+The application itself is currently deployed to a Render Web Server instance and the database to a Render database instance.
+
+The deployment process follows these steps:
+
+1. Create a Render web service instance.
+2. Select 'Deploy from Github repo'.
+3. Connect the relevant repo.
+4. Add necessary evironment variables for the database URL, disable collectstatic value and the job secret key (use for running remote cron jobs).
+5. Finalise the creation.
+6. The web service will now deploy from the Github repo and on every subsequent push to the repo.
+
 ## Future Ideas / Roadmap
+
+### AI Chat
+
+### Phrase Library
 
 ### Multiple Languages
 
 This entails rewriting some of the application logic to dynamically generate UI components based on the target languages data model based on what data needs to be included about the target language. For example languages the use the Roman alphabet would not need an alphabet section or to show the romanised for of words.
+
+## Testing
+
+### Validator Testing
+
+### Known Bugs
+
+- Flashcard flip on Safari on mobile - there is currently still some issues with the card flip animation on Safari on mobile, I've tried multiple suggested approaches to fix this to no avail. If I can't find a solution that works I will just revert to disable the flip animation on Safari Mobile and just make the card transition the front/back.
+
+## Credits
+
+### Icons
+
+All icons where sourced from The Noun Project under the Creative Commons License, individual icon credits are listed below
+
+- chevron by Landan Lloyd from <a href="https://thenounproject.com/browse/icons/term/chevron/" target="_blank" title="chevron Icons">Noun Project</a> (CC BY 3.0)
+- Close by Genius Icons from <a href="https://thenounproject.com/browse/icons/term/close/" target="_blank" title="Close Icons">Noun Project</a> (CC BY 3.0)
+- translate by silvio rebelo from <a href="https://thenounproject.com/browse/icons/term/translate/" target="_blank" title="translate Icons">Noun Project</a> (CC BY 3.0)
+- Travel by Adrien Coquet from <a href="https://thenounproject.com/browse/icons/term/travel/" target="_blank" title="Travel Icons">Noun Project</a> (CC BY 3.0)

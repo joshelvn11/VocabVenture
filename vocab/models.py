@@ -22,7 +22,7 @@ class ALPHABET_UKR_ENG(models.Model):
         verbose_name = "Letter (UKR/ENG)"
         verbose_name_plural = "Alphabet (UKR/ENG)"
 
-    def __str__(self):
+    def __str__(self): 
         return f"[ID] {self.letter_id} [UKR] {self.letter_ukrainian}"
 
 # Model to define full list of word
@@ -106,11 +106,10 @@ class WORD_UKR_ENG_SCORES(models.Model):
         verbose_name_plural = "Word Scores (UKR/ENG)"
 
     def __str__(self):
-        return f"[User] {self.user.username} [Word] {self.word.word_ukrainian}"
+        return f"[User] {self.user.username} [Word] {self. word.word_ukrainian}"
     
 # Model to hold set scores
 class SET_UKR_ENG_SCORES(models.Model):
-
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_set_scores')
     word_set = models.ForeignKey(WORD_SET, on_delete=models.CASCADE, related_name='set_scores')
     set_total_score = models.IntegerField(default=0, validators=[
