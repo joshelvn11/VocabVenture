@@ -384,19 +384,19 @@ class PostWordItemTests(TestCase):
         self.client.force_authenticate(user=self.superuser)
         data = {
             "word_id":1, 
-            "word_ukrainian":"слово", 
-            "word_english":"word", 
-            "word_roman":"slovo", 
-            "word_gender":0, 
-            "word_pronounciation":"slo-vo",
-            "word_pronounciation_audio":'https://google.com', 
-            "word_definition":"test", 
-            "word_explanation":"test", 
-            "word_part_of_speech":1,
-            "word_examples":json.loads('[{"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Vona", "chytaty", "zhurnal"], "tense": "Present", "english": ["She", "reads", "magazine"], "cultural": "", "ukrainian": ["Вона", "читати", "журнал"], "definition": "Engaging with printed literature.", "difficulty": "Beginner", "explanation": "Used to describe the action of reading a magazine for information or entertainment.", "translation": "She is reading a magazine"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Dity", "chytaty", "kazku"], "tense": "Present", "english": ["Children", "read", "fairy tale"], "cultural": "", "ukrainian": ["Діти", "читати", "казку"], "definition": "The act of reading a story with fantastical elements.", "difficulty": "Beginner", "explanation": "Indicates the activity of children engaging with a fairy tale, possibly as a bedtime story or for leisure.", "translation": "The children are reading a fairy tale"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 2, "roman": ["Ya", "lyublyu", "chytaty", "poeziyu"], "tense": "Present", "english": ["I", "love", "to read", "poetry"], "cultural": "", "ukrainian": ["Я", "люблю", "читати", "поезію"], "definition": "Expressing a preference for reading poetic works.", "difficulty": "Intermediate", "explanation": "Used to convey a personal enjoyment or preference for reading poetry, highlighting the emotional or aesthetic appreciation.", "translation": "I love to read poetry"}]'),
+            "word_ukrainian": "слово", 
+            "word_english": "word", 
+            "word_roman": "slovo", 
+            "word_gender": 0, 
+            "word_pronounciation": "slo-vo",
+            "word_pronounciation_audio": 'https://google.com', 
+            "word_definition": "test", 
+            "word_explanation": "test", 
+            "word_part_of_speech": 1,
+            "word_examples": json.loads('[{"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Vona", "chytaty", "zhurnal"], "tense": "Present", "english": ["She", "reads", "magazine"], "cultural": "", "ukrainian": ["Вона", "читати", "журнал"], "definition": "Engaging with printed literature.", "difficulty": "Beginner", "explanation": "Used to describe the action of reading a magazine for information or entertainment.", "translation": "She is reading a magazine"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Dity", "chytaty", "kazku"], "tense": "Present", "english": ["Children", "read", "fairy tale"], "cultural": "", "ukrainian": ["Діти", "читати", "казку"], "definition": "The act of reading a story with fantastical elements.", "difficulty": "Beginner", "explanation": "Indicates the activity of children engaging with a fairy tale, possibly as a bedtime story or for leisure.", "translation": "The children are reading a fairy tale"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 2, "roman": ["Ya", "lyublyu", "chytaty", "poeziyu"], "tense": "Present", "english": ["I", "love", "to read", "poetry"], "cultural": "", "ukrainian": ["Я", "люблю", "читати", "поезію"], "definition": "Expressing a preference for reading poetic works.", "difficulty": "Intermediate", "explanation": "Used to convey a personal enjoyment or preference for reading poetry, highlighting the emotional or aesthetic appreciation.", "translation": "I love to read poetry"}]'),
             "word_declension": json.loads('{"value": null}'),
             "word_conjugation": json.loads('{"value": null}'),
-            "word_aspect_examples":json.loads('{"value": null}'), 
+            "word_aspect_examples": json.loads('{"value": null}'), 
             }
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -406,19 +406,19 @@ class PostWordItemTests(TestCase):
         self.client.force_authenticate(user=self.superuser)
         data = {
             "word_id":1, 
-            "word_ukrainian":"слово", 
-            "word_english":"word", 
-            "word_roman":"slovo", 
-            "word_gender":0, 
-            "word_pronounciation":"slo-vo",
-            "word_pronounciation_audio":'https://google.com', 
-            "word_definition":"test", 
-            "word_explanation":"test", 
-            "word_part_of_speech":1,
-            "word_examples":json.loads('[{"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Vona", "chytaty", "zhurnal"], "tense": "Present", "english": ["She", "reads", "magazine"], "cultural": "", "ukrainian": ["Вона", "читати", "журнал"], "definition": "Engaging with printed literature.", "difficulty": "Beginner", "explanation": "Used to describe the action of reading a magazine for information or entertainment.", "translation": "She is reading a magazine"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Dity", "chytaty", "kazku"], "tense": "Present", "english": ["Children", "read", "fairy tale"], "cultural": "", "ukrainian": ["Діти", "читати", "казку"], "definition": "The act of reading a story with fantastical elements.", "difficulty": "Beginner", "explanation": "Indicates the activity of children engaging with a fairy tale, possibly as a bedtime story or for leisure.", "translation": "The children are reading a fairy tale"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 2, "roman": ["Ya", "lyublyu", "chytaty", "poeziyu"], "tense": "Present", "english": ["I", "love", "to read", "poetry"], "cultural": "", "ukrainian": ["Я", "люблю", "читати", "поезію"], "definition": "Expressing a preference for reading poetic works.", "difficulty": "Intermediate", "explanation": "Used to convey a personal enjoyment or preference for reading poetry, highlighting the emotional or aesthetic appreciation.", "translation": "I love to read poetry"}]'),
+            "word_ukrainian": "слово", 
+            "word_english": "word", 
+            "word_roman": "slovo", 
+            "word_gender": 0, 
+            "word_pronounciation": "slo-vo",
+            "word_pronounciation_audio": 'https://google.com', 
+            "word_definition": "test", 
+            "word_explanation": "test", 
+            "word_part_of_speech": 1,
+            "word_examples": json.loads('[{"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Vona", "chytaty", "zhurnal"], "tense": "Present", "english": ["She", "reads", "magazine"], "cultural": "", "ukrainian": ["Вона", "читати", "журнал"], "definition": "Engaging with printed literature.", "difficulty": "Beginner", "explanation": "Used to describe the action of reading a magazine for information or entertainment.", "translation": "She is reading a magazine"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Dity", "chytaty", "kazku"], "tense": "Present", "english": ["Children", "read", "fairy tale"], "cultural": "", "ukrainian": ["Діти", "читати", "казку"], "definition": "The act of reading a story with fantastical elements.", "difficulty": "Beginner", "explanation": "Indicates the activity of children engaging with a fairy tale, possibly as a bedtime story or for leisure.", "translation": "The children are reading a fairy tale"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 2, "roman": ["Ya", "lyublyu", "chytaty", "poeziyu"], "tense": "Present", "english": ["I", "love", "to read", "poetry"], "cultural": "", "ukrainian": ["Я", "люблю", "читати", "поезію"], "definition": "Expressing a preference for reading poetic works.", "difficulty": "Intermediate", "explanation": "Used to convey a personal enjoyment or preference for reading poetry, highlighting the emotional or aesthetic appreciation.", "translation": "I love to read poetry"}]'),
             "word_declension": json.loads('{"value": null}'),
             "word_conjugation": json.loads('{"value": null}'),
-            "word_aspect_examples":json.loads('{"value": null}'), 
+            "word_aspect_examples": json.loads('{"value": null}'), 
             }
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -426,3 +426,73 @@ class PostWordItemTests(TestCase):
         self.assertIsNotNone(word)
         self.assertEqual(word.word_ukrainian, "слово")
 
+class UpdateWordItemTests(APITestCase):
+    def setUp(self):
+        self.superuser = User.objects.create_superuser("admin", "adminpass")
+        self.user = User.objects.create_user("testuser", "12345")
+        self.word = WORD_UKR_ENG.objects.create(word_id=1, 
+                                                word_ukrainian="UKR word 1", 
+                                                word_english="ENG word 1", 
+                                                word_roman="ROMAN word 1", 
+                                                word_gender=0, 
+                                                word_pronounciation="PRONOUNCIATION word 1", 
+                                                word_pronounciation_audio='https://google.com', 
+                                                word_definition="DEF 1", 
+                                                word_explanation="EXP 1", 
+                                                word_part_of_speech=1,
+                                                word_examples = json.loads('[{"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Vona", "chytaty", "zhurnal"], "tense": "Present", "english": ["She", "reads", "magazine"], "cultural": "", "ukrainian": ["Вона", "читати", "журнал"], "definition": "Engaging with printed literature.", "difficulty": "Beginner", "explanation": "Used to describe the action of reading a magazine for information or entertainment.", "translation": "She is reading a magazine"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Dity", "chytaty", "kazku"], "tense": "Present", "english": ["Children", "read", "fairy tale"], "cultural": "", "ukrainian": ["Діти", "читати", "казку"], "definition": "The act of reading a story with fantastical elements.", "difficulty": "Beginner", "explanation": "Indicates the activity of children engaging with a fairy tale, possibly as a bedtime story or for leisure.", "translation": "The children are reading a fairy tale"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 2, "roman": ["Ya", "lyublyu", "chytaty", "poeziyu"], "tense": "Present", "english": ["I", "love", "to read", "poetry"], "cultural": "", "ukrainian": ["Я", "люблю", "читати", "поезію"], "definition": "Expressing a preference for reading poetic works.", "difficulty": "Intermediate", "explanation": "Used to convey a personal enjoyment or preference for reading poetry, highlighting the emotional or aesthetic appreciation.", "translation": "I love to read poetry"}]'),
+                                                word_declension = json.loads('{"value": null}'),
+                                                word_conjugation = json.loads('{"value": null}'),
+                                                word_aspect_examples = json.loads('{"value": null}'),
+                                                )
+        self.word.save()
+
+        self.update_data = {
+            "word_id":1, 
+            "word_ukrainian": "слово", 
+            "word_english": "word", 
+            "word_roman": "slovo", 
+            "word_gender": 0, 
+            "word_pronounciation": "slo-vo",
+            "word_pronounciation_audio": 'https://google.com', 
+            "word_definition": "test", 
+            "word_explanation": "test", 
+            "word_part_of_speech": 1,
+            "word_examples": json.loads('[{"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Vona", "chytaty", "zhurnal"], "tense": "Present", "english": ["She", "reads", "magazine"], "cultural": "", "ukrainian": ["Вона", "читати", "журнал"], "definition": "Engaging with printed literature.", "difficulty": "Beginner", "explanation": "Used to describe the action of reading a magazine for information or entertainment.", "translation": "She is reading a magazine"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 1, "roman": ["Dity", "chytaty", "kazku"], "tense": "Present", "english": ["Children", "read", "fairy tale"], "cultural": "", "ukrainian": ["Діти", "читати", "казку"], "definition": "The act of reading a story with fantastical elements.", "difficulty": "Beginner", "explanation": "Indicates the activity of children engaging with a fairy tale, possibly as a bedtime story or for leisure.", "translation": "The children are reading a fairy tale"}, {"case": "Accusative", "audio": "URL_to_audio_pronunciation_of_the_sentence", "index": 2, "roman": ["Ya", "lyublyu", "chytaty", "poeziyu"], "tense": "Present", "english": ["I", "love", "to read", "poetry"], "cultural": "", "ukrainian": ["Я", "люблю", "читати", "поезію"], "definition": "Expressing a preference for reading poetic works.", "difficulty": "Intermediate", "explanation": "Used to convey a personal enjoyment or preference for reading poetry, highlighting the emotional or aesthetic appreciation.", "translation": "I love to read poetry"}]'),
+            "word_declension": json.loads('{"value": null}'),
+            "word_conjugation": json.loads('{"value": null}'),
+            "word_aspect_examples": json.loads('{"value": null}'), 
+            }
+        self.url = reverse("update_word_item", kwargs={"word_id": self.word.word_id})
+
+    def test_update_word_item_access_control(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.put(self.url, {"word_english": "updated_word"})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        self.client.force_authenticate(user=self.superuser)
+        response = self.client.put(self.url, {"word_english": "updated_word"})
+        self.assertNotEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        
+    def test_update_non_existent_word(self):
+        self.client.force_authenticate(user=self.superuser)
+        non_existent_url = reverse("update_word_item", kwargs={"word_id": 999})
+        response = self.client.put(non_existent_url, {"word_english": "updated_word"})
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_valid_update(self):
+        self.client.force_authenticate(user=self.superuser)
+        response = self.client.put(self.url, self.update_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.word.refresh_from_db()
+        self.assertEqual(self.word.word_english, "word")
+    
+    def test_invalid_update(self):
+        self.client.force_authenticate(user=self.superuser)
+        response = self.client.put(self.url, {"word_english": ""})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
+    def tearDown(self):
+        self.user.delete()
+        self.superuser.delete()
+        self.word.delete()

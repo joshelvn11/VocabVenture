@@ -571,7 +571,8 @@ def updateWordItem(request, word_id):
         except WORD_UKR_ENG.DoesNotExist:
             # If the word item does not exist, return a 404 Not Found response
             return Response({"status": "ERROR",
-                            "message": "Word not found"})
+                            "message": "Word not found"},
+                            status=status.HTTP_404_NOT_FOUND)
 
         # Serialize the incoming data with the existing word item instance
         serializer = WordUkrEngSerializer(word_item, data=request.data)
@@ -586,7 +587,8 @@ def updateWordItem(request, word_id):
         else:
             # If data is invalid, return the errors
             return Response({"status": "ERROR",
-                            "message": json.dumps(serializer.errors)})
+                            "message": json.dumps(serializer.errors)},
+                            status=status.HTTP_400_BAD_REQUEST)
     else:
         # If the user is not a superuser, return an unauthorized error response
         return Response({"status": "ERROR",
@@ -616,7 +618,6 @@ def deleteWordItem(request, word_id):
         return Response({"status": "ERROR",
                          "message": "Unauthorized: Only superusers can perform this action"},
                         status=status.HTTP_403_FORBIDDEN)
-
 
 ## --------------------------------------------------------------------------  GET Word Sets
 @api_view(["GET"])
