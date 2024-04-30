@@ -496,3 +496,55 @@ class UpdateWordItemTests(APITestCase):
         self.user.delete()
         self.superuser.delete()
         self.word.delete()
+
+class DeleteWordItemTests(APITestCase):
+    def setUp(self):
+        self.superuser = User.objects.create_superuser("admin", "adminpass")
+        self.user = User.objects.create_user('user', 'user@test.com', 'userpass')
+        
+        # Create a sample word to be deleted
+        self.word = WORD_UKR_ENG.objects.create(
+            word_id=1, 
+            word_ukrainian="слово", 
+            word_english="word", 
+            word_roman="slovo", 
+            word_gender=0, 
+            word_pronounciation="slo-vo",
+            word_pronounciation_audio='https://google.com', 
+            word_definition="definition", 
+            word_explanation="explanation", 
+            word_part_of_speech=1
+        )
+        
+        # URL for deleteWordItem
+        self.url = reverse("delete_word_item", kwargs={"word_id": self.word.word_id})
+
+    def test_access_denied_to_unauthenticated_users(self):
+        # Attempt to delete without authentication
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_access_denied_to_non_superuser(self):
+        # Authenticate as a regular user
+        self.client.force_authenticate(user=self.user)
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_delete_word_item_with_superuser(self):
+        self.client.force_authenticate(user=self.superuser)
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(WORD_UKR_ENG.objects.filter(word_id=self.word.word_id).exists())
+
+    def test_delete_non_existent_word(self):
+        self.client.force_authenticate(user=self.superuser)
+        non_existent_url = reverse("delete_word_item", kwargs={"word_id": 999})
+        response = self.client.delete(non_existent_url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def tearDown(self):
+        # Clean up code
+        self.user.delete()
+        self.superuser.delete()
+        if WORD_UKR_ENG.objects.filter(word_id=self.word.word_id).exists():
+            self.word.delete()

@@ -595,7 +595,6 @@ def updateWordItem(request, word_id):
                          "message": "Unauthorized: Only superusers can perform this action"},
                         status=status.HTTP_403_FORBIDDEN)
 
-
 ## --------------------------------------------------------------------------  DELETE Word Item
 @api_view(["DELETE"])
 def deleteWordItem(request, word_id):
@@ -612,7 +611,7 @@ def deleteWordItem(request, word_id):
         word_item.delete()
 
         # Return a success response
-        return Response({"status": "SUCCESS", "message": "Word deleted successfully"})
+        return Response({"status": "SUCCESS", "message": "Word deleted successfully"}, status=status.HTTP_200_OK)
     else:
         # If the user is not a superuser, return an unauthorized error response
         return Response({"status": "ERROR",
