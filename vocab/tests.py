@@ -577,17 +577,13 @@ class GetWordSetsTests(APITestCase):
             word=self.word
         )
 
-        # URL for getWordSets
         self.url = reverse('get_word_sets', kwargs={'word_id': self.word.word_id})
 
     def test_get_word_sets_with_valid_word_id(self):
         response = self.client.get(self.url)
-        print(response)
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue('data' in response.data)
-        self.assertEqual(len(response.data['data']), 1)
-        self.assertEqual(response.data['data'][0]['set_title'], 'Sample Set')
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]['set_title'], 'Sample Set')
 
     def test_get_word_sets_with_invalid_word_id(self):
         # Test with a non-existent word_id
