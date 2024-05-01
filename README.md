@@ -89,7 +89,29 @@ Currently only the predefined word sets can be quized and this can be accessed b
 
 #### Flashcard Quiz
 
+The flashcard quiz type is probably a familiar concept to everyone. When the user opts to take a flashcard quiz two cards are generated for every word in the set, one for Ukrainian to English and one for the reverse, English to Ukrainian. These cards are then shuffled and generated into interactable card elements for the user to play with.
+
+How it works is a card is shown with the question side facing the user, the question asking for the translation of the Ukrainian or English word depeneding on which card is being shown. The user can then flip the card and select whether they were correct or incorrect.
+
+In practice mode if they are correct the card is removed from the deck and they proceed to the next card. If they are incorrect the card is moved to the end of the deck where they can attempt it again. This continues until all cards are correctly guessed.
+
+In test mode the same process happens with a correct answer and their score for that word is incremented. If they get an answer incorrect in test mode the word is also removed from the deck but this time not added onto the end and their score for that word is decremented.
+
+Once they have finished the quiz they can choose to restart or exit the quiz.
+
+![Flashcard Quiz Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/flash-cards.png)
+
 #### Spelling Quiz
+
+The spelling quiz allows users to test and practice their memory and spelling while also learning the meaning of words in the context of sentence at the same time.
+
+When the user access the spelling quiz a set of 'spelling cards' are generated for the current set, shuffled and displayed to the user. On each card is an instruction given the English translation that needs to be filled in, an interactive sentence like in the usage examples but where the focus word is there is an input field for the user to fill in the missing word. It also includes a 'Show Translation' button to show the overall translation of the sentence.
+
+In practice mode the answer is shown as a hint for the input so the user can see the answer until they enter any character at which point the hint will disapear. Showing the answer like this and letting the user type it in may seem counter-productive but is essential for built that muscle memory for learning words. In a similar fashion to the flashcards if the user get's the answer incorrect in practice mode the card will be repeated except this time not at the end. The card is immeditaley shown again until the user gets the correct answer.
+
+In test mode the key difference is that no word hint is shown so the user needs to remember it completely from their own memory. This rest of the test mode functionality is the same as the flashcard test mode being that questions are not repeated when incorrect and users' score are incremented/decremented if they get question correct/incorrect.
+
+![Spelling Quiz Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/spelling-quiz.png)
 
 ### Scoring
 
