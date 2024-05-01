@@ -115,19 +115,82 @@ In test mode the key difference is that no word hint is shown so the user needs 
 
 ### Scoring
 
+The scoring system is fairly simple, every word has three scoring metrics:
+
+1. Flashcard Score - the score contributed to by answering Flashcards that are Ukrainian to English
+2. Flashcard Score (Reverse) - the score contributed to by answering Flashcards that are English to Ukrainian
+3. Spelling - the score that is contributed to by answering spelling questions
+
+Each word then has a total score which is the average of these score.
+
+Every set also has the scores calculated for each user. It has each of the same three score metrics which is calculated by taking the score for each score metric for each word in the set then calculating an average of all the words in the set. The set total is then calculated by taking the sets three scores and finding the average.
+
+In tests every correct answer increments the word score by 20 points and every incorrect answer decrements the score by 5 points.
+
+Every word is divided into four different learning stages based on the word's score:
+
+1. New - 0 to 24%
+2. Learning - 25% to 74%
+3. Learnt - 75% to 99%
+4. Mastered - 100%
+
 ### Admin Editing
+
+Admins are able to add, delete and edit word data on the front end of the app using API calls to the server. Using custom built forms on the front end and submitting data via API calls prevents the need for page reloads ultimately resulting in a better user experience.
+
+To access word addition functionality the admin can navigate to any set where they will see the button to add a word, this button is only availale if the user is authenticated as a super user. Clicking this brings up a modal with a form with all required fields for the data necessary to create a new word object. There is also a checklist of sets that is dynamically generating by getting all the existing sets from the server via API call. Once the word is created the admin then can check (or uncheck) sets they want the word to be in. Some of the fields are prepopulated with data such as the Word ID which is a random eight digit number.
+
+Each field is first validated on the client side and the again validated by the model's serializer on the server side. Any error in any of these validations will alert the user to the error by an alert pop up.
+
+The user is also alerted to every successful action such as adding a word or adding the word to a set.
+
+![Word Add Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/word-add.png)
+
+If the admin wishes to edit the word they can navigate to the word details modal and click the edit button which will bring up the same modal but prepopulated with all the data of the current word being edited.
+
+![Word Edit Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/word-edit.png)
 
 ### Navigation Bar
 
+The navigation bar is designed to be simple and easy to use, it is located on the left of the screen and is always visible to the user on desktop. On mobile it collapses and a hamburger menu button becomes available to expand the menu. The menu can then be closed but hitting the close button or clicking anywhere off the menu.
+
+The menu links are outlined and coloured using the primary colour of the application to indicate to the user which page they are currently on.
+
 ### Profile
 
+The profile system is currently very basic and just allows the user to see they are logged in with the correct profile and log out if they need to. The profile button is located at the bottom of the navigation bar to seperate it from all the app functions and so it always accessible to the user. Clicking the profile button expands a small menu where they can see their username and email and includes a log out button to log out of the app.
+
+### Alert Notifications
+
+I created a custom alert notification system to show alerts to the user to update them on any import information and give them feedback about their actions or if there if any error occur.
+
+There is a fixed container located in the upper right hand corner used to hold and display alert notifications. It operates as a stack so multiple alter notifications can be stacked on top of one another if multiple alerts occur in a short space of time.
+
+The alert notification are split into four categories: Info, Warning, Error and Success. Each alert is colour coded and the alert will be outlined in the alert colour as well as the alert title set to the name of the alert category. This makes it easy for users to understand the purpose and intent of message.
+
+Message can be closed manually using the close icon on each alert but will also close automatically after eight seconds.
+
+![Alert Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/alerts.png)
+
 ### Login / Sign Up
+
+The login and sign up system uses all Django's default authentication system functionality however I have customised the styling fairly heavily to be as user-friendly as possible and inline with the design of the rest of the application as well as also being inline the conventional login/sign up form look that users will probably be used to.
+
+There is also a link to each alternate page the bottom of the form to allow users to easily navigate betwen each page.
+
+![Login Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/login.png)
+
+![Sign Up Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/sign-up.png)
 
 ### Progressive Web App
 
 VocabVenture is also a progresive web app which improves performance and allows users to install it like a native app on mobile devices for a greatly enhaces user exeperience.
 
 ## API
+
+For this application I created a custom REST API using Django's Rest Framework. I adopted this approach for multiple reasons firstly being while most of the site is rendered on the server I want some components to be only be rendered when necessary and prevent uncessary database calls and rendering on the server for components that may not even be used. It also allowed the client to make updates to data without having to reload pages such as when updating scores or word data. These use cases all use Django's authetication tokens to verify the access level of the user access the API. Some API endpoints are public meaning users do not have to be logged in to access them which is useful if other application wish to use the application's data.
+
+The other purpose is for running scheduled jobs on the database such as updating user streaks at midnight every night. I had initially attempted to use celery and rabbitmq as a message broker to achieve but ran into some limitations using the approach with the hosting I was using to I instead opted to make job functions accessible as an API endpoint that are then called at set intervals by a cron job on another server, specifically I have use cron-job.org to accomplish this. These job requests are authenticated using a secret access token as a parameter when making requests.
 
 ## Database
 
