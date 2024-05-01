@@ -665,7 +665,7 @@ def post_word_set_junction(request, set_id, word_id):
 
 ## --------------------------------------------------------------------------  DELETE Word Set Junction
 @api_view(["DELETE"])
-def deleteWordSetJunction(request, set_id, word_id):
+def delete_word_set_junction(request, set_id, word_id):
 
     # Check if the user is authenticated and is a superuser
     if request.user.is_authenticated and request.user.is_superuser:
@@ -684,7 +684,7 @@ def deleteWordSetJunction(request, set_id, word_id):
         junction = WORD_SET_JUNCTION_UKR_ENG.objects.get(word=word, word_set=word_set)
         junction.delete()
 
-        return Response({"status": "SUCCESS", "message": "Word removed from set successfully"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"status": "SUCCESS", "message": "Word removed from set successfully"}, status=status.HTTP_200_OK)
     else:
         return Response({"status": "ERROR", "message": "Unauthorized: Only superusers can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 

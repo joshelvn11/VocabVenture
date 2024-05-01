@@ -601,8 +601,8 @@ class GetWordSetsTests(APITestCase):
 class PostWordSetJunctionTests(APITestCase):
     def setUp(self):
         # Create a superuser and a regular user for access control tests
-        self.superuser = User.objects.create_superuser('admin', 'admin@test.com', 'adminpass')
-        self.user = User.objects.create_user('user', 'user@test.com', 'userpass')
+        self.superuser = User.objects.create_superuser("admin", "adminpass")
+        self.user = User.objects.create_user("testuser", "12345")
         
         # Create sample word and word set data
         self.word = WORD_UKR_ENG.objects.create(
@@ -667,4 +667,72 @@ class PostWordSetJunctionTests(APITestCase):
         self.superuser.delete()
         self.word.delete()
         self.word_set.delete()
+
+class DeleteWordSetJunctionTests(APITestCase):
+    def setUp(self):
+        # Create a superuser and a regular user for access control tests
+        self.superuser = User.objects.create_superuser("admin", "adminpass")
+        self.user = User.objects.create_user("testuser", "12345")
+        
+        # Create sample word and word set data
+        self.word = WORD_UKR_ENG.objects.create(
+            word_id=1, 
+            word_ukrainian="слово", 
+            word_english="word", 
+            word_roman="slovo", 
+            word_gender=0, 
+            word_pronounciation="slo-vo",
+            word_pronounciation_audio='https://google.com'
+        )
+        self.word_set = WORD_SET.objects.create(
+            set_id=1, 
+            set_order=1,
+            set_title="Sample Set", 
+            set_slug="sample_set"
+        )
+        self.junction = WORD_SET_JUNCTION_UKR_ENG.objects.create(
+            word_set=self.word_set, 
+            word=self.word
+        )
+        
+        # URL for deleteWordSetJunction
+        self.url = reverse('delete_word_set_junction', kwargs={'set_id': self.word_set.set_id, 'word_id': self.word.word_id})
+
+    def test_access_denied_to_unauthenticated_users(self):
+        # Attempt to delete without authentication
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_access_denied_to_non_superuser(self):
+        # Authenticate as a regular user
+        self.client.force_authenticate(user=self.user)
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_delete_word_set_junction_with_superuser(self):
+        # Authenticate as a superuser
+        self.client.force_authenticate(user=self.superuser)
+        response = self.client.delete(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["message"], "Word removed from set successfully")
+        # Verify that the junction has been deleted
+        self.assertFalse(WORD_SET_JUNCTION_UKR_ENG.objects.filter(word_set=self.word_set, word=self.word).exists())
+
+    def test_delete_non_existent_junction(self):
+        # Authenticate as a superuser
+        self.client.force_authenticate(user=self.superuser)
+        # Attempt to delete a non-existent junction
+        non_existent_url = reverse('delete_word_set_junction', kwargs={'set_id': 999, 'word_id': 999})
+        response = self.client.delete(non_existent_url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertIn("not found", response.data["message"])
+
+    def tearDown(self):
+        # Clean up code
+        self.user.delete()
+        self.superuser.delete()
+        if WORD_UKR_ENG.objects.filter(word_id=self.word.word_id).exists():
+            self.word.delete()
+        if WORD_SET.objects.filter(set_id=self.word_set.set_id).exists():
+            self.word_set.delete()
 
