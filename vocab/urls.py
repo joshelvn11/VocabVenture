@@ -4,6 +4,7 @@ from .views import home, set_list, word_list_ukr_eng, get_word_list
 from django.views.decorators.cache import cache_page
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
 from pwa import views as pwa_views
 
 urlpatterns = [
@@ -17,6 +18,8 @@ urlpatterns = [
     ## --------------------------------------------------------------- Practice URLS
     path('practice/flashcards', views.practice_flashcards, name='practice_flashcards'),
     path('practice/spelling', views.practice_spelling, name='practice_spelling'),
+    ## --------------------------------------------------------------- Missing 404 Pages
+    path('<path:undefined_path>', RedirectView.as_view(url='/'), name='redirect_to_home'),
     ## --------------------------------------------------------------- API URLS
     path('api/words/list', get_word_list, name='get_word_list'), 
     path('api/word/list', views.getWordList, name='getWordList'), 
