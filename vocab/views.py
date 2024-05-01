@@ -691,7 +691,30 @@ def delete_word_set_junction(request, set_id, word_id):
 ## --------------------------------------------------------------------------  UPDATE User Word Score
 
 @api_view(["PUT"])
-def updateUserWordScore(request):
+def update_user_word_score(request):
+    """
+    Updates the word scores for a user based on the provided quiz results.
+
+    This function handles a PUT request to update the scores of words for a user. It requires the user to be authenticated.
+    The request must include a 'Quiz-Type' header indicating the type of quiz taken, and the body of the request should
+    contain JSON data with word IDs, the specific score type to update, and the increment value for each word score.
+
+    The function performs the following steps:
+    - Validates the presence of the 'Quiz-Type' header.
+    - Parses the JSON data from the request body.
+    - For each word score data in the JSON:
+        - Retrieves or creates a word score entry for the user and word.
+        - Updates the specified score type by the provided increment value.
+        - Retrieves all set junctions for the word and updates the set list.
+    - If the score type is already at its maximum (100), it prevents further increment.
+    - Returns a success response if all operations are successful.
+
+    Parameters:
+        request (HttpRequest): The request object containing the user, headers, and body.
+
+    Returns:
+        Response: A DRF Response object with either a success or error status and message.
+    """    
 
     print("Updating word scores")
 

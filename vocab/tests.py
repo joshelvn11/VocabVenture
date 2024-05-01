@@ -736,3 +736,67 @@ class DeleteWordSetJunctionTests(APITestCase):
         if WORD_SET.objects.filter(set_id=self.word_set.set_id).exists():
             self.word_set.delete()
 
+class UpdateUserWordScoreTests(APITestCase):
+    def setUp(self):
+        # Create a user for the tests
+        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        # Create sample word and word score data
+        self.word = WORD_UKR_ENG.objects.create(
+            word_id=1, 
+            word_ukrainian="слово", 
+            word_english="word", 
+            word_roman="slovo", 
+            word_gender=0, 
+            word_pronounciation="slo-vo",
+            word_pronounciation_audio='https://google.com'
+        )
+        self.word.save()
+        self.word_score = WORD_UKR_ENG_SCORES.objects.create(
+            user=self.user, 
+            word=self.word, 
+            word_total_score=50
+        )
+        self.word_score.save()
+        self.user_meta = USER_UKR_ENG_META.objects.create(
+            user=self.user,
+            streak_flashcards_longest=0,
+            streak_flashcards_current=0,
+            streak_spelling_longest=0,
+            streak_spelling_current=0,
+            tour_message_home_one=True,
+            tour_message_word_sets_one=True,
+            tour_message_word_list_one=True,
+            tour_message_word_details_one=True
+        )
+        self.user_meta.save()
+
+        # URL for updateUserWordScore
+        self.url = reverse('update_user_word_score')
+
+    def test_update_word_score_without_quiz_type(self):
+        # Attempt to update without providing quiz type
+        response = self.client.put(self.url, {}, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("Quiz type is required", response.data["message"])
+
+    def test_update_word_score_with_invalid_json(self):
+        # Attempt to update with invalid JSON format
+        response = self.client.put(self.url, '{"invalid": "json"', content_type='application/json', headers={'Quiz-Type': 1})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("Invalid JSON format", response.data["message"])
+
+    def test_successful_word_score_update(self):
+        # Valid update request
+        data = json.dumps([{"word_id": 1, "score": "word_flashcard_eng_ukr_score", "increment_value": "10"}])
+        response = self.client.put(self.url, data, content_type='application/json', headers={'Quiz-Type': 1})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("Word score updated successfully", response.data["message"])
+        updated_score = WORD_UKR_ENG_SCORES.objects.get(user=self.user, word=self.word)
+        self.assertEqual(updated_score.word_flashcard_eng_ukr_score, 10)
+
+    def tearDown(self):
+        # Clean up code
+        self.user.delete()
+        self.word.delete()
