@@ -561,7 +561,7 @@ def postWordItem(request):
     
 ## --------------------------------------------------------------------------  PUT Word Item
 @api_view(["PUT"])
-def updateWordItem(request, word_id):
+def update_word_item(request, word_id):
     # Check if the user is authenticated and is a superuser
     if request.user.is_authenticated and request.user.is_superuser:
         print("Received word item POST request")
@@ -597,7 +597,7 @@ def updateWordItem(request, word_id):
 
 ## --------------------------------------------------------------------------  DELETE Word Item
 @api_view(["DELETE"])
-def deleteWordItem(request, word_id):
+def delete_word_item(request, word_id):
      # Check if the user is authenticated and is a superuser
     if request.user.is_authenticated and request.user.is_superuser:
         try:
@@ -620,7 +620,7 @@ def deleteWordItem(request, word_id):
 
 ## --------------------------------------------------------------------------  GET Word Sets
 @api_view(["GET"])
-def getWordSets(request, word_id):
+def get_word_sets(request, word_id):
 
     try:
         # Get the specified word object
@@ -640,7 +640,7 @@ def getWordSets(request, word_id):
 
 ## --------------------------------------------------------------------------  POST Word Set Junction
 @api_view(["POST"])
-def postWordSetJunction(request, set_id, word_id):
+def post_word_set_junction(request, set_id, word_id):
 
     # Check if the user is authenticated and is a superuser
     if request.user.is_authenticated and request.user.is_superuser:
@@ -659,7 +659,7 @@ def postWordSetJunction(request, set_id, word_id):
         new_junction = WORD_SET_JUNCTION_UKR_ENG(word_set=word_set, word=word)
         new_junction.save()
 
-        return Response({"status": "SUCCESS", "message": "Word added to set successfully"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"status": "SUCCESS", "message": "Word added to set successfully"}, status=status.HTTP_200_OK)
     else:
         return Response({"status": "ERROR", "message": "Unauthorized: Only superusers can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 

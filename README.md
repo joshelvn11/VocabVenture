@@ -63,7 +63,29 @@ When the word list is accessed this page is always dynamically generated however
 
 ### Word Details
 
+The word details modal can be accessed by clicking on any word in the word list screen. Clicking on a word with open this modal which shows further information about the word be accessed. The data in the modal is dynamically generated from the data loaded from the API in the previous step. The word details modal also contains the relevant score data for the various quiz types of the current word being viewed. Clicking the audio button at the top allows the user to hear the pronounciation of the current word.
+
+![Word Details Screen Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/word-details.png)
+
+### Usage Examples
+
+The usage examples are interactive element of the word details modal where users can see the word in the context of an actual Ukrainian sentence. Hovering over any word in the sentence allows the user to see the romanisation of that word and the direct translation of the word in the context of the current sentence. Clicking the 'Show Translation' button underneath the sentence will show the overall translation of that sentence.
+
+The interactive usage examples are dynamically generated from data stored as JSON when then the modal is opened. Storing the data as JSON and creating an automatic rendering process for the interactions makes it very simple for non-technical admins to create these interactable elements.
+
+![Usage Examples Screen Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/usage-examples.png)
+
 ### Quiz
+
+The quiz component of the app is probably the most integral part next to the words themselves as it is the part that allows users to practice and really improve their vocabulary.
+
+There are currently two quiz types players can use to practice: a flashcard quiz and a spelling quiz, each of which are described in further detail below.
+
+Furthermore each quiz type can be playes in two different modes: Practice and test mode. In practice mode questions are repeated until the user gets them right and answers are not scored meaning a correct answers does not contribute any points to a word's score and wrong answer does not deduct any points from a word's score.
+
+Currently only the predefined word sets can be quized and this can be accessed by clicking the 'Quiz' button at the top of any set. Upon clicking the button the user is presented with a modal allowing them to select the quiz type they wish to use and whether or not to quiz in practice or test mode. When the 'Start Quiz' button is clicked the quiz is then started with the configuration they chose.
+
+![Quiz Modal Screenshot](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/quiz-modal.png)
 
 #### Flashcard Quiz
 
@@ -72,6 +94,12 @@ When the word list is accessed this page is always dynamically generated however
 ### Scoring
 
 ### Admin Editing
+
+### Navigation Bar
+
+### Profile
+
+### Login / Sign Up
 
 ### Progressive Web App
 

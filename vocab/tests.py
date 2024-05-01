@@ -597,3 +597,74 @@ class GetWordSetsTests(APITestCase):
         self.word.delete()
         self.word_set.delete()
         self.junction.delete()
+
+class PostWordSetJunctionTests(APITestCase):
+    def setUp(self):
+        # Create a superuser and a regular user for access control tests
+        self.superuser = User.objects.create_superuser('admin', 'admin@test.com', 'adminpass')
+        self.user = User.objects.create_user('user', 'user@test.com', 'userpass')
+        
+        # Create sample word and word set data
+        self.word = WORD_UKR_ENG.objects.create(
+            word_id=1, 
+            word_ukrainian="слово", 
+            word_english="word", 
+            word_roman="slovo", 
+            word_gender=0, 
+            word_pronounciation="slo-vo",
+            word_pronounciation_audio='https://google.com'
+        )
+        self.word.save()
+        self.word_set = WORD_SET.objects.create(
+            set_id = 1, 
+            set_order = 1,
+            set_title = "Sample Set", 
+            set_slug = "sample_set"
+        )
+        self.word_set.save()
+        
+        # URL for post_word_set_junction
+        self.url = reverse('post_word_set_junction', kwargs={'set_id': 1, 'word_id': 1})
+
+    def test_access_denied_to_unauthenticated_users(self):
+        # Attempt to post without authentication
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_access_denied_to_non_superuser(self):
+        # Authenticate as a regular user
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_post_word_set_junction_with_superuser(self):
+        # Authenticate as a superuser
+        self.client.force_authenticate(user=self.superuser)
+        response = self.client.post(self.url)
+        print(response.data["message"])
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["status"], "SUCCESS")
+        # Verify that the junction has been created
+        self.assertTrue(WORD_SET_JUNCTION_UKR_ENG.objects.filter(word_set=self.word_set, word=self.word).exists())
+
+    def test_post_with_nonexistent_word_or_set(self):
+        # Authenticate as a superuser
+        self.client.force_authenticate(user=self.superuser)
+        # Non-existent word
+        nonexistent_word_url = reverse('post_word_set_junction', kwargs={'set_id': self.word_set.set_id, 'word_id': 999})
+        response = self.client.post(nonexistent_word_url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.data["message"], "Word not found")
+        # Non-existent set
+        nonexistent_set_url = reverse('post_word_set_junction', kwargs={'set_id': 999, 'word_id': self.word.word_id})
+        response = self.client.post(nonexistent_set_url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.data["message"], "Set not found")
+
+    def tearDown(self):
+        # Clean up code
+        self.user.delete()
+        self.superuser.delete()
+        self.word.delete()
+        self.word_set.delete()
+
