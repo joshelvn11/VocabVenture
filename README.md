@@ -184,7 +184,7 @@ There is also a link to each alternate page the bottom of the form to allow user
 
 ### Progressive Web App
 
-VocabVenture is also a progresive web app which improves performance and allows users to install it like a native app on mobile devices for a greatly enhaces user exeperience.
+VocabVenture is also a progresive web app which improves performance and allows users to install it like a native app on mobile devices for a greatly enhaces user exeperience. I achieved this using the Django PWA module which made it very simple to implement.
 
 ## API
 
@@ -201,6 +201,14 @@ The other purpose is for running scheduled jobs on the database such as updating
 [View the ERM on Figma here](https://www.figma.com/file/Zhc99JR3FgcUm0Vguyzy6w/Vocab-Venture-ERM?type=whiteboard&node-id=0%3A1&t=aZP744msjxiJwk40-1)
 
 ## Design
+
+The design of the app is focused on overall simplicity and useability for the best overall user experience. It adopts a mainly card based design to easily segment information into manageable and identifiable chunks to make the information easier to consume and generally less overwhelming. It follows a fairly conventional design approach adopted by many other popular apps and websites to ensure it is easy and inituiative to user for all levels of users.
+
+The colours are kept simple as well using black and white for most of the app and highlight specific important elements using the primary colour where needed. Buttons also show their level of importance by using either a solid background or white background with a border to denote the significance and priority of the button.
+
+You will also notice subtle yet valuable animations all over the app to give immediate feedback to the user's about the state and result of their interactions with the app.
+
+The app was designed in Figma before being developed.
 
 ### UI Design Mockup
 
@@ -222,6 +230,8 @@ The deployment process follows these steps:
 6. The web service will now deploy from the Github repo and on every subsequent push to the repo.
 
 ### Database
+
+The database is a Postgresql database also running using Render which automates the process of database deployment and management.
 
 ### Object Storage
 
