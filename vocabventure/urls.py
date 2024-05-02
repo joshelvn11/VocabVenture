@@ -16,10 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('', include('vocab.urls')),
     path("accounts/", include("allauth.urls")),
     path('admin/', admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
+    ## --------------------------------------------------------------- Missing 404 Pages
+    path('<path:undefined_path>', RedirectView.as_view(url='/'), name='redirect_to_home'),
 ]

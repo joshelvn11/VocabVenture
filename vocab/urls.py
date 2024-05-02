@@ -4,7 +4,6 @@ from .views import home, set_list, word_list_ukr_eng, get_word_list
 from django.views.decorators.cache import cache_page
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import RedirectView
 from pwa import views as pwa_views
 
 urlpatterns = [
@@ -30,8 +29,6 @@ urlpatterns = [
     path('api/scores/update', views.update_user_word_score, name="update_user_word_score"),
     path('api/jobs/update-streaks', views.job_update_user_streaks, name="job_update_user_streaks"),
     path('api/user-meta/update-hint', views.update_user_meta_hint, name="update_user_meta_hint"),
-    ## --------------------------------------------------------------- Missing 404 Pages
-    path('<path:undefined_path>', RedirectView.as_view(url='/'), name='redirect_to_home'),
     ## --------------------------------------------------------------- PWA URLS
     #path('offline/', cache_page(settings.PWA_APP_NAME)(pwa_views.OfflineView.as_view())),
 ]
