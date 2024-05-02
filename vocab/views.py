@@ -126,8 +126,6 @@ def alphabet_list(request):
     if not request.user.is_authenticated:
         return redirect('/accounts/login/')
     
-    # Get the user meta
-    #user_meta = USER_UKR_ENG_META.objects.get(user=request.user)
     
     # Get the alphabet objects
     letters = ALPHABET_UKR_ENG.objects.all()
@@ -477,11 +475,14 @@ def get_word_list(request):
         if get_scores:
             # Return an error if the user is not authenticated
             if not request.user.is_authenticated:
+                
                 data_response = {
                     "status": "ERROR",
                     "message": "Requesting user needs to be authenticated when retrieving scores",
                 }
                 return Response(data_response, status=401) # Return unauthorized response
+
+            
             
             try:
                 word_flashcard_ukr_eng_score = word_scores.get(word=word).word_flashcard_ukr_eng_score

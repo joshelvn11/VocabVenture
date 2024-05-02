@@ -279,8 +279,6 @@ function loadUsageExamples(wordObject) {
   }
 }
 
-// ------------------------------------------------------------------------- Admin Modal Functions
-
 // ------------------------------------------------------------------------- Utility Functions
 
 // Function to format an array of strings into an individual string
@@ -296,7 +294,3 @@ function formatArray(arr) {
 
   return formattedString;
 }
-
-// $("#test-alert").on("click", () => {
-//   showAlertModal("ERROR", "This is a message");
-// });

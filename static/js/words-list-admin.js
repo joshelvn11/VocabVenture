@@ -147,7 +147,7 @@ function clearAdminEditFields() {
 }
 
 function populateSetCheckBoxes(wordId) {
-  fetch(`http://127.0.0.1:8000/api/words/sets/${wordId}`, {
+  fetch(`/api/words/sets/${wordId}`, {
     method: "GET",
   })
     .then((response) => {

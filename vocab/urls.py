@@ -30,5 +30,5 @@ urlpatterns = [
     path('api/jobs/update-streaks', views.job_update_user_streaks, name="job_update_user_streaks"),
     path('api/user-meta/update-hint', views.update_user_meta_hint, name="update_user_meta_hint"),
     ## --------------------------------------------------------------- PWA URLS
-    #path('offline/', cache_page(settings.PWA_APP_NAME)(pwa_views.OfflineView.as_view())),
+    
 ]
