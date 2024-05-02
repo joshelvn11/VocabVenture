@@ -8,6 +8,8 @@ const instructionText = $("#practice-card-instruction");
 const wordTranslation = $("#word-translation");
 const checkButton = $("#check-button");
 const wordsRemaining = $("#words-remaining");
+const returnButton = $("#return-button");
+const exitButton = $("#exit-button");
 let spellingInputField;
 let englishTranslation;
 
@@ -31,6 +33,14 @@ let scoreIncrements = [];
 // ------------------------------------------------------------------------- Event Listeners
 
 checkButton.on("click", checkSpelling);
+
+exitButton.on("click", () => {
+  window.history.back();
+});
+
+returnButton.on("click", () => {
+  window.history.back();
+});
 
 // ------------------------------------------------------------------------- Functions
 

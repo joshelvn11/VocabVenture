@@ -23,7 +23,6 @@ const answerShowRomanisationButton = $("#answer-show-romananisation-button");
 const answerPlayAudioButton = $("#answer-play-audio-button");
 const restartButton = $("#restart-button");
 const returnButton = $("#return-button");
-const testButton = $("#test-button");
 const cardsRemaining = $("#cards-remaining");
 const exitButton = $("#exit-button");
 
