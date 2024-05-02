@@ -339,7 +339,6 @@ label {
 
 .checkbox-wrapper input {
   display: inline;
-  min-width: none;
 }
 
 .checkbox-wrapper label {

@@ -562,6 +562,25 @@ def postWordItem(request):
 ## --------------------------------------------------------------------------  PUT Word Item
 @api_view(["PUT"])
 def update_word_item(request, word_id):
+    """
+    Updates a specific word item in the database.
+
+    This function handles a PUT request to update a word item identified by its 'word_id'. 
+    It ensures that the operation is only performed by authenticated superusers. 
+    If the word item does not exist, it returns a 404 Not Found response. 
+    Upon successful update, it confirms the action with a success response.
+
+    Steps:
+    1. Authenticate the user and confirm superuser status.
+    2. Retrieve the word item by 'word_id'.
+    3. If the word item exists, update it with the provided data.
+    4. Validate the updated data.
+    5. Save the updated word item.
+    6. Return a success response indicating the word has been updated.
+
+    
+    """
+
     # Check if the user is authenticated and is a superuser
     if request.user.is_authenticated and request.user.is_superuser:
         print("Received word item POST request")
@@ -598,6 +617,28 @@ def update_word_item(request, word_id):
 ## --------------------------------------------------------------------------  DELETE Word Item
 @api_view(["DELETE"])
 def delete_word_item(request, word_id):
+    """
+     Deletes a specific word item from the database.
+
+     This function handles a DELETE request to remove a word item identified by its 'word_id'. 
+     It ensures that the operation is only performed by authenticated superusers. 
+     If the word item does not exist, it returns a 404 Not Found response. 
+     Upon successful deletion, it confirms the action with a success response.
+
+     Steps:
+     1. Authenticate the user and confirm superuser status.
+     2. Retrieve the word item by 'word_id'.
+     3. If the word item exists, delete it from the database.
+     4. Return a success response indicating the word has been deleted.
+
+     Parameters:
+         request (HttpRequest): The request object containing the user and other metadata.
+         word_id (int): The ID of the word item to be deleted.
+
+     Returns:
+         Response: A DRF Response object containing a success message if the word is deleted successfully, 
+         or an error message if the word does not exist or the user is unauthorized.
+     """
      # Check if the user is authenticated and is a superuser
     if request.user.is_authenticated and request.user.is_superuser:
         try:
@@ -621,6 +662,25 @@ def delete_word_item(request, word_id):
 ## --------------------------------------------------------------------------  GET Word Sets
 @api_view(["GET"])
 def get_word_sets(request, word_id):
+    """
+    Retrieves all sets associated with a specific word.
+
+    This function handles a GET request to fetch all sets that contain a specified word. It uses the word_id provided in the URL to identify the word and then queries a junction table to find all sets associated with that word. The function is designed to be used by any authenticated user.
+
+    Steps:
+    1. Authenticate the user.
+    2. Retrieve the word object using the provided word_id.
+    3. Query the junction table to find all sets associated with the word.
+    4. Serialize the set data for the response.
+    5. Return the serialized data.
+
+    Parameters:
+        request (HttpRequest): The request object containing the user and other metadata.
+        word_id (int): The ID of the word for which associated sets are being retrieved.
+
+    Returns:
+        Response: A DRF Response object containing the serialized set data or an error message if the word does not exist.
+    """
 
     try:
         # Get the specified word object
@@ -641,6 +701,28 @@ def get_word_sets(request, word_id):
 ## --------------------------------------------------------------------------  POST Word Set Junction
 @api_view(["POST"])
 def post_word_set_junction(request, set_id, word_id):
+    """
+    Creates a junction between a word and a set.
+
+    This function handles a POST request to add a word to a set by creating a new junction record in the database.
+    It requires the user to be authenticated and to have superuser privileges. The function uses the set_id and word_id
+    provided in the URL to identify the specific word and set to be linked.
+
+    Steps:
+    1. Authenticate the user and check for superuser status.
+    2. Retrieve the word and set objects using the provided IDs.
+    3. Create a new junction table record linking the word and the set.
+    4. Save the new junction record to the database.
+    5. Return a success response if the junction is successfully created.
+
+    Parameters:
+        request (HttpRequest): The request object containing the user and other metadata.
+        set_id (int): The ID of the set to which the word is to be added.
+        word_id (int): The ID of the word to be added to the set.
+
+    Returns:
+        Response: A DRF Response object with either a success or error status and message.
+    """
 
     # Check if the user is authenticated and is a superuser
     if request.user.is_authenticated and request.user.is_superuser:
@@ -666,6 +748,28 @@ def post_word_set_junction(request, set_id, word_id):
 ## --------------------------------------------------------------------------  DELETE Word Set Junction
 @api_view(["DELETE"])
 def delete_word_set_junction(request, set_id, word_id):
+    """
+    Deletes a junction between a word and a set for superusers.
+
+    This function handles a DELETE request to remove a word from a set by deleting the junction record in the database.
+    It requires the user to be authenticated and to have superuser privileges. The function uses the set_id and word_id
+    provided in the URL to identify the specific junction to be deleted.
+
+    Steps:
+    1. Authenticate the user and check for superuser status.
+    2. Retrieve the word and set objects using the provided IDs.
+    3. Retrieve the junction object for the specified word and set.
+    4. Delete the junction object.
+    5. Return a success response if the junction is successfully deleted.
+
+    Parameters:
+        request (HttpRequest): The request object containing the user and other metadata.
+        set_id (int): The ID of the set from which the word is to be removed.
+        word_id (int): The ID of the word to be removed from the set.
+
+    Returns:
+        Response: A DRF Response object with either a success or error status and message.
+    """
 
     # Check if the user is authenticated and is a superuser
     if request.user.is_authenticated and request.user.is_superuser:
@@ -699,15 +803,15 @@ def update_user_word_score(request):
     The request must include a 'Quiz-Type' header indicating the type of quiz taken, and the body of the request should
     contain JSON data with word IDs, the specific score type to update, and the increment value for each word score.
 
-    The function performs the following steps:
-    - Validates the presence of the 'Quiz-Type' header.
-    - Parses the JSON data from the request body.
-    - For each word score data in the JSON:
-        - Retrieves or creates a word score entry for the user and word.
-        - Updates the specified score type by the provided increment value.
-        - Retrieves all set junctions for the word and updates the set list.
-    - If the score type is already at its maximum (100), it prevents further increment.
-    - Returns a success response if all operations are successful.
+    Steps:
+    1. Validates the presence of the 'Quiz-Type' header.
+    2. Parses the JSON data from the request body.
+    3. For each word score data in the JSON:
+        a. Retrieves or creates a word score entry for the user and word.
+        b. Updates the specified score type by the provided increment value.
+        c. Retrieves all set junctions for the word and updates the set list.
+    4. If the score type is already at its maximum (100), it prevents further increment.
+    5. Returns a success response if all operations are successful.
 
     Parameters:
         request (HttpRequest): The request object containing the user, headers, and body.
