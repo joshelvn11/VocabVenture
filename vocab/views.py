@@ -517,7 +517,6 @@ def get_word_list(request):
         "data": data,
     }
 
-
     return Response(data_response, status=200)
 
 ## --------------------------------------------------------------------------  GET Word List
@@ -534,7 +533,7 @@ def getWordList(request):
 
 ## --------------------------------------------------------------------------  POST Word Item
 @api_view(["POST"])
-def postWordItem(request):
+def post_word_item(request):
 
     # Check if the user is authenticated and is a superuser
     if request.user.is_authenticated and request.user.is_superuser:
@@ -578,7 +577,7 @@ def update_word_item(request, word_id):
     5. Save the updated word item.
     6. Return a success response indicating the word has been updated.
 
-    
+
     """
 
     # Check if the user is authenticated and is a superuser

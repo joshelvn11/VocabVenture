@@ -18,12 +18,10 @@ urlpatterns = [
     ## --------------------------------------------------------------- Practice URLS
     path('practice/flashcards', views.practice_flashcards, name='practice_flashcards'),
     path('practice/spelling', views.practice_spelling, name='practice_spelling'),
-    ## --------------------------------------------------------------- Missing 404 Pages
-    path('<path:undefined_path>', RedirectView.as_view(url='/'), name='redirect_to_home'),
     ## --------------------------------------------------------------- API URLS
-    path('api/words/list', get_word_list, name='get_word_list'), 
+    path('api/words/list', views.get_word_list, name='get_word_list'), 
     path('api/word/list', views.getWordList, name='getWordList'), 
-    path('api/words/add', views.postWordItem, name='postWordItem'), 
+    path('api/words/add', views.post_word_item, name='post_word_item'), 
     path('api/words/update/<int:word_id>', views.update_word_item, name='update_word_item'), 
     path('api/words/delete/<int:word_id>', views.delete_word_item, name='delete_word_item'),
     path('api/words/sets/<int:word_id>', views.get_word_sets, name="get_word_sets"),
@@ -32,6 +30,8 @@ urlpatterns = [
     path('api/scores/update', views.update_user_word_score, name="update_user_word_score"),
     path('api/jobs/update-streaks', views.job_update_user_streaks, name="job_update_user_streaks"),
     path('api/user-meta/update-hint', views.update_user_meta_hint, name="update_user_meta_hint"),
+    ## --------------------------------------------------------------- Missing 404 Pages
+    path('<path:undefined_path>', RedirectView.as_view(url='/'), name='redirect_to_home'),
     ## --------------------------------------------------------------- PWA URLS
     #path('offline/', cache_page(settings.PWA_APP_NAME)(pwa_views.OfflineView.as_view())),
 ]

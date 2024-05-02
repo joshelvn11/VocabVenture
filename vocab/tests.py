@@ -358,10 +358,10 @@ class GetWordListTests(APITestCase):
     def tearDown(self):
         self.user.delete()
 
-class PostWordItemTests(TestCase):
+class post_word_itemTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.url = reverse('postWordItem') 
+        self.url = reverse('post_word_item') 
         self.superuser = User.objects.create_superuser('admin', 'admin@test.com', 'adminpass')
         self.user = User.objects.create_user('user', 'user@test.com', 'userpass')
 
