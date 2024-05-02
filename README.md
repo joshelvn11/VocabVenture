@@ -301,7 +301,7 @@ Below are the Lighthouse Scores for every page
 
 #### Spelling Quiz Page
 
-![Lighthouse Score Spelling](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/vocab-venture-erm.png)
+![Lighthouse Score Spelling](https://s3.eu-west-1.wasabisys.com/vocabventure/documents/lh-spelling.png)
 
 ### Known Bugs
 
