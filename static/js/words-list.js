@@ -115,6 +115,7 @@ fetch(`/api/words/list?set-id=${setId}&get-scores=true`)
   })
   .then((data) => {
     wordData = data.data;
+    console.log(wordData);
   });
 
 // ------------------------------------------------------------------------- User Modal Functions
