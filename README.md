@@ -269,6 +269,15 @@ There were also a couple of errors related to certain sizes not being set on lin
 
 The CSS passed through the validator with no errors.
 
+#### PEP8 Validator
+
+All custom Python code was checked against PEP8 style guidlines using the pep8 and pycodestyle command lines tools. It mostly passes
+without issues with exception to multiple occurrences of warning regarding lines being to long, which were left like they are 
+intentionally. Where possible I followed convention to line length however where I felt shortening the line length as per guidance
+created a negative readability experience and since the whole point of PEP8 is to prove readability and maintainability it seemed
+counterintuive to blindly follow the guidlines even it worked against the direct goal it is meant to have. Often where these lines
+that are too long occur are with "non-functional" code for example strings for long urls or json sample data.
+
 ### Python Testing
 
 All Django views are tested extensively using Django's in-built unit testing framework. Multiple test cases are carried out for every view function testing for factors such as authorization, correct responses, data validity, and correct template rendering.
