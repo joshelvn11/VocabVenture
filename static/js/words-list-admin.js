@@ -25,7 +25,7 @@ const setCheckBoxes = $(".set-checkbox");
 
 // ------------------------------------------------------------------------- Global Variables
 
-let editWordID; // Word that is currently beind edited in the admin from
+let editWordID; // Word that is currently being edited in the admin form
 let editAction = "NONE"; // State variable to control whether a word is being added or updated
 
 // ------------------------------------------------------------------------- Event Listeners
@@ -40,10 +40,10 @@ adminEditFormSaveButton.on("click", () => {
 
 adminEditFormDeleteButton.on("click", () => {
   editAction = "DELETE";
-  let confirmDetele = confirm(
-    "Are you sure you want to delete this word? This action cannot be undone"
+  let confirmDelete = confirm(
+    "Are you sure you want to delete this word? This action cannot be undone."
   );
-  if (confirmDetele) {
+  if (confirmDelete) {
     submitWordEditUpdate();
   }
 });
@@ -75,11 +75,16 @@ setCheckBoxes.each(function () {
 // ------------------------------------------------------------------------- Functions
 
 function showAdminEditModal(wordId) {
-  // Populate the fields with word data if is editinng words
+  // Populate the fields with word data if editing words
   if (editAction === "UPDATE") {
-    // Find the relevant objecty from the wordData array
+    // Find the relevant object from the wordData array
     editWordID = wordId;
     const wordObject = wordData.find((obj) => obj["word_id"] == wordId);
+
+    if (!wordObject) {
+      showAlertModal("ERROR", "Word data not found.");
+      return;
+    }
 
     populateAdminEditFields(wordObject);
     populateSetCheckBoxes(wordId);
@@ -151,6 +156,9 @@ function populateSetCheckBoxes(wordId) {
     method: "GET",
   })
     .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch set data.");
+      }
       return response.json();
     })
     .then((data) => {
@@ -163,6 +171,9 @@ function populateSetCheckBoxes(wordId) {
           })
           .prop("checked", true);
       });
+    })
+    .catch((error) => {
+      showAlertModal("ERROR", `Failed to load set data: ${error.message}`);
     });
 }
 
@@ -178,18 +189,65 @@ function submitWordEditUpdate() {
     document.getElementById("admin-word-edit-form")
   );
 
+  // Validate required fields
+  const requiredFields = [
+    "word_ukrainian",
+    "word_english",
+    "word_roman",
+    "word_gender",
+    "word_part_of_speech",
+    "word_pronounciation",
+    "word_pronounciation_audio",
+    "word_definition",
+    "word_explanation",
+  ];
+
+  const missingFields = requiredFields.filter((field) => !formData.get(field));
+
+  if (missingFields.length > 0) {
+    showAlertModal(
+      "ERROR",
+      `The following fields are required: ${missingFields.join(", ")}`
+    );
+    return;
+  }
+
+  // Validate that part of speech and gender are integers
+  const wordPartOfSpeech = formData.get("word_part_of_speech");
+  const wordGender = formData.get("word_gender");
+
+  if (
+    !Number.isInteger(Number(wordPartOfSpeech)) ||
+    !Number.isInteger(Number(wordGender))
+  ) {
+    showAlertModal(
+      "ERROR",
+      "The fields 'Part of Speech' and 'Pronunciation' must be integers."
+    );
+    return;
+  }
+
+  // Check if the audio is a vali url
+  // code from https://medium.com/@tariibaba/javascript-check-if-string-is-url-ddf98d50060a
+  try {
+    const url = new URL(formData.get("word_pronounciation_audio"));
+  } catch (error) {
+    showAlertModal("ERROR", "Pronounciation audio must be a valid URL");
+    return;
+  }
+
   // Parse the word JSON fields to JSON
-  wordExamples = {};
-  wordAspect = {};
-  wordDeclension = {};
-  wordConjugation = {};
+  let wordExamples = {};
+  let wordAspect = {};
+  let wordDeclension = {};
+  let wordConjugation = {};
   try {
     wordExamples = JSON.parse(formData.get("word_examples"));
     wordAspect = JSON.parse(formData.get("word_aspect_examples"));
     wordDeclension = JSON.parse(formData.get("word_declension"));
     wordConjugation = JSON.parse(formData.get("word_conjugation"));
   } catch (error) {
-    showAlertModal("ERROR", `Error in usage examples syntax`);
+    showAlertModal("ERROR", `Error in usage examples syntax: ${error.message}`);
     console.log(`Error in usage examples syntax (${error})`);
     return;
   }
@@ -211,6 +269,7 @@ function submitWordEditUpdate() {
     word_declension: wordDeclension,
     word_conjugation: wordConjugation,
   };
+
   // ------------------------------------------------------ Update Word Logic
   if (editAction === "UPDATE") {
     showAlertModal("INFO", "Updating word...");
@@ -224,10 +283,16 @@ function submitWordEditUpdate() {
       body: JSON.stringify(jsonData),
     })
       .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to update word.");
+        }
         return response.json();
       })
       .then((data) => {
         showAlertModal(data.status, data.message);
+      })
+      .catch((error) => {
+        showAlertModal("ERROR", `Update failed: ${error.message}`);
       });
   } else if (editAction === "ADD") {
     // ------------------------------------------------------ ADD Word Logic
@@ -243,6 +308,9 @@ function submitWordEditUpdate() {
       body: JSON.stringify(jsonData),
     })
       .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to add word.");
+        }
         return response.json();
       })
       .then((data) => {
@@ -251,6 +319,9 @@ function submitWordEditUpdate() {
         if (data.status === "SUCCESS") {
           editWordID = jsonData["word_id"];
         }
+      })
+      .catch((error) => {
+        showAlertModal("ERROR", `Add failed: ${error.message}`);
       });
   } else if (editAction === "DELETE") {
     showAlertModal("INFO", "Deleting word...");
@@ -264,10 +335,16 @@ function submitWordEditUpdate() {
       },
     })
       .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to delete word.");
+        }
         return response.json();
       })
       .then((data) => {
         showAlertModal(data.status, data.message);
+      })
+      .catch((error) => {
+        showAlertModal("ERROR", `Delete failed: ${error.message}`);
       });
   }
 }
@@ -284,10 +361,16 @@ function addDeleteSet(setId, addSet) {
       },
     })
       .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to add to set.");
+        }
         return response.json();
       })
       .then((data) => {
         showAlertModal(data.status, data.message);
+      })
+      .catch((error) => {
+        showAlertModal("ERROR", `Add to set failed: ${error.message}`);
       });
   } else {
     showAlertModal("INFO", "Removing from set...");
@@ -309,6 +392,7 @@ function addDeleteSet(setId, addSet) {
 }
 
 // Function to get CSRF token from cookies
+// code from https://www.reddit.com/r/django/comments/17jbsj3/react_post_django_view_problems/
 function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== "") {

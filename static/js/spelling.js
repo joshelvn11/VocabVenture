@@ -15,7 +15,7 @@ let englishTranslation;
 
 // ------------------------------------------------------------------------- Global Variables
 
-// URL Paramters
+// URL Parameters
 const PARAMS = new URLSearchParams(window.location.search);
 
 // Const to hold the practice state

@@ -28,7 +28,7 @@ const exitButton = $("#exit-button");
 
 // ------------------------------------------------------------------------- Global Variables
 
-// URL Paramters
+// URL Parameters
 const PARAMS = new URLSearchParams(window.location.search);
 
 // Const to hold the practice state
@@ -121,6 +121,12 @@ returnButton.on("click", () => {
 // ------------------------------------------------------------------------- Functions
 
 function setFlashcardData() {
+  if (!flashcardData || flashcardData.length === 0) {
+    console.error("No flashcard data available.");
+    showAlertModal("ERROR", "No flashcard data available.");
+    return;
+  }
+
   flashcardInstructionText.text(flashcardData[0]["title"]);
   flashcardQuestionText.text(flashcardData[0]["question"]);
   flashcardAnswerText.text(flashcardData[0]["answer"]);
