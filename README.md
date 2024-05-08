@@ -6,6 +6,8 @@ VocabVenture is a language learning web app that currently supports learning Ukr
 
 VocabVenture adopts the traditional but effective approach of learning through constant testing and repetition. It is aimed at individuals who prefer this method of learning. The app features an extensive word list with crucial information needed to understand each word, its meaning, appropriate usage, and semantic and grammatical nuances. While the information on each word is comprehensive, most of it is optional. This design choice ensures that while additional details can enhance understanding, they are not necessary for gaining a basic and practical understanding of the word. The app is designed to initially hide detailed information to prevent overwhelming users, but it remains easily accessible for those who wish to engage more deeply.
 
+So to summarise this information into one succinct goal, the goal would be to effectively teach newcomers to the Ukrainian language basic vocubulary and beyond so can start to properly learn the language by studying further through reading, writing, listening and speaking. It is designed to give a firm foundation in vocabulary for further exploration to allow further linguistic exploration.
+
 ## Backend
 
 The backend of the application is built with Django. Pages are primarily server-side rendered, with some client-side updates performed using the application's REST API, built with Django's Rest Framework. Updates to database data are made by the client via the REST API. Certain incremental jobs are carried out by a cron job on a separate server that requests specific endpoints to execute job functions (e.g., resetting streaks at midnight every night).
@@ -272,7 +274,7 @@ The CSS passed through the validator with no errors.
 #### PEP8 Validator
 
 All custom Python code was checked against PEP8 style guidlines using the pep8 and pycodestyle command lines tools. It mostly passes
-without issues with exception to multiple occurrences of warning regarding lines being to long, which were left like they are 
+without issues with exception to multiple occurrences of warning regarding lines being to long, which were left like they are
 intentionally. Where possible I followed convention to line length however where I felt shortening the line length as per guidance
 created a negative readability experience and since the whole point of PEP8 is to prove readability and maintainability it seemed
 counterintuive to blindly follow the guidlines even it worked against the direct goal it is meant to have. Often where these lines
