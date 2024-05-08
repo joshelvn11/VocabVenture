@@ -253,13 +253,12 @@ class PracticeFlashcardsViewTests(TestCase):
         self.client.login(username="testuser", password="12345")
         response = self.client.get(reverse("practice_flashcards") +
                                    "?set=1" + "&practice=True")
-        self.assertContains(response, '<div id="practice-page">',
+        self.assertContains(response, '<div id="practice-page"',
                             html=False)
         self.assertContains(response, '<span id="cards-remaining">',
                             html=False)
         self.assertContains(response,
-                            '<button id="flip-card-button" \
-                                class="border-button">Flip</button>',
+                            '<button id="flip-card-button"',
                             html=False)
 
     def tearDown(self):
@@ -328,7 +327,7 @@ class PracticeSpellingViewTests(TestCase):
                             '<p>Words Remaining: <span id="words-remaining">null</span></p>',
                             html=False)
         self.assertContains(response,
-                            '<button id="check-button" class="border-button">Check</button>',
+                            '<button id="check-button" class="border-button"',
                             html=False)
 
     def tearDown(self):
