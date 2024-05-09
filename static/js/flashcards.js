@@ -274,7 +274,6 @@ function startFlashcards(restart = false) {
   // Show buttons
   restartButton.addClass("hidden");
   returnButton.addClass("hidden");
-  testButton.addClass("hidden");
 }
 
 function endFlashcards() {
@@ -304,7 +303,6 @@ function endFlashcards() {
   // Show buttons
   restartButton.removeClass("hidden");
   returnButton.removeClass("hidden");
-  testButton.removeClass("hidden");
 }
 
 function flipCard() {
