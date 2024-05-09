@@ -16,9 +16,6 @@ import dj_database_url
 from dotenv import load_dotenv
 import sys
 
-if os.path.isfile('env.py'):
-    import env
-
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,10 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ldu$*@bfhdujw@-6*^cm6+nb5a!m6yw9%zac(72hlclb67atet'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1',
                  'localhost',
@@ -83,7 +80,8 @@ MIDDLEWARE = [
 ]
 
 if DEBUG:
-    MIDDLEWARE = ['vocabventure.middleware.DisableCacheMiddleware',] + MIDDLEWARE
+    MIDDLEWARE = ['vocabventure.middleware.DisableCacheMiddleware',] \
+        + MIDDLEWARE
 
 
 ROOT_URLCONF = 'vocabventure.urls'
@@ -123,23 +121,28 @@ DATABASES = {
 
 if 'test' in sys.argv:
     # Override the DATABASE_URL for an alternative database connection
-    DATABASES['default'] = dj_database_url.parse("postgresql://vocabventure_owner:thOEjUYH42lW@ep-withered-glade-a2q3oqi5.eu-central-1.aws.neon.tech/vocabventure_test?sslmode=require")
+    DATABASES['default'] = \
+        dj_database_url.parse(os.environ.get("TEST_DATABASE_URL"))
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.\
+            UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.\
+            MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.\
+            CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.\
+            NumericPasswordValidator',
     },
 ]
 
@@ -165,7 +168,6 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",  # Base directory where your global static files are
 ]
 STATIC_ROOT = BASE_DIR / "staticfiles"  # Collect static to here for production
-
 
 
 # Default primary key field type
@@ -205,9 +207,10 @@ LOGGING = {
     },
 }
 
-# ------------------------------------------------------------------------------ PWA Config
+# ---------------------------------------------- PWA Config
 
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js',
+                                       'serviceworker.js')
 PWA_APP_NAME = 'VocabVenture'
 PWA_APP_DESCRIPTION = "Learn languages interactively online"
 PWA_APP_THEME_COLOR = '#471cff'
@@ -232,12 +235,10 @@ PWA_APP_ICONS_APPLE = [
 PWA_APP_SPLASH_SCREEN = [
     {
         'src': '/static/images/icons/splash-640x1136.png',
-        #'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+        'media': '(device-width: 320px) and (device-height: 568px) \
+            and (-webkit-device-pixel-ratio: 2)',
         'sizes': any
     }
 ]
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'en-US'
-
-# ------------------------------------------------------------------------------ Celery Config
-
