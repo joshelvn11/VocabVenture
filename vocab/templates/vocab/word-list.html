@@ -209,6 +209,7 @@
             <textarea id="word-conjugation-input" name="word_conjugation" class="full-width" aria-label="Conjugation input"></textarea>
             <label for="word_id">Declension</label>
             <textarea id="word-declension-input" name="word_declension" class="full-width" aria-label="Declension input"></textarea>
+            <p id="enable-sets-message">Please save the current word before adding to sets</p>
             {% for set in sets %}
             <div class="checkbox-wrapper">
                 <input type="checkbox" set-id="{{set.set_id}}" id="{{set.set_slug}}" class="set-checkbox inline" aria-label="Set selection for {{ set.set_title }}">

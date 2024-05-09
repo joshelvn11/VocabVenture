@@ -22,6 +22,7 @@ const wordAspectInput = $("#word-aspect-input");
 const wordDeclensionInput = $("#word-declension-input");
 const wordCojugationInput = $("#word-conjugation-input");
 const setCheckBoxes = $(".set-checkbox");
+const enableSetCheckBoxesMessage = $("#enable-sets-message");
 
 // ------------------------------------------------------------------------- Global Variables
 
@@ -88,9 +89,11 @@ function showAdminEditModal(wordId) {
 
     populateAdminEditFields(wordObject);
     populateSetCheckBoxes(wordId);
+    enableSetCheckBoxes(true);
   } else if (editAction === "ADD") {
     clearAdminEditFields();
     clearSetCheckBoxes();
+    enableSetCheckBoxes(false);
   }
 
   adminEditModal.removeClass("hidden");
@@ -341,6 +344,7 @@ function submitWordEditUpdate() {
         // If the operation was successful update the current edit word id to the newly created word
         if (data.status === "SUCCESS") {
           editWordID = jsonData["word_id"];
+          enableSetCheckBoxes(true);
         }
       })
       .catch((error) => {
@@ -411,6 +415,16 @@ function addDeleteSet(setId, addSet) {
       .then((data) => {
         showAlertModal(data.status, data.message);
       });
+  }
+}
+
+function enableSetCheckBoxes(enable) {
+  $(".set-checkbox").prop("disabled", !enable);
+
+  if (enable) {
+    enableSetCheckBoxesMessage.addClass("hidden");
+  } else {
+    enableSetCheckBoxesMessage.removeClass("hidden");
   }
 }
 
