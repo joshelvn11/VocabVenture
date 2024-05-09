@@ -144,7 +144,9 @@ function clearAdminEditFields() {
   wordGenderInput.val("");
   wordPronounceInput.val("");
   wordPronounceAudioInput.val("");
+  wordPartOfSpeechInput.val("");
   wordExplainInput.val("");
+  wordDefinitionInput.val("");
   wordExamplesInput.val("");
   wordDeclensionInput.val(JSON.stringify({ value: null }, null, 2));
   wordAspectInput.val(JSON.stringify({ value: null }, null, 2));
@@ -222,7 +224,7 @@ function submitWordEditUpdate() {
   ) {
     showAlertModal(
       "ERROR",
-      "The fields 'Part of Speech' and 'Pronunciation' must be integers."
+      "The fields 'Part of Speech' and 'Gender' must be integers."
     );
     return;
   }
@@ -247,9 +249,30 @@ function submitWordEditUpdate() {
     wordDeclension = JSON.parse(formData.get("word_declension"));
     wordConjugation = JSON.parse(formData.get("word_conjugation"));
   } catch (error) {
-    showAlertModal("ERROR", `Error in usage examples syntax: ${error.message}`);
-    console.log(`Error in usage examples syntax (${error})`);
+    showAlertModal("ERROR", `Error in JSON syntax: ${error.message}`);
+    console.log(`Error in JSON syntax (${error})`);
     return;
+  }
+
+  console.log(wordExamples);
+
+  requiredKeys = ["ukrainian", "english", "roman", "index", "translation"];
+
+  // Check if wordExamples is an array
+  if (!Array.isArray(wordExamples)) {
+    showAlertModal("ERROR", `Usage examples needs to be an array of objects`);
+    return;
+  }
+
+  // Check each word example cotains the required keys
+  for (let i = 0; i < wordExamples.length; i++) {
+    if (!requiredKeys.every((key) => key in wordExamples[i])) {
+      showAlertModal(
+        "ERROR",
+        `The usage example at index ${i} is missing one of the required keys`
+      );
+      return;
+    }
   }
 
   // Convert the form data to JSON
