@@ -1,0 +1,57 @@
+.progress-bar-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.progress-bar-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.progress-bar {
+  position: relative;
+  flex-grow: 1;
+  height: 8px;
+  margin-right: 14px;
+  background-color: var(--gray-opaque);
+  border-radius: var(--border-radius);
+}
+
+.progress-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: var(--border-radius);
+
+  &.red {
+    background-color: red;
+  }
+
+  &.orange {
+    background-color: orange;
+  }
+
+  &.yellow {
+    background-color: gold;
+  }
+
+  &.green {
+    background-color: green;
+  }
+
+  &.purple {
+    background-color: var(--primary-color);
+  }
+}
+
+.progress-bar-title {
+  margin: -6px 12px 0 0;
+}
+
+.progress-bar-percentage {
+  margin: -3px 0 0 0;
+}
