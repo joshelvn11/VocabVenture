@@ -1,0 +1,31 @@
+@keyframes flashGreen {
+  0%,
+  100% {
+    box-shadow: 0 0 5px 1px transparent;
+  } /* Start and end with no border color */
+  25%,
+  75% {
+    box-shadow: 0 0 5px 1px green;
+  } /* Flash green at these intervals */
+}
+
+.flashing-border-green {
+  box-shadow: 0 0 5px 1px transparent; /* Initial border setup */
+  animation: flashGreen 0.2s ease-out 3; /* Apply the animation */
+}
+
+@keyframes flashRed {
+  0%,
+  100% {
+    box-shadow: 0 0 5px 1px transparent;
+  } /* Start and end with no border color */
+  25%,
+  75% {
+    box-shadow: 0 0 5px 1px red;
+  } /* Flash green at these intervals */
+}
+
+.flashing-border-red {
+  box-shadow: 0 0 5px 1px transparent; /* Initial border setup */
+  animation: flashRed 0.2s ease-out 3; /* Apply the animation */
+}

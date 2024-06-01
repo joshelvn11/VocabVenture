@@ -1,0 +1,41 @@
+#login-signup-card {
+  width: 350px;
+  max-width: 70vw;
+
+  p {
+    margin: 6px 0;
+  }
+}
+
+.login {
+  width: 100%;
+  padding: 0 2px;
+
+  #id_login #id_password {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .errorlist {
+    list-style: none;
+    padding: 0 24px 0 0;
+
+    li {
+      color: red;
+    }
+  }
+}
+
+#signup-link {
+  display: block;
+  width: 100%;
+  text-align: center;
+
+  &:hover {
+    color: var(--primary-color);
+  }
+}
